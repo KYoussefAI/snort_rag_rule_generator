@@ -1,0 +1,26 @@
+{
+  "rows": 216,
+  "malicious_rows": 204,
+  "benign_rows": 12,
+  "attack_types": [
+    "benign",
+    "command_injection",
+    "directory_traversal",
+    "dns_axfr",
+    "dns_tunneling",
+    "ftp_bruteforce",
+    "icmp_sweep",
+    "log4shell",
+    "malware_c2",
+    "port_scan",
+    "rdp_bruteforce",
+    "shellshock",
+    "smb_exploit",
+    "sql_injection",
+    "ssh_bruteforce",
+    "suspicious_user_agent",
+    "webshell_upload",
+    "xss"
+  ],
+  "valid_rule_rate_excluding_benign": 0.9411764705882353
+}
