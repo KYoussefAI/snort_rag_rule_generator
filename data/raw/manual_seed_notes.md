@@ -1,16 +1,19 @@
-# Manual seed notes
+# Dataset provenance notes
 
-The dataset starts from manually curated defensive attack families:
+The processed dataset must now start from persisted trusted-source real Snort rules
+stored in `data/knowledge_base/trusted_rule_kb.csv`.
 
-- port scanning / reconnaissance
-- SSH, FTP and RDP brute force
-- HTTP SQL injection, XSS, command injection, directory traversal, Log4Shell and Shellshock
-- DNS tunneling and AXFR attempts
-- ICMP sweep
-- SMB exploit pattern
-- malware C2 HTTP beacon
-- suspicious scanner User-Agent
-- web shell upload
-- benign traffic
+Trusted sources used for the KB:
 
-The syntax patterns follow the official Snort rule writing documentation and the categories commonly present in open/community Snort rulesets. The generated dataset rows are student-owned variations, not a copied Kaggle/GitHub/public pre-labelled dataset.
+- Snort Community Rules
+- Emerging Threats Open Rules
+- Snort documentation for syntax validation and interpretation
+
+Each generated dataset row must preserve the original real rule in the `rule` and
+`base_rule` fields and record traceability with `kb_id`, `source_name`,
+`source_url`, `source_archive`, `source_file`, `base_rule_sid`, and
+`base_rule_msg`.
+
+The augmentation step is limited to generating additional natural-language
+descriptions for those real rules. It must not invent training labels from rules
+that are not present in the trusted knowledge base.

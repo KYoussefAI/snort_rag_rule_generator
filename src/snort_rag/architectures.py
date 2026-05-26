@@ -11,7 +11,7 @@ from snort_rag.templates import ATTACK_KEYWORDS, detect_attack_type, generate_sn
 from snort_rag.rule_parser import validate_rule, option_coverage
 
 
-DEFAULT_DATASET = Path(__file__).resolve().parents[2] / "data" / "processed" / "snort_generated_dataset.csv"
+DEFAULT_DATASET = Path(__file__).resolve().parents[2] / "data" / "processed" / "final_snort_dataset.csv"
 
 
 class SnortRAGArchitectures:
@@ -77,11 +77,11 @@ class SnortRAGArchitectures:
                 rank=0,
                 score=1.0,
                 id=str(row.get("id", "")),
-                text=str(row.get("description_nl", "")),
+                text=self.kb._description(row),
                 attack_type=str(row.get("attack_type", "")),
-                rule=str(row.get("rule", "")),
-                source_name=str(row.get("source_name", "")),
-                source_url=str(row.get("source_url", "")),
+                rule=self.kb._rule(row),
+                source_name=self.kb._source_name(row),
+                source_url=self.kb._source_url(row, self.kb.dataset_path),
             )
             graph[doc.attack_type].append(doc)
         return graph

@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "name": "Emerging Threats Open Rules",
+      "url": "https://rules.emergingthreats.net/open/snort-2.9.0/emerging.rules.tar.gz",
+      "archive_name": "emerging_threats_open",
+      "downloaded": true,
+      "rule_count": 68481
+    },
+    {
+      "name": "Snort Community Rules",
+      "url": "https://www.snort.org/downloads/community/community-rules.tar.gz",
+      "archive_name": "snort_community",
+      "downloaded": true,
+      "rule_count": 4013
+    }
+  ],
+  "rows": 72494
+}

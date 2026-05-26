@@ -71,14 +71,32 @@ class SnortKnowledgeBase:
         self.df = self.df.fillna("")
         self._rebuild()
 
+    @staticmethod
+    def _description(row: pd.Series) -> str:
+        return str(row.get("description_naturelle") or row.get("description_nl") or "")
+
+    @staticmethod
+    def _rule(row: pd.Series) -> str:
+        return str(row.get("snort_rule_reference") or row.get("rule") or "")
+
+    @staticmethod
+    def _source_name(row: pd.Series) -> str:
+        return str(row.get("source_name") or row.get("source_type") or "person1_dataset")
+
+    @staticmethod
+    def _source_url(row: pd.Series, dataset_path: Path) -> str:
+        return str(row.get("source_url") or dataset_path)
+
     def _compose_text(self, row: pd.Series) -> str:
         return " ".join([
-            str(row.get("description_nl", "")),
+            self._description(row),
             str(row.get("attack_type", "")),
             str(row.get("attack_family", "")),
             str(row.get("severity", "")),
-            str(row.get("rule", "")),
+            self._rule(row),
             str(row.get("log_example", "")),
+            str(row.get("false_positive_context", "")),
+            str(row.get("expected_explanation", "")),
         ])
 
     def _rebuild(self) -> None:
@@ -95,11 +113,11 @@ class SnortKnowledgeBase:
                 rank=rank,
                 score=float(score),
                 id=str(row.get("id", idx)),
-                text=str(row.get("description_nl", "")),
+                text=self._description(row),
                 attack_type=str(row.get("attack_type", "")),
-                rule=str(row.get("rule", "")),
-                source_name=str(row.get("source_name", "")),
-                source_url=str(row.get("source_url", "")),
+                rule=self._rule(row),
+                source_name=self._source_name(row),
+                source_url=self._source_url(row, self.dataset_path),
             ))
         return docs
 
@@ -160,12 +178,14 @@ class SnortKnowledgeBase:
             for j, chunk in enumerate(chunks, 1):
                 new_rows.append({
                     "id": f"PDF-{path.stem}-{page_no}-{j}",
-                    "description_nl": chunk,
-                    "label": "knowledge",
+                    "description_naturelle": chunk,
                     "attack_type": "external_pdf_knowledge",
                     "attack_family": "knowledge_base",
                     "severity": "none",
-                    "rule": "NO_RULE_RECOMMENDED",
+                    "snort_rule_reference": "NO_RULE_RECOMMENDED",
+                    "false_positive_context": "external document chunk",
+                    "source_type": "uploaded_pdf",
+                    "expected_explanation": "Chunk imported from an uploaded PDF to extend retrieval context.",
                     "source_name": source_name,
                     "source_url": str(path),
                     "log_example": "",

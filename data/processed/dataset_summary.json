@@ -1,26 +1,70 @@
 {
-  "rows": 216,
-  "malicious_rows": 204,
-  "benign_rows": 12,
-  "attack_types": [
-    "benign",
-    "command_injection",
-    "directory_traversal",
-    "dns_axfr",
-    "dns_tunneling",
-    "ftp_bruteforce",
-    "icmp_sweep",
-    "log4shell",
-    "malware_c2",
-    "port_scan",
-    "rdp_bruteforce",
-    "shellshock",
-    "smb_exploit",
-    "sql_injection",
-    "ssh_bruteforce",
-    "suspicious_user_agent",
-    "webshell_upload",
-    "xss"
+  "total_rows": 200,
+  "columns": [
+    "id",
+    "description_naturelle",
+    "attack_type",
+    "attack_family",
+    "protocol",
+    "src_port",
+    "dst_port",
+    "severity",
+    "log_example",
+    "snort_rule_reference",
+    "false_positive_context",
+    "source_type",
+    "expected_explanation"
   ],
-  "valid_rule_rate_excluding_benign": 0.9411764705882353
+  "rows_per_attack_type": {
+    "benign_traffic": 20,
+    "command_injection": 20,
+    "directory_traversal": 20,
+    "dns_tunneling": 20,
+    "icmp_sweep": 20,
+    "malware_c2": 20,
+    "port_scan": 20,
+    "sql_injection": 20,
+    "ssh_bruteforce": 20,
+    "xss": 20
+  },
+  "rows_per_attack_family": {
+    "benign": 20,
+    "command_and_control": 20,
+    "credential_access": 20,
+    "exfiltration_command_control": 20,
+    "reconnaissance": 40,
+    "web_attack": 40,
+    "web_attack_execution": 20,
+    "web_attack_file_access": 20
+  },
+  "severity_distribution": {
+    "critical": 26,
+    "high": 105,
+    "low": 17,
+    "medium": 39,
+    "none": 13
+  },
+  "protocol_distribution": {
+    "dns": 16,
+    "http": 37,
+    "https": 41,
+    "icmp": 22,
+    "mixed": 7,
+    "tcp": 69,
+    "udp": 8
+  },
+  "source_type_distribution": {
+    "manual": 80,
+    "synthetic_manual_variation": 120
+  },
+  "manual_rows": 80,
+  "synthetic_manual_variation_rows": 120,
+  "rules_exported_count": 180,
+  "validation_status": "passed_structural_validation_with_local_script",
+  "notes": [
+    "Official Person 1 dataset is personal, controlled, and manually reviewable.",
+    "Legacy snort_generated_dataset.* files remain only as older generator experiments and are not the official dataset.",
+    "Trusted Snort rule knowledge base stays separate from this personal retrieval dataset.",
+    "Dataset vérifié structurellement et cohérent pour RAG. Les règles Snort-like doivent encore être testées dans un environnement Snort réel avant usage opérationnel."
+  ]
 }

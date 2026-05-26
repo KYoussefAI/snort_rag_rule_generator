@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Dict, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,22 +12,25 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 from snort_rag.architectures import SnortRAGArchitectures
-from snort_rag.rule_parser import validate_rule
 
 TEST_QUERIES = [
     {"query": "Detect a TCP SYN port scan against our web server with many ports touched in one minute", "expected_attack_type": "port_scan"},
     {"query": "Generate a Snort rule for repeated SSH brute force attempts on port 22", "expected_attack_type": "ssh_bruteforce"},
     {"query": "Détecter une injection SQL UNION SELECT dans une URL HTTP", "expected_attack_type": "sql_injection"},
     {"query": "Detect XSS attack where the URI contains <script>alert(1)</script>", "expected_attack_type": "xss"},
-    {"query": "Alert when someone tries ../../../../etc/passwd directory traversal", "expected_attack_type": "directory_traversal"},
     {"query": "Detect command injection with cmd parameter and whoami in HTTP request", "expected_attack_type": "command_injection"},
-    {"query": "Detect ${jndi:ldap://evil} Log4Shell payload in HTTP headers", "expected_attack_type": "log4shell"},
+    {"query": "Alert when someone tries ../../../../etc/passwd directory traversal", "expected_attack_type": "directory_traversal"},
     {"query": "Detect DNS tunneling using long encoded subdomains", "expected_attack_type": "dns_tunneling"},
-    {"query": "Detect AXFR DNS zone transfer attempt", "expected_attack_type": "dns_axfr"},
     {"query": "Detect ICMP ping sweep against internal network", "expected_attack_type": "icmp_sweep"},
     {"query": "Detect malware command and control beacon to /gate.php", "expected_attack_type": "malware_c2"},
-    {"query": "Normal HTTP health check from the monitoring server, no attack", "expected_attack_type": "benign"},
+    {"query": "Normal HTTP health check from the monitoring server, no attack", "expected_attack_type": "benign_traffic"},
 ]
+
+
+def _normalize_attack_type(label: str) -> str:
+    if label == "benign":
+        return "benign_traffic"
+    return label
 
 
 def evaluate_architectures(rag: SnortRAGArchitectures, out_dir: Path) -> pd.DataFrame:
@@ -42,9 +45,10 @@ def evaluate_architectures(rag: SnortRAGArchitectures, out_dir: Path) -> pd.Data
         results = rag.run_all(query)
         for arch in architectures:
             res = results[arch]
-            predicted = str(res["attack_type"])
-            valid_rule = bool(res["valid_rule"]) or predicted == "benign"
-            retrieval_hit = expected in res.get("retrieved_attack_types", [])[:3] if arch != "baseline" else False
+            predicted = _normalize_attack_type(str(res["attack_type"]))
+            retrieved_types = [_normalize_attack_type(str(label)) for label in res.get("retrieved_attack_types", [])[:3]]
+            valid_rule = bool(res["valid_rule"]) or predicted == "benign_traffic"
+            retrieval_hit = expected in retrieved_types if arch != "baseline" else False
             detailed.append({
                 "query": query,
                 "expected_attack_type": expected,
@@ -90,8 +94,8 @@ def plot_tsne(rag: SnortRAGArchitectures, out_path: Path) -> None:
     X = TruncatedSVD(n_components=n_components, random_state=42).fit_transform(X_sparse)
     perplexity = max(5, min(15, n // 5))
     coords = TSNE(n_components=2, random_state=42, init="random", perplexity=perplexity, max_iter=300, learning_rate="auto", method="exact").fit_transform(X)
-    plt.figure(figsize=(10, 7))
     unique = sorted(set(labels))
+    plt.figure(figsize=(10, 7))
     for label in unique:
         idx = [i for i, lab in enumerate(labels) if lab == label]
         plt.scatter(coords[idx, 0], coords[idx, 1], s=20, label=label, alpha=0.75)

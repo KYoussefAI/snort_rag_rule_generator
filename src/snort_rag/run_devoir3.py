@@ -9,9 +9,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def main() -> None:
-    dataset = PROJECT_ROOT / "data" / "processed" / "snort_generated_dataset.csv"
+    dataset = PROJECT_ROOT / "data" / "processed" / "final_snort_dataset.csv"
     if not dataset.exists():
-        raise SystemExit("Dataset not found. Run: python -m snort_rag.generate_dataset --multiplier 10")
+        raise SystemExit("Dataset not found. Expected official Person 1 dataset at data/processed/final_snort_dataset.csv")
     rag = SnortRAGArchitectures(dataset)
     out_dir = PROJECT_ROOT / "results"
     summary = evaluate_architectures(rag, out_dir)

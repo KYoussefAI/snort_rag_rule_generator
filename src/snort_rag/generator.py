@@ -50,8 +50,17 @@ def explain_rule(rule: str, attack_type: str, docs: Sequence[RetrievedDoc]) -> s
     return (
         f"Attack type: {attack_type}. The rule uses a conservative classtype "
         f"({CLASSTYPE.get(attack_type, 'unknown')}) and includes msg/sid/rev. "
-        f"It was generated after retrieving similar examples: {source_ids}. Parser status: {status}."
+        f"It was selected or adapted after retrieving similar examples: {source_ids}. Parser status: {status}."
     )
+
+
+def choose_rule(query: str, attack_type: str, retrieved_docs: Sequence[RetrievedDoc]) -> str:
+    for doc in retrieved_docs:
+        if doc.attack_type == attack_type and doc.rule and doc.rule != "NO_RULE_RECOMMENDED":
+            valid, _ = validate_rule(doc.rule)
+            if valid:
+                return doc.rule
+    return generate_snort_rule(attack_type, query)
 
 
 def generate_from_context(query: str, retrieved_docs: Sequence[RetrievedDoc], force_attack_type: str | None = None) -> Dict[str, object]:
@@ -61,7 +70,7 @@ def generate_from_context(query: str, retrieved_docs: Sequence[RetrievedDoc], fo
         valid = False
         errors = ["Benign request"]
     else:
-        rule = generate_snort_rule(attack_type, query)
+        rule = choose_rule(query, attack_type, retrieved_docs)
         valid, errors = validate_rule(rule)
     prompt = build_prompt(query, retrieved_docs)
     hallucination_risk = 0.0

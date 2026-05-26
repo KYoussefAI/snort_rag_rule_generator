@@ -9,7 +9,7 @@ import gradio as gr
 from snort_rag.architectures import SnortRAGArchitectures
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATASET = PROJECT_ROOT / "data" / "processed" / "snort_generated_dataset.csv"
+DATASET = PROJECT_ROOT / "data" / "processed" / "final_snort_dataset.csv"
 rag = SnortRAGArchitectures(DATASET)
 
 
