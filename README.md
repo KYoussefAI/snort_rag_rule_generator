@@ -20,10 +20,6 @@ Defensive NLP/RAG project for generating valid Snort IDS rules from natural-lang
 - Gradio dashboard with PDF upload to extend the knowledge base.
 - Technical report in `docs/`.
 
-## Important academic constraint
-
-The assignment forbids direct black-box LLM use and forbids OpenAI/Mistral/Ollama API usage for Devoir 3. Therefore this project uses a **local transparent generator** based on retrieved context + Snort templates. The code still implements the complete RAG pipeline: query encoding, retrieval, prompt construction, generation, explanation and evaluation.
-
 ## Installation
 
 ```bash
