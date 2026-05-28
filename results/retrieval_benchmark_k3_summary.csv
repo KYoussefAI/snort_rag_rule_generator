@@ -1,0 +1,10 @@
+method,backend,k,status,sentence_bert_runtime_available,faiss_runtime_available,sentence_bert_model,faiss_enabled,error_message,hit_at_k,precision_at_k,recall_at_k,mrr,avg_latency_ms
+hybrid_rerank_best,hybrid_tfidf_bm25_rerank,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,1.0,1.0,1.0,8.82283999981155
+hybrid_rerank_0.25,hybrid_tfidf_bm25_rerank,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,1.0,1.0,1.0,9.203730000263022
+dense_tfidf_rerank,tfidf_rerank,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,0.9666666666666666,1.0,1.0,2.3293899999771384
+sentence_bert,sentence_bert_cosine,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,0.9666666666666666,1.0,1.0,15.938869999990857
+sentence_bert_faiss,sentence_bert_faiss_ip,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,True,,1.0,0.9666666666666666,1.0,1.0,16.676309899776243
+bm25,bm25,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,0.9666666666666668,1.0,0.95,6.7505200999221415
+hybrid_alpha_0.25,hybrid_tfidf_bm25,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,0.9666666666666668,1.0,0.95,8.405600000332925
+hybrid_alpha_0.55,hybrid_tfidf_bm25,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,0.9666666666666668,1.0,0.95,9.09460009970644
+dense_tfidf,tfidf,3,ready,True,True,sentence-transformers/all-MiniLM-L6-v2,False,,1.0,0.9,1.0,0.95,1.8331499999476364

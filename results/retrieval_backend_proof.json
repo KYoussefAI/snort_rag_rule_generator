@@ -1,0 +1,136 @@
+{
+  "dataset_path": "/mnt/e/projects/snort_rag_rule_generator/data/processed/final_snort_dataset.csv",
+  "sentence_bert_runtime_available": true,
+  "faiss_runtime_available": true,
+  "sentence_bert_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "methods": [
+    {
+      "method": "bm25",
+      "backend": "bm25",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "dense_tfidf",
+      "backend": "tfidf",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "dense_tfidf_rerank",
+      "backend": "tfidf_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_rerank_best",
+      "backend": "hybrid_tfidf_bm25_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_alpha_0.25",
+      "backend": "hybrid_tfidf_bm25",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_alpha_0.50",
+      "backend": "hybrid_tfidf_bm25",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_alpha_0.55",
+      "backend": "hybrid_tfidf_bm25",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_alpha_0.75",
+      "backend": "hybrid_tfidf_bm25",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_alpha_0.90",
+      "backend": "hybrid_tfidf_bm25",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_rerank_0.25",
+      "backend": "hybrid_tfidf_bm25_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_rerank_0.50",
+      "backend": "hybrid_tfidf_bm25_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_rerank_0.55",
+      "backend": "hybrid_tfidf_bm25_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_rerank_0.75",
+      "backend": "hybrid_tfidf_bm25_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "hybrid_rerank_0.90",
+      "backend": "hybrid_tfidf_bm25_rerank",
+      "requires_sentence_bert": false,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "sentence_bert",
+      "backend": "sentence_bert_cosine",
+      "requires_sentence_bert": true,
+      "requires_faiss": false,
+      "status": "ready",
+      "error_message": ""
+    },
+    {
+      "method": "sentence_bert_faiss",
+      "backend": "sentence_bert_faiss_ip",
+      "requires_sentence_bert": true,
+      "requires_faiss": true,
+      "status": "ready",
+      "error_message": ""
+    }
+  ]
+}
