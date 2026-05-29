@@ -71,7 +71,7 @@ ATTACK_KEYWORDS: Dict[str, List[str]] = {
     "smb_exploit": ["smb", "eternalblue", "445", "ms17-010", "smb exploit"],
     "suspicious_user_agent": ["sqlmap", "nikto", "acunetix", "scanner user-agent", "user agent"],
     "webshell_upload": ["webshell", "upload php", "multipart", ".php upload"],
-    "benign": ["normal", "legitimate", "backup", "health check", "authorized", "benign"],
+    "benign": ["normal", "normally", "legitimate", "backup", "health check", "authorized", "benign"],
 }
 
 DESCRIPTION_TEMPLATES = {
@@ -175,6 +175,9 @@ def stable_sid(text: str, base: int = 9000000, modulo: int = 900000) -> int:
 
 def detect_attack_type(text: str) -> str:
     lower = text.lower()
+    icmp_priority_terms = ("icmp", "ping sweep", "echo request", "icmp sweep", "internal network sweep")
+    if any(term in lower for term in icmp_priority_terms):
+        return "icmp_sweep"
     scores: Dict[str, int] = {}
     for attack, keywords in ATTACK_KEYWORDS.items():
         scores[attack] = sum(1 for kw in keywords if kw.lower() in lower)

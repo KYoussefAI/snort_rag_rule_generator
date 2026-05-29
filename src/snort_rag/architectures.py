@@ -5,10 +5,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
 
-from snort_rag.generator import generate_from_context
+from snort_rag.generator import build_generation_result, generate_from_context
 from snort_rag.retrieval import RetrievedDoc, SnortKnowledgeBase
 from snort_rag.templates import ATTACK_KEYWORDS, detect_attack_type, generate_snort_rule
-from snort_rag.rule_parser import validate_rule, option_coverage
 
 
 DEFAULT_DATASET = Path(__file__).resolve().parents[2] / "data" / "processed" / "final_snort_dataset.csv"
@@ -32,21 +31,16 @@ class SnortRAGArchitectures:
         attack_type = detect_attack_type(query)
         if attack_type == "benign":
             rule = "NO_RULE_RECOMMENDED"
-            valid, errors = False, ["Benign request"]
         else:
             rule = generate_snort_rule(attack_type, query)
-            valid, errors = validate_rule(rule)
-        result = {
-            "query": query,
-            "attack_type": attack_type,
-            "generated_rule": rule,
-            "valid_rule": valid,
-            "validation_errors": errors,
-            "option_coverage": option_coverage(rule) if rule != "NO_RULE_RECOMMENDED" else 0.0,
-            "explanation": "Baseline without retrieval: generated only from query keywords, so context control is weak.",
-            "prompt": f"User request only: {query}",
-            "hallucination_risk": 0.35 if attack_type != "benign" else 0.20,
-        }
+        result = build_generation_result(
+            query=query,
+            attack_type=attack_type,
+            rule=rule,
+            retrieved_docs=[],
+            prompt=f"User request only: {query}",
+            explanation="Baseline without retrieval: generated only from query keywords, so context control is weak.",
+        )
         return self._pack("baseline_no_rag", result, [])
 
     def rag_classic(self, query: str, k: int = 5) -> Dict[str, object]:
@@ -64,7 +58,8 @@ class SnortRAGArchitectures:
 
     def multi_hop_rag(self, query: str, k: int = 4) -> Dict[str, object]:
         first = self.kb.hybrid_retrieve(query, k=k)
-        inferred = first[0].attack_type if first else detect_attack_type(query)
+        direct_attack_type = detect_attack_type(query)
+        inferred = direct_attack_type if direct_attack_type != "suspicious_user_agent" else (first[0].attack_type if first else direct_attack_type)
         refined_query = query + " " + inferred.replace("_", " ") + " " + " ".join(ATTACK_KEYWORDS.get(inferred, [])[:3])
         second = self.kb.hybrid_retrieve(refined_query, k=k)
         docs = self.kb.rerank(refined_query, first + second, k=5)
@@ -111,7 +106,7 @@ class SnortRAGArchitectures:
         else:
             # Ambiguous request: do a first hop, expand with top category, then rerank.
             first = self.kb.hybrid_retrieve(query, k=k)
-            inferred = first[0].attack_type if first else attack_type
+            inferred = attack_type if attack_type != "suspicious_user_agent" else (first[0].attack_type if first else attack_type)
             expanded = query + " " + inferred.replace("_", " ")
             second = self.kb.hybrid_retrieve(expanded, k=k)
             docs = self.kb.rerank(expanded, first + second, k=k)

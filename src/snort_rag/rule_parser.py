@@ -22,6 +22,18 @@ RULE_RE = re.compile(
 
 REQUIRED_OPTIONS = {"msg", "sid", "rev"}
 RECOMMENDED_OPTIONS = {"classtype"}
+COMMON_REQUIRED_OPTIONS = ("msg", "sid", "rev", "classtype")
+ATTACK_TYPE_RECOMMENDATIONS = {
+    "ssh_bruteforce": (("flow",), ("detection_filter", "threshold"), ("flags", "content")),
+    "sql_injection": (("flow",), ("content", "pcre"), ("nocase",)),
+    "xss": (("flow",), ("content", "pcre"), ("nocase",)),
+    "command_injection": (("flow",), ("content", "pcre"), ("nocase",)),
+    "directory_traversal": (("flow",), ("content", "pcre"), ("nocase",)),
+    "port_scan": (("flags",), ("detection_filter", "threshold")),
+    "dns_tunneling": (("content", "dsize"),),
+    "icmp_sweep": (("dsize", "detection_filter"),),
+    "malware_c2": (("flow",), ("content",), ("detection_filter", "threshold")),
+}
 
 
 @dataclass
@@ -91,6 +103,46 @@ def parse_rule(rule: str) -> ParsedRule:
         options=options,
         raw_options=raw_options,
     )
+
+
+def extract_snort_options(rule: str) -> Dict[str, List[str]]:
+    """Return parsed Snort options keyed by option name."""
+    if rule == "NO_RULE_RECOMMENDED":
+        return {}
+    parsed = parse_rule(rule)
+    return parsed.options
+
+
+def detected_option_names(rule: str) -> List[str]:
+    """Return normalized option names detected in a Snort-like rule."""
+    if rule == "NO_RULE_RECOMMENDED":
+        return []
+    try:
+        return sorted(extract_snort_options(rule))
+    except ValueError:
+        return []
+
+
+def missing_required_options(rule: str, attack_type: str = "") -> List[str]:
+    """Return missing common and attack-specific options for a generated rule."""
+    if rule == "NO_RULE_RECOMMENDED":
+        return []
+    detected = set(detected_option_names(rule))
+    if not detected:
+        return list(COMMON_REQUIRED_OPTIONS)
+
+    missing: List[str] = [name for name in COMMON_REQUIRED_OPTIONS if name not in detected]
+    for option_group in ATTACK_TYPE_RECOMMENDATIONS.get(attack_type, ()):
+        if not any(option in detected for option in option_group):
+            missing.extend(option_group)
+    # Preserve order while removing duplicates.
+    ordered: List[str] = []
+    seen = set()
+    for item in missing:
+        if item not in seen:
+            ordered.append(item)
+            seen.add(item)
+    return ordered
 
 
 def validate_rule(rule: str) -> Tuple[bool, List[str]]:
