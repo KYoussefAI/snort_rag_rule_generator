@@ -1,4 +1,4 @@
-# Snort RAG Rule Generator - NLP Mini Project + Devoir 3
+# Snort RAG Rule Generator - NLP Mini Project
 
 Defensive NLP/RAG project for generating valid Snort IDS rules from natural-language network-attack descriptions.
 
