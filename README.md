@@ -1,26 +1,94 @@
-# Snort RAG Rule Generator - NLP Mini Project + Devoir 3
+# Snort RAG Rule Generator
 
-Defensive NLP/RAG project for generating valid Snort IDS rules from natural-language network-attack descriptions.
+## Overview
+This repository contains an academic NLP/RAG project for generating Snort IDS rules from natural-language descriptions of suspicious network activity. The system is designed as a controlled, defensive pipeline: it retrieves relevant examples from a local corpus, selects or adapts Snort-like rules from retrieved context when possible, and otherwise falls back to deterministic local templates. The project also includes local syntax validation, automatic explanation generation, and heuristic false-positive analysis.
 
-## What this project contains
+The repository is intended for coursework and technical reporting. It is not presented as a production IDS engineering framework.
 
-- An **official Person 1 retrieval dataset** stored in `data/processed/final_snort_dataset.csv`.
-- A **trusted-source knowledge base** of real Snort rules stored in `data/knowledge_base/`.
-- A legacy script to **expand trusted rules into experiment rows**: `python -m snort_rag.generate_dataset --multiplier 20`.
-- Seven Devoir 3 architectures:
-  - baseline without RAG
-  - classic RAG
-  - RAG with re-ranking
-  - hybrid RAG (TF-IDF dense fallback + BM25 fusion)
-  - multi-hop RAG
-  - graph RAG
-  - agentic RAG
-- Metrics and comparison table in `results/comparison_metrics.csv`.
-- t-SNE embedding visualization in `results/embedding_tsne.png`.
-- Gradio dashboard with PDF upload to extend the knowledge base.
-- Technical report in `docs/`.
+## Objectives
+The project addresses the following goals:
+- transform a textual attack description into a structured Snort-like detection rule
+- compare several Retrieval-Augmented Generation architectures in a reproducible local setting
+- maintain a personal, reviewable dataset consistent with academic project constraints
+- provide interpretable outputs through validation metadata, explanations, and false-positive indicators
+
+## Scope of the Repository
+The current repository includes:
+- a personal final retrieval dataset in `data/processed/final_snort_dataset.csv`
+- a retrieval and generation package in `src/snort_rag/`
+- multiple Devoir 3 architectures, including baseline, classic RAG, reranking, hybrid, multi-hop, graph-based, and agentic variants
+- a local Snort-like parser/validator
+- a false-positive analysis module for generated rules
+- evaluation scripts, generated example artifacts, and report sections in `docs/` and `results/`
+
+## Methodology
+The generation workflow follows this sequence:
+
+natural-language query  
+→ retrieval of Top-k relevant documents  
+→ controlled prompt and template logic  
+→ rule selection or deterministic rule generation  
+→ local syntax validation  
+→ automatic explanation  
+→ false-positive analysis
+
+This is not a direct external-LLM generation workflow. The repository does not depend on OpenAI, Claude, Mistral, Ollama, or other hosted LLM APIs for final rule generation.
+
+## Main Components
+
+### 1. Retrieval Corpus
+The official project dataset is:
+- `data/processed/final_snort_dataset.csv`
+- `data/processed/final_snort_dataset.jsonl`
+- `data/processed/dataset_summary.json`
+- `data/processed/person1_rules.rules`
+
+This dataset is the default retrieval corpus for the application and evaluation pipeline. It is personal, limited in size, manually reviewable, and suitable for controlled academic experimentation.
+
+### 2. Generation Module
+The generation logic is primarily implemented in:
+- `src/snort_rag/generator.py`
+- `src/snort_rag/templates.py`
+- `src/snort_rag/rule_parser.py`
+- `src/snort_rag/false_positive.py`
+
+The generator returns both legacy and enriched fields, including:
+- `generated_rule`
+- `attack_type`
+- `valid_rule`
+- `validation_errors`
+- `syntax_validation`
+- `detected_options`
+- `missing_options`
+- `false_positive_risk`
+- `false_positive_score`
+- `improvement_suggestions`
+- `explanation`
+- `source_doc_ids`
+- `retrieved_context_used`
+- `hallucination_risk`
+- `option_coverage`
+
+### 3. RAG Architectures
+The repository evaluates seven configurations:
+- baseline without RAG
+- classic RAG
+- RAG with re-ranking
+- hybrid RAG
+- multi-hop RAG
+- graph RAG
+- agentic RAG
+
+### 4. Evaluation and Artifacts
+Relevant outputs include:
+- `results/comparison_metrics.csv`
+- `results/detailed_devoir3_results.csv`
+- `results/generated_rule_examples.csv`
+- `results/false_positive_analysis.csv`
+- `results/embedding_tsne.png`
 
 ## Installation
+Create a virtual environment and install the project locally:
 
 ```bash
 python -m venv .venv
@@ -29,102 +97,99 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-## Build the real-rule knowledge base
+## Reproducible Commands
+
+### Run the Devoir 3 evaluation
+```bash
+python -m snort_rag.run_devoir3
+```
+
+Expected outputs:
+- `results/comparison_metrics.csv`
+- `results/detailed_devoir3_results.csv`
+- `results/embedding_tsne.png`
+
+### Generate example rules and false-positive artifacts
+```bash
+PYTHONPATH=src python scripts/generate_generation_examples.py
+```
+
+Expected outputs:
+- `results/generated_rule_examples.csv`
+- `results/false_positive_analysis.csv`
+
+### Run focused tests
+```bash
+PYTHONPATH=src pytest tests/test_generator.py tests/test_rule_parser.py tests/test_retrieval.py tests/test_generate_dataset.py
+```
+
+### Launch the dashboard
+```bash
+python -m snort_rag.app_gradio
+```
+
+The dashboard provides a simple interface for:
+- entering an attack description
+- selecting a RAG architecture
+- generating a rule
+- reviewing retrieved documents
+- extending the in-memory knowledge base with an uploaded PDF
+
+## Trusted-Source Knowledge Base
+If external rule references are needed for the optional trusted-rule knowledge base workflow, use:
 
 ```bash
 python scripts/fetch_real_sources.py
 ```
 
-Outputs:
-
+This produces:
 - `data/knowledge_base/trusted_rule_kb.csv`
 - `data/knowledge_base/trusted_rule_kb.jsonl`
 - `data/knowledge_base/fetch_summary.json`
 
-## Official Person 1 dataset
+These artifacts serve as reference material and optional experimental support. They are distinct from the official personal dataset used by the submitted project workflow.
 
-The official dataset used by the application, Devoir 3 runner, and retrieval layer is:
-
-- `data/processed/final_snort_dataset.csv`
-- `data/processed/final_snort_dataset.jsonl`
-- `data/processed/dataset_summary.json`
-- `data/processed/person1_rules.rules`
-
-This dataset is personal, controlled, manually reviewable, and is the main dataset for Person 1 and the default retrieval corpus across the project.
-
-The exported Person 1 rules are locally pre-validated with a strengthened validator. This does not replace Snort runtime validation.
-
-Submission status:
-
-- The official Person 1 dataset is `data/processed/final_snort_dataset.csv`.
-- The final dataset is personal, controlled, balanced across 10 attack types, and contains 200 rows.
-- The legacy trusted-rule expansion generator remains in the repository only as experimental code.
-- The old 500k-row generated files are not included in the final submitted project.
-
-## Legacy dataset generator
-
-The legacy generator requires the trusted real-rule knowledge base and creates
-multiple natural-language rows per real rule for older experiments only.
-
-```bash
-python -m snort_rag.generate_dataset --multiplier 10
-# bigger dataset
-python -m snort_rag.generate_dataset --multiplier 30
-```
-
-Legacy outputs if you run the experiment manually:
-
-- `data/experiments/legacy_generated/snort_generated_dataset.csv`
-- `data/experiments/legacy_generated/snort_generated_dataset.json`
-- `data/experiments/legacy_generated/snort_generated_dataset.jsonl`
-- `data/experiments/legacy_generated/snort_generated_dataset_summary.json`
-
-These files are legacy experimental artifacts only. The legacy generator no longer writes into `data/processed/` and must not be used as the official Person 1 dataset workflow.
-
-## Run Devoir 3 comparison
-
-```bash
-python -m snort_rag.run_devoir3
-```
-
-Outputs:
-
-- `results/comparison_metrics.csv`
-- `results/detailed_devoir3_results.csv`
-- `results/embedding_tsne.png`
-
-## Launch dashboard
-
-```bash
-python -m snort_rag.app_gradio
-```
-
-The dashboard lets you choose a RAG architecture, generate a Snort rule, inspect retrieved documents and add a PDF as a new knowledge source.
-
-## Project structure
-
+## Repository Structure
 ```text
-src/snort_rag/                 package source code
-data/knowledge_base/           persisted trusted-source real Snort rules
-data/raw/                      source manifest
-data/processed/                official Person 1 dataset
-data/experiments/legacy_generated/ legacy trusted-rule expansion outputs only
-notebooks/                     Devoir 3 notebook
-results/                       metrics and t-SNE plot
-docs/                          report files
-scripts/fetch_real_sources.py  trusted-source rule ingestion
+src/snort_rag/                         source package
+data/processed/                        official project dataset and exported rules
+data/knowledge_base/                   trusted-source rule reference artifacts
+data/experiments/legacy_generated/     legacy experimental outputs
+results/                               evaluation and generation artifacts
+docs/                                  report sections and technical notes
+scripts/                               reproducible project scripts
+tests/                                 unit and integration-style tests
 ```
 
-## Example
-
+## Example Usage
 ```python
 from snort_rag.architectures import SnortRAGArchitectures
+
 rag = SnortRAGArchitectures("data/processed/final_snort_dataset.csv")
 result = rag.agentic_rag("Detect SQL injection with UNION SELECT in HTTP URI")
+
 print(result["generated_rule"])
 print(result["explanation"])
+print(result["false_positive_risk"])
 ```
 
-## Disclaimer
+## Validation Status and Limitations
+This repository includes local Snort-like validation, but it does not claim that local validation is equivalent to runtime validation by the Snort engine.
 
-This is a defensive IDS rule generation project for education. Every generated rule must still be validated in a real Snort installation using Snort's configuration test mode before production use.
+Important limitations:
+- the validator is structural and local only
+- generated rules remain educational Snort-like outputs until verified in a real Snort environment
+- false-positive analysis is heuristic, not empirical
+- PCAP-based validation is still necessary to confirm actual detection behavior
+- retrieval quality can still affect the final selected rule
+
+## Academic Positioning
+This repository is written for an academic context and emphasizes:
+- reproducibility
+- interpretability
+- controlled local generation
+- explicit limitations
+- separation between personal dataset construction and external rule references
+
+## Disclaimer
+This is a defensive cybersecurity project for educational use. Generated rules should not be deployed operationally without real Snort runtime validation and behavior testing on representative traffic.
