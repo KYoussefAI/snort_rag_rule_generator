@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Snort RAG Rule Generator
+=======
+# Snort RAG Rule Generator - NLP Mini Project
+>>>>>>> 99ef1088bcb774fb2474c8cf999a3d20daa0fe65
 
 ## Overview
 This repository contains an academic NLP/RAG project for generating Snort IDS rules from natural-language descriptions of suspicious network activity. The system is designed as a controlled, defensive pipeline: it retrieves relevant examples from a local corpus, selects or adapts Snort-like rules from retrieved context when possible, and otherwise falls back to deterministic local templates. The project also includes local syntax validation, automatic explanation generation, and heuristic false-positive analysis.
