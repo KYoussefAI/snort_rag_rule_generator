@@ -1,0 +1,62 @@
+[
+  {
+    "pcap": "tests/pcaps/generated/port_scan.pcap",
+    "scenario": "port_scan",
+    "synthetic": true,
+    "expected_attack_type": "port_scan"
+  },
+  {
+    "pcap": "tests/pcaps/generated/ssh_bruteforce.pcap",
+    "scenario": "ssh_bruteforce",
+    "synthetic": true,
+    "expected_attack_type": "ssh_bruteforce"
+  },
+  {
+    "pcap": "tests/pcaps/generated/sql_injection.pcap",
+    "scenario": "sql_injection",
+    "synthetic": true,
+    "expected_attack_type": "sql_injection"
+  },
+  {
+    "pcap": "tests/pcaps/generated/xss.pcap",
+    "scenario": "xss",
+    "synthetic": true,
+    "expected_attack_type": "xss"
+  },
+  {
+    "pcap": "tests/pcaps/generated/command_injection.pcap",
+    "scenario": "command_injection",
+    "synthetic": true,
+    "expected_attack_type": "command_injection"
+  },
+  {
+    "pcap": "tests/pcaps/generated/directory_traversal.pcap",
+    "scenario": "directory_traversal",
+    "synthetic": true,
+    "expected_attack_type": "directory_traversal"
+  },
+  {
+    "pcap": "tests/pcaps/generated/dns_tunneling.pcap",
+    "scenario": "dns_tunneling",
+    "synthetic": true,
+    "expected_attack_type": "dns_tunneling"
+  },
+  {
+    "pcap": "tests/pcaps/generated/icmp_sweep.pcap",
+    "scenario": "icmp_sweep",
+    "synthetic": true,
+    "expected_attack_type": "icmp_sweep"
+  },
+  {
+    "pcap": "tests/pcaps/generated/malware_c2.pcap",
+    "scenario": "malware_c2",
+    "synthetic": true,
+    "expected_attack_type": "malware_c2"
+  },
+  {
+    "pcap": "tests/pcaps/generated/benign_traffic.pcap",
+    "scenario": "benign_traffic",
+    "synthetic": true,
+    "expected_attack_type": "benign_traffic"
+  }
+]

@@ -5,7 +5,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
 
-from snort_rag.generator import build_generation_result, generate_from_context
+from snort_rag.generator import build_generation_result, dedupe_preserve_order, generate_from_context
+from snort_rag.llm_clients import BaseLLMClient, MockDeterministicClient
+from snort_rag.llm_generator import generate_with_llm_context
 from snort_rag.retrieval import RetrievedDoc, SnortKnowledgeBase
 from snort_rag.templates import ATTACK_KEYWORDS, detect_attack_type, generate_snort_rule
 
@@ -21,9 +23,18 @@ class SnortRAGArchitectures:
     def _pack(self, architecture: str, result: Dict[str, object], docs: List[RetrievedDoc]) -> Dict[str, object]:
         result = dict(result)
         result["architecture"] = architecture
-        result["retrieved_ids"] = [d.id for d in docs]
-        result["retrieved_attack_types"] = [d.attack_type for d in docs]
-        result["retrieval_scores"] = [round(d.score, 4) for d in docs]
+        unique_docs: list[RetrievedDoc] = []
+        seen: set[str] = set()
+        for doc in docs:
+            if doc.id not in seen:
+                unique_docs.append(doc)
+                seen.add(doc.id)
+        result["retrieved_ids"] = [d.id for d in unique_docs]
+        result["retrieved_attack_types"] = [d.attack_type for d in unique_docs]
+        result["retrieval_scores"] = [round(d.score, 4) for d in unique_docs]
+        result["source_doc_ids"] = dedupe_preserve_order([str(x) for x in result.get("source_doc_ids", [])])
+        if "used_source_doc_ids" in result:
+            result["used_source_doc_ids"] = dedupe_preserve_order([str(x) for x in result.get("used_source_doc_ids", [])])
         return result
 
     def llm_no_rag(self, query: str) -> Dict[str, object]:
@@ -42,6 +53,9 @@ class SnortRAGArchitectures:
             explanation="Baseline without retrieval: generated only from query keywords, so context control is weak.",
         )
         return self._pack("baseline_no_rag", result, [])
+
+    def baseline_no_rag(self, query: str) -> Dict[str, object]:
+        return self.llm_no_rag(query)
 
     def rag_classic(self, query: str, k: int = 5) -> Dict[str, object]:
         docs = self.kb.dense_retrieve(query, k=k)
@@ -116,6 +130,18 @@ class SnortRAGArchitectures:
         if docs and any(d.attack_type == result["attack_type"] for d in docs[:3]):
             result["hallucination_risk"] = max(0.0, float(result["hallucination_risk"]) - 0.15)
         return self._pack("agentic_rag", result, docs)
+
+    def rag_llm_generate(
+        self,
+        query: str,
+        k: int = 5,
+        client: BaseLLMClient | None = None,
+        prompt_variant: str = "strict_json",
+    ) -> Dict[str, object]:
+        docs = self.kb.hybrid_rerank_retrieve(query, k=k)
+        llm_client = client or MockDeterministicClient()
+        result = generate_with_llm_context(query, docs, llm_client, prompt_variant=prompt_variant)
+        return self._pack("rag_llm", result, docs)
 
     def run_all(self, query: str) -> Dict[str, Dict[str, object]]:
         return {

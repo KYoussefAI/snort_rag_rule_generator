@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import math
 import os
+import importlib.util
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, List, Sequence
@@ -17,15 +18,8 @@ try:
 except Exception:  # pragma: no cover
     PdfReader = None
 
-try:  # pragma: no cover
-    import faiss
-except Exception:  # pragma: no cover
-    faiss = None
-
-try:  # pragma: no cover
-    from sentence_transformers import SentenceTransformer
-except Exception:  # pragma: no cover
-    SentenceTransformer = None
+faiss = None
+SentenceTransformer = None
 
 
 @dataclass
@@ -131,11 +125,11 @@ class SnortKnowledgeBase:
 
     @classmethod
     def sentence_bert_runtime_available(cls) -> bool:
-        return SentenceTransformer is not None
+        return importlib.util.find_spec("sentence_transformers") is not None
 
     @staticmethod
     def faiss_runtime_available() -> bool:
-        return faiss is not None
+        return importlib.util.find_spec("faiss") is not None
 
     def embedding_backend_info(self) -> dict[str, object]:
         return {
@@ -154,8 +148,13 @@ class SnortKnowledgeBase:
         return matrix / norms
 
     def _load_sentence_model(self) -> Any:
+        global SentenceTransformer
         if SentenceTransformer is None:
-            raise RuntimeError("sentence-transformers is not installed")
+            try:  # pragma: no cover - depends on optional local install
+                from sentence_transformers import SentenceTransformer as _SentenceTransformer
+            except Exception as exc:  # pragma: no cover
+                raise RuntimeError("sentence-transformers is not installed") from exc
+            SentenceTransformer = _SentenceTransformer
         if self._sentence_model is None:
             try:
                 self._sentence_model = SentenceTransformer(self._sentence_model_name)
@@ -182,8 +181,13 @@ class SnortKnowledgeBase:
         return self._sentence_embeddings
 
     def _ensure_faiss_index(self) -> Any:
+        global faiss
         if faiss is None:
-            raise RuntimeError("faiss is not installed")
+            try:  # pragma: no cover - depends on optional local install
+                import faiss as _faiss
+            except Exception as exc:  # pragma: no cover
+                raise RuntimeError("faiss is not installed") from exc
+            faiss = _faiss
         if self._faiss_index is not None:
             return self._faiss_index
         embeddings = self._ensure_sentence_embeddings()

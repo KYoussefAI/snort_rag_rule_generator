@@ -9,5 +9,10 @@ description = "Defensive NLP/RAG Snort rule generator for Devoir 3"
 requires-python = ">=3.10"
 dependencies = ["pandas", "numpy", "scikit-learn", "matplotlib", "gradio", "pypdf"]
 
+[project.optional-dependencies]
+embeddings = ["sentence-transformers>=2.6", "faiss-cpu>=1.8"]
+llm = ["transformers>=4.41", "accelerate>=0.30", "torch"]
+dev = ["pytest"]
+
 [tool.setuptools.packages.find]
 where = ["src"]

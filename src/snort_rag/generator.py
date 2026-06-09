@@ -1,9 +1,8 @@
-"""Local generation module for Snort rules.
+"""Deterministic baseline and fallback generation module for Snort rules.
 
-This is a controlled local generator that behaves like the generation stage of RAG,
-but without prohibited external LLM APIs. It builds a transparent prompt, uses
-retrieved context, classifies the attack type, fills a valid Snort template and
-returns an explanation.
+The final RAG+LLM path lives in ``llm_generator.py``. This module remains the
+transparent local baseline/fallback used when LLM output is unavailable or fails
+validation.
 """
 from __future__ import annotations
 
@@ -12,14 +11,26 @@ from typing import Dict, List, Sequence
 from snort_rag.false_positive import analyze_false_positive_risk
 from snort_rag.rule_parser import (
     detected_option_names,
+    extract_snort_options,
     missing_required_options,
     option_coverage,
     validate_rule,
 )
-from snort_rag.templates import CLASSTYPE, detect_attack_type, generate_snort_rule
+from snort_rag.templates import detect_attack_type, generate_snort_rule
 from snort_rag.retrieval import RetrievedDoc
 
 BENIGN_ATTACK_TYPES = {"benign", "benign_traffic"}
+
+
+def dedupe_preserve_order(values: Sequence[str]) -> List[str]:
+    output: List[str] = []
+    seen: set[str] = set()
+    for value in values:
+        item = str(value)
+        if item and item not in seen:
+            output.append(item)
+            seen.add(item)
+    return output
 
 
 def build_prompt(query: str, retrieved_docs: Sequence[RetrievedDoc]) -> str:
@@ -55,11 +66,15 @@ def explain_rule(rule: str, attack_type: str, docs: Sequence[RetrievedDoc]) -> s
     if rule == "NO_RULE_RECOMMENDED":
         return "The request appears benign, so the system recommends no alert rule to avoid false positives."
     valid, errors = validate_rule(rule)
-    source_ids = ", ".join(doc.id for doc in docs[:3]) or "no retrieved source"
+    source_ids = ", ".join(dedupe_preserve_order([doc.id for doc in docs])[:3]) or "no retrieved source"
     status = "valid by internal parser" if valid else "needs Snort -T validation: " + "; ".join(errors)
+    try:
+        classtype = (extract_snort_options(rule).get("classtype") or ["classtype unavailable"])[0]
+    except ValueError:
+        classtype = "classtype unavailable"
     return (
-        f"Attack type: {attack_type}. The rule uses a conservative classtype "
-        f"({CLASSTYPE.get(attack_type, 'unknown')}) and includes msg/sid/rev. "
+        f"Attack type: {attack_type}. The generated rule declares classtype "
+        f"({classtype}) and includes msg/sid/rev. "
         f"It was selected or adapted after retrieving similar examples: {source_ids}. Parser status: {status}."
     )
 
@@ -111,7 +126,7 @@ def build_generation_result(
 
     detected_options = detected_option_names(rule)
     missing_options = missing_required_options(rule, attack_type=attack_type)
-    source_doc_ids = [doc.id for doc in retrieved_docs[:3]]
+    source_doc_ids = dedupe_preserve_order([doc.id for doc in retrieved_docs])[:3]
     hallucination_risk = _hallucination_risk(query, attack_type, rule, valid, retrieved_docs)
     fp_analysis = analyze_false_positive_risk(
         rule,
@@ -139,7 +154,7 @@ def build_generation_result(
         "retrieved_context_used": bool(retrieved_docs),
         "prompt": prompt,
         "hallucination_risk": hallucination_risk,
-        "retrieved_ids": [doc.id for doc in retrieved_docs],
+        "retrieved_ids": dedupe_preserve_order([doc.id for doc in retrieved_docs]),
         "retrieved_attack_types": [doc.attack_type for doc in retrieved_docs],
         "retrieval_scores": [round(doc.score, 4) for doc in retrieved_docs],
     }

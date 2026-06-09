@@ -1,0 +1,75 @@
+(youssef) youssef@Youssef:/mnt/e/projects/snort_rag_rule_generator$ PYTHONPATH=src pytest tests/
+PYTHONPATH=src python scripts/validate_dataset.py
+PYTHONPATH=src python scripts/final_health_check.py
+================================================================= test session starts =================================================================platform linux -- Python 3.10.20, pytest-8.3.5, pluggy-1.6.0
+rootdir: /mnt/e/projects/snort_rag_rule_generator
+configfile: pyproject.toml
+plugins: anyio-4.13.0
+collected 19 items                                                                                                                                    
+
+tests/test_clustering.py .                                                                                                                      [  5%]
+tests/test_generate_dataset.py .                                                                                                                [ 10%]
+tests/test_generator.py ........                                                                                                                [ 52%]
+tests/test_llm_generator.py ..                                                                                                                  [ 63%]
+tests/test_pcap_scripts.py .                                                                                                                    [ 68%]
+tests/test_prompting.py ..                                                                                                                      [ 78%]
+tests/test_retrieval.py .                                                                                                                       [ 84%]
+tests/test_rule_parser.py ..                                                                                                                    [ 94%]
+tests/test_runtime_scripts.py .                                                                                                                 [100%]
+
+================================================================= 19 passed in 19.99s =================================================================VALIDATION PASSED
+{
+  "total_rows": 200,
+  "manual_rows": 80,
+  "synthetic_manual_variation_rows": 120,
+  "rows_per_attack_type": {
+    "benign_traffic": 20,
+    "command_injection": 20,
+    "directory_traversal": 20,
+    "dns_tunneling": 20,
+    "icmp_sweep": 20,
+    "malware_c2": 20,
+    "port_scan": 20,
+    "sql_injection": 20,
+    "ssh_bruteforce": 20,
+    "xss": 20
+  },
+  "rows_per_attack_family": {
+    "benign": 20,
+    "command_and_control": 20,
+    "credential_access": 20,
+    "exfiltration_command_control": 20,
+    "reconnaissance": 40,
+    "web_attack": 40,
+    "web_attack_execution": 20,
+    "web_attack_file_access": 20
+  },
+  "severity_distribution": {
+    "critical": 26,
+    "high": 105,
+    "low": 17,
+    "medium": 39,
+    "none": 13
+  },
+  "protocol_distribution": {
+    "http": 37,
+    "https": 41,
+    "icmp": 22,
+    "mixed": 7,
+    "tcp": 69,
+    "udp": 24
+  },
+  "source_type_distribution": {
+    "manual": 80,
+    "synthetic_manual_variation": 120
+  },
+  "rules_exported_count": 180
+}
+FINAL HEALTH CHECK
+==================
+ERRORS: none
+WARNINGS:
+- LLM benchmark is mock-only; run Ollama/local models for final evidence
+- Snort runtime validation is all SKIPPED
+- PCAP replay is all SKIPPED
+(youssef) youssef@Youssef:/mnt/e/projects/snort_rag_rule_generator$ 

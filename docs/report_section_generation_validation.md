@@ -14,17 +14,17 @@ Le module s'appuie sur quatre types d'entrées:
 Le flux suivi par le module est le suivant:
 
 description utilisateur  
-→ documents récupérés  
-→ prompt ou template contrôlé  
-→ règle Snort générée ou sélectionnée  
-→ validation syntaxique  
+→ documents Top-k récupérés  
+→ prompt enrichi contrôlé  
+→ génération LLM dans le contexte RAG ou fallback déterministe explicite  
+→ validation syntaxique et réparation éventuelle  
 → explication  
 → analyse des faux positifs
 
-En pratique, si un document récupéré contient déjà une règle Snort-like valide et pertinente pour le type d'attaque détecté, le système préfère cette règle. Sinon, il applique un template local déterministe défini dans le projet.
+En pratique, le chemin final utilise `llm_generator.py`: le prompt contient la requête, les documents récupérés, un schéma JSON strict et les contraintes Snort. La sortie LLM est parsée, validée, réparée si nécessaire, puis seulement acceptée. Si le modèle n'est pas disponible ou si la sortie reste invalide, le système applique un fallback déterministe explicite défini dans `generator.py` et `templates.py`.
 
-## 4. Pourquoi ce n’est pas une génération LLM directe
-Ce module n'appelle aucun service LLM externe et ne délègue pas la génération finale à une boîte noire. La logique est locale, déterministe et contrôlée par le code du projet. La génération repose soit sur une règle récupérée depuis le corpus, soit sur un template Snort écrit à l'avance dans le dépôt. Le prompt construit dans `generator.py` sert à rendre le pipeline explicable, mais il n'est pas envoyé à une API OpenAI, Claude, Mistral ou Ollama.
+## 4. Pourquoi ce n’est pas une génération LLM directe non contrôlée
+Le projet n'utilise pas un LLM comme boîte noire indépendante. Le modèle est appelé uniquement après récupération RAG, avec un prompt enrichi par les documents Top-k, des labels autorisés, un schéma JSON strict, une validation locale et une boucle de réparation. Les templates locaux restent un baseline et un fallback documenté, pas le module final principal.
 
 ## 5. Format de sortie `generation_result`
 La sortie principale du module est un dictionnaire `generation_result` contenant notamment:
@@ -44,6 +44,10 @@ La sortie principale du module est un dictionnaire `generation_result` contenant
 - `retrieved_context_used`
 - `hallucination_risk`
 - `option_coverage`
+- `model_name`
+- `generation_mode`
+- `repair_attempts`
+- `prompt_variant`
 
 Ce format permet de conserver la compatibilité avec le reste du projet tout en ajoutant des métadonnées utiles pour l'analyse.
 
@@ -87,6 +91,9 @@ Quand la requête décrit un comportement légitime, le système retourne `NO_RU
 ## 9. Artefacts produits
 Les artefacts directement liés à ce module sont:
 - `src/snort_rag/generator.py`
+- `src/snort_rag/llm_clients.py`
+- `src/snort_rag/prompting.py`
+- `src/snort_rag/llm_generator.py`
 - `src/snort_rag/rule_parser.py`
 - `src/snort_rag/templates.py`
 - `src/snort_rag/false_positive.py`

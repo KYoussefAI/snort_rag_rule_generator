@@ -1,0 +1,32 @@
+{
+  "dataset_name": "snort_rag_personal_dataset",
+  "validation_date": "2026-06-09",
+  "rows": 200,
+  "label_distribution": {
+    "port_scan": 20,
+    "ssh_bruteforce": 20,
+    "sql_injection": 20,
+    "xss": 20,
+    "command_injection": 20,
+    "directory_traversal": 20,
+    "dns_tunneling": 20,
+    "icmp_sweep": 20,
+    "malware_c2": 20,
+    "benign_traffic": 20
+  },
+  "source_type_distribution": {
+    "manual": 80,
+    "synthetic_manual_variation": 120
+  },
+  "official_dataset_statement": "The official corpus is personally constructed for the coursework. Public ready-made datasets are not used as the main dataset.",
+  "hashes": {
+    "final_snort_dataset.csv": "afab94cc859e8d21fd303415a8d314cad93f6b84148d2489e6693ebfe4a27c2c",
+    "final_snort_dataset.jsonl": "642470057a62528a17ed875d6641c014f21e3967eb147fc3d76ddfaaeb71ed36",
+    "person1_rules.rules": "fbc007fde7ff5fd3b7f3025e2b03ac1e43f723f78ec3899e745d6ba826de7abe"
+  },
+  "separation_policy": {
+    "official_personal_dataset": "data/processed/final_snort_dataset.csv",
+    "trusted_external_reference_kb": "data/knowledge_base/trusted_rule_kb.csv",
+    "uploaded_pdf_chunks": "dashboard in-memory knowledge base"
+  }
+}

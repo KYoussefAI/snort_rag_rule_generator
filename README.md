@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-# Snort RAG Rule Generator
-=======
-# Snort RAG Rule Generator - NLP Mini Project
->>>>>>> 99ef1088bcb774fb2474c8cf999a3d20daa0fe65
+# Snort RAG Rule Generator - NLP/RAG Mini Project
 
 ## Overview
-This repository contains an academic NLP/RAG project for generating Snort IDS rules from natural-language descriptions of suspicious network activity. The system is designed as a controlled, defensive pipeline: it retrieves relevant examples from a local corpus, selects or adapts Snort-like rules from retrieved context when possible, and otherwise falls back to deterministic local templates. The project also includes local syntax validation, automatic explanation generation, and heuristic false-positive analysis.
+This repository contains an academic NLP/RAG project for generating Snort IDS rules from natural-language descriptions of suspicious network activity. The system is designed as a controlled, defensive pipeline: it retrieves relevant examples from a local corpus, builds an enriched prompt, uses an LLM only inside that RAG context when configured, validates the output, and falls back explicitly to deterministic local templates if the LLM output is unavailable or invalid. The project also includes local syntax validation, automatic explanation generation, and heuristic false-positive analysis.
 
 The repository is intended for coursework and technical reporting. It is not presented as a production IDS engineering framework.
 
@@ -30,13 +26,13 @@ The generation workflow follows this sequence:
 
 natural-language query  
 → retrieval of Top-k relevant documents  
-→ controlled prompt and template logic  
-→ rule selection or deterministic rule generation  
-→ local syntax validation  
+→ controlled enriched prompt  
+→ LLM generation inside RAG, or explicit deterministic fallback  
+→ local syntax validation and optional repair  
 → automatic explanation  
 → false-positive analysis
 
-This is not a direct external-LLM generation workflow. The repository does not depend on OpenAI, Claude, Mistral, Ollama, or other hosted LLM APIs for final rule generation.
+This is not a direct black-box LLM answer workflow. The final LLM path is constrained by retrieved documents, a strict JSON schema, parser validation, repair attempts, and explicit fallback metadata. The deterministic generator remains available as a baseline and fallback.
 
 ## Main Components
 
@@ -52,6 +48,9 @@ This dataset is the default retrieval corpus for the application and evaluation 
 ### 2. Generation Module
 The generation logic is primarily implemented in:
 - `src/snort_rag/generator.py`
+- `src/snort_rag/llm_clients.py`
+- `src/snort_rag/prompting.py`
+- `src/snort_rag/llm_generator.py`
 - `src/snort_rag/templates.py`
 - `src/snort_rag/rule_parser.py`
 - `src/snort_rag/false_positive.py`
@@ -72,6 +71,10 @@ The generator returns both legacy and enriched fields, including:
 - `retrieved_context_used`
 - `hallucination_risk`
 - `option_coverage`
+- `model_name`
+- `generation_mode`
+- `repair_attempts`
+- `prompt_variant`
 
 ### 3. RAG Architectures
 The repository evaluates seven configurations:
@@ -122,6 +125,48 @@ Expected outputs:
 - `results/generated_rule_examples.csv`
 - `results/false_positive_analysis.csv`
 
+### Run controlled LLM benchmarking
+```bash
+PYTHONPATH=src python scripts/benchmark_llms.py --models mock
+```
+
+For a real local LLM runtime, use an Ollama-compatible model spec:
+
+```bash
+ollama serve
+ollama pull mistral
+ollama pull llama3
+ollama pull qwen2.5
+PYTHONPATH=src python scripts/benchmark_llms.py --models ollama:mistral ollama:llama3 ollama:qwen2.5
+```
+
+The `mock` client is only a smoke-test client. Final LLM evidence should contain real local model rows, not only `model_spec=mock`.
+
+Expected outputs:
+- `results/llm_benchmark.csv`
+- `results/llm_benchmark_summary.csv`
+
+### Run attack-family clustering
+```bash
+PYTHONPATH=src python scripts/run_clustering_analysis.py
+```
+
+Expected outputs:
+- `results/clustering_metrics.csv`
+- `results/clustering_confusion_matrix.csv`
+- `results/clustering_tsne.png`
+
+### Generate lab PCAPs and run Snort validation
+```bash
+PYTHONPATH=src python scripts/generate_lab_pcaps.py --out tests/pcaps/generated
+PYTHONPATH=src python scripts/run_snort_validation.py --rules data/processed/person1_rules.rules
+PYTHONPATH=src python scripts/run_pcap_tests.py --pcap-dir tests/pcaps/generated
+```
+
+If Snort is not installed, the runtime scripts write `SKIPPED` rows instead of claiming success.
+
+The final report should include the exact Snort command, date, PASS/FAIL/SKIPPED counts, and triggered SIDs when Snort has actually run.
+
 ### Run focused tests
 ```bash
 PYTHONPATH=src pytest tests/test_generator.py tests/test_rule_parser.py tests/test_retrieval.py tests/test_generate_dataset.py
@@ -135,8 +180,10 @@ python -m snort_rag.app_gradio
 The dashboard provides a simple interface for:
 - entering an attack description
 - selecting a RAG architecture
+- selecting a controlled LLM model spec such as `mock` or `ollama:mistral`
 - generating a rule
 - reviewing retrieved documents
+- inspecting the enriched prompt, raw LLM output, validation metadata, and false-positive metadata
 - extending the in-memory knowledge base with an uploaded PDF
 
 ## Trusted-Source Knowledge Base
@@ -184,7 +231,7 @@ Important limitations:
 - the validator is structural and local only
 - generated rules remain educational Snort-like outputs until verified in a real Snort environment
 - false-positive analysis is heuristic, not empirical
-- PCAP-based validation is still necessary to confirm actual detection behavior
+- PCAP-based validation must be executed in a Snort-capable environment to confirm actual detection behavior
 - retrieval quality can still affect the final selected rule
 
 ## Academic Positioning

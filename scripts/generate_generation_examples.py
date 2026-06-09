@@ -3,12 +3,6 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
-import sys
-
-# This export uses the local TF-IDF/BM25 pipeline only and avoids loading heavy
-# optional embedding backends at import time.
-sys.modules.setdefault("sentence_transformers", None)
-sys.modules.setdefault("faiss", None)
 
 from snort_rag.architectures import SnortRAGArchitectures
 

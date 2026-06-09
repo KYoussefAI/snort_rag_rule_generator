@@ -1,9 +1,8 @@
-"""Deterministic Snort rule templates for defensive generation.
+"""Deterministic Snort rule templates for defensive fallback generation.
 
-These templates are intentionally conservative and are used as the local generation
-module in the Devoir 3 implementation because the assignment explicitly forbids
-OpenAI/Mistral/Ollama API usage for the TP. The templates are filled only after
-retrieval, so generation is not a black-box response.
+The main final path can use an LLM only inside a controlled RAG pipeline. These
+templates remain useful as a transparent baseline and as an explicit fallback
+when an LLM output cannot be parsed or validated.
 """
 from __future__ import annotations
 

@@ -1,0 +1,11 @@
+cluster,benign_traffic,command_injection,directory_traversal,dns_tunneling,icmp_sweep,malware_c2,port_scan,sql_injection,ssh_bruteforce,xss
+0,0,0,0,0,20,0,0,0,0,0
+1,0,0,0,0,0,0,20,0,0,0
+2,0,0,0,0,0,20,0,0,0,0
+3,0,0,0,20,0,0,0,0,0,0
+4,0,0,0,0,0,0,0,0,20,0
+5,0,0,20,0,0,0,0,0,0,0
+6,0,20,0,0,0,0,0,0,0,0
+7,0,0,0,0,0,0,0,20,0,0
+8,20,0,0,0,0,0,0,0,0,0
+9,0,0,0,0,0,0,0,0,0,20
