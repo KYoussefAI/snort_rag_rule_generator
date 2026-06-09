@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="/mnt/e/projects/snort_rag_rule_generator"
+
+docker run --rm \
+  -v "$PROJECT_ROOT":/work \
+  -w /work \
+  ciscotalos/snort3:latest \
+  snort "$@"
