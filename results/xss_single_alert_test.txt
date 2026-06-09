@@ -1,0 +1,248 @@
+--------------------------------------------------
+o")~   Snort++ 3.10.0.0
+--------------------------------------------------
+Loading /home/snorty/snort3/etc/snort/snort.lua:
+Loading snort_defaults.lua:
+Finished snort_defaults.lua:
+	active
+	alerts
+	daq
+	host_cache
+	so_proxy
+	stream
+	stream_ip
+	stream_icmp
+	stream_udp
+	stream_user
+	stream_file
+	back_orifice
+	dns
+	imap
+	netflow
+	normalizer
+	pop
+	rpc_decode
+	sip
+	ssh
+	ssl
+	telnet
+	cip
+	iec104
+	mms
+	modbus
+	opcua
+	s7commplus
+	dce_smb
+	dce_tcp
+	dce_udp
+	dce_http_proxy
+	dce_http_server
+	gtp_inspect
+	port_scan
+	smtp
+	ftp_client
+	ftp_data
+	http_inspect
+	http2_inspect
+	js_norm
+	appid
+	wizard
+	ips
+	file_id
+	classifications
+	references
+	binder
+	file_policy
+	ftp_server
+	dnp3
+	arp_spoof
+	stream_tcp
+	search_engine
+	process
+	output
+	network
+	host_tracker
+	packets
+	trace
+	hosts
+	decode
+Finished /home/snorty/snort3/etc/snort/snort.lua:
+Loading file_id.rules_file:
+Loading file_magic.rules:
+Finished file_magic.rules:
+Finished file_id.rules_file:
+Loading rule args:
+Loading tmp/xss_test.rules:
+Finished tmp/xss_test.rules:
+Finished rule args:
+--------------------------------------------------
+ips policies rule stats
+              id  loaded  shared enabled    file
+               0     220       0     220    /home/snorty/snort3/etc/snort/snort.lua
+--------------------------------------------------
+rule counts
+       total rules loaded: 220
+               text rules: 220
+            option chains: 220
+            chain headers: 2
+--------------------------------------------------
+port rule counts
+             tcp     udp    icmp      ip
+     dst       1       0       0       0
+   total       1       0       0       0
+--------------------------------------------------
+service rule counts          to-srv  to-cli
+                  file_id:      219     219
+                    total:      219     219
+--------------------------------------------------
+fast pattern groups
+                      dst: 2
+                to_server: 1
+                to_client: 1
+--------------------------------------------------
+search engine (ac_bnfa)
+                instances: 3
+                 patterns: 439
+            pattern chars: 2628
+               num states: 1858
+         num match states: 393
+             memory scale: KB
+             total memory: 73.001
+           pattern memory: 19.7119
+        match list memory: 28.6719
+        transition memory: 24.2422
+        fast pattern only: 1
+appid: MaxRss diff: 3200
+appid: patterns loaded: 300
+--------------------------------------------------
+pcap DAQ configured to read-file.
+Commencing packet processing
+Retry queue interval is: 200 ms
+++ [0] tests/pcaps/generated/xss.pcap
+06/09-19:56:00.582774 [**] [1:9990003:1] "TEST XSS SCRIPT ALERT" [**] [Priority: 0] {TCP} 203.0.113.10:41002 -> 192.168.56.10:80
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x6F
+203.0.113.10:41002 -> 192.168.56.10:80 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:97
+***AP*** Seq: 0x3E9  Ack: 0x1389  Win: 0x2000  TcpLen: 20
+
+snort.raw[57]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+47 45 54 20 2F 3F 71 3D  3C 73 63 72 69 70 74 3E  GET /?q= <script>
+61 6C 65 72 74 28 31 29  3C 2F 73 63 72 69 70 74  alert(1) </script
+3E 20 48 54 54 50 2F 31  2E 31 0D 0A 48 6F 73 74  > HTTP/1 .1..Host
+3A 20 6C 61 62 0D 0A 0D  0A                       : lab... .
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+-- [0] tests/pcaps/generated/xss.pcap
+--------------------------------------------------
+Packet Statistics
+--------------------------------------------------
+daq
+                    pcaps: 1
+                 received: 5
+                 analyzed: 5
+                    allow: 5
+                 rx_bytes: 327
+--------------------------------------------------
+codec
+                    total: 5           	(100.000%)
+                      eth: 5           	(100.000%)
+                     ipv4: 5           	(100.000%)
+                      tcp: 5           	(100.000%)
+--------------------------------------------------
+Module Statistics
+--------------------------------------------------
+ac_bnfa
+                 searches: 1
+                  matches: 1
+                    bytes: 57
+--------------------------------------------------
+ac_full
+                 searches: 5
+                  matches: 1
+                    bytes: 95
+--------------------------------------------------
+appid
+                  packets: 5
+        processed_packets: 4
+          ignored_packets: 1
+           total_sessions: 1
+       service_cache_adds: 1
+             bytes_in_use: 168
+             items_in_use: 1
+--------------------------------------------------
+binder
+              raw_packets: 1
+                new_flows: 1
+          service_changes: 1
+                 inspects: 2
+--------------------------------------------------
+detection
+                 analyzed: 5
+             raw_searches: 1
+             pkt_searches: 1
+                   alerts: 1
+             total_alerts: 1
+                   logged: 1
+--------------------------------------------------
+http_inspect
+                    flows: 1
+                    scans: 2
+              reassembles: 2
+              inspections: 2
+                 requests: 1
+             get_requests: 1
+  max_concurrent_sessions: 1
+              total_bytes: 51
+--------------------------------------------------
+ips_actions
+                    alert: 1
+--------------------------------------------------
+port_scan
+                  packets: 5
+                 trackers: 2
+--------------------------------------------------
+search_engine
+               max_queued: 1
+            total_flushed: 1
+            total_inserts: 1
+             total_unique: 1
+         qualified_events: 1
+--------------------------------------------------
+stream
+                    flows: 1
+--------------------------------------------------
+stream_tcp
+                 sessions: 1
+                      max: 1
+                  created: 1
+                 released: 1
+             instantiated: 1
+                   setups: 1
+                 restarts: 1
+         syn_ack_trackers: 1
+              segs_queued: 1
+            segs_released: 1
+                segs_used: 1
+          rebuilt_packets: 2
+            rebuilt_bytes: 57
+                 syn_acks: 1
+                 max_segs: 1
+                max_bytes: 57
+--------------------------------------------------
+wizard
+                tcp_scans: 1
+                 tcp_hits: 1
+--------------------------------------------------
+Appid Statistics
+--------------------------------------------------
+detected apps and services
+              Application: Services   Clients    Users      Payloads   Misc       Referred  
+                  unknown: 1          0          0          1          0          0         
+--------------------------------------------------
+Summary Statistics
+--------------------------------------------------
+timing
+                  runtime: 00:00:00
+                  seconds: 0.060915
+                 pkts/sec: 82
+o")~   Snort exiting

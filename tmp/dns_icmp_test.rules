@@ -1,0 +1,2 @@
+alert udp any any -> any 53 (msg:"TEST DNS TUNNEL LONG LABEL"; content:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",nocase; sid:9990004; rev:1;)
+alert icmp any any -> any any (msg:"TEST ICMP SWEEP PAYLOAD"; content:"ICMP echo sweep lab packet"; sid:9990005; rev:1;)

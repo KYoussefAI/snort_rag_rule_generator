@@ -1,0 +1,1 @@
+alert tcp any any -> any 80 (msg:"TEST XSS SCRIPT ALERT"; flow:to_server,established; content:"<script>alert(1)</script>",nocase; sid:9990003; rev:1;)

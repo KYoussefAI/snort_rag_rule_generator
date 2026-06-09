@@ -1,0 +1,359 @@
+--------------------------------------------------
+o")~   Snort++ 3.10.0.0
+--------------------------------------------------
+Loading /home/snorty/snort3/etc/snort/snort.lua:
+Loading snort_defaults.lua:
+Finished snort_defaults.lua:
+	ips
+	classifications
+	s7commplus
+	binder
+	wizard
+	appid
+	js_norm
+	file_policy
+	file_id
+	http2_inspect
+	http_inspect
+	ftp_data
+	ftp_client
+	ftp_server
+	smtp
+	port_scan
+	gtp_inspect
+	dce_http_server
+	dce_http_proxy
+	dce_udp
+	dce_tcp
+	dce_smb
+	references
+	opcua
+	modbus
+	mms
+	sip
+	dnp3
+	ssh
+	telnet
+	daq
+	decode
+	host_cache
+	host_tracker
+	hosts
+	network
+	packets
+	process
+	search_engine
+	so_proxy
+	ssl
+	cip
+	iec104
+	stream_ip
+	stream_tcp
+	stream_udp
+	stream_user
+	arp_spoof
+	rpc_decode
+	pop
+	normalizer
+	netflow
+	trace
+	imap
+	dns
+	back_orifice
+	stream_file
+	stream_icmp
+	stream
+	output
+	active
+	alerts
+Finished /home/snorty/snort3/etc/snort/snort.lua:
+Loading file_id.rules_file:
+Loading file_magic.rules:
+Finished file_magic.rules:
+Finished file_id.rules_file:
+Loading rule args:
+Loading tmp/dns_icmp_test.rules:
+Finished tmp/dns_icmp_test.rules:
+Finished rule args:
+--------------------------------------------------
+ips policies rule stats
+              id  loaded  shared enabled    file
+               0     221       0     221    /home/snorty/snort3/etc/snort/snort.lua
+--------------------------------------------------
+rule counts
+       total rules loaded: 221
+               text rules: 221
+            option chains: 221
+            chain headers: 3
+--------------------------------------------------
+port rule counts
+             tcp     udp    icmp      ip
+     any       0       0       1       0
+     dst       0       1       0       0
+   total       0       1       1       0
+--------------------------------------------------
+service rule counts          to-srv  to-cli
+                  file_id:      219     219
+                    total:      219     219
+--------------------------------------------------
+fast pattern groups
+                      dst: 2
+                      any: 2
+                to_server: 1
+                to_client: 1
+--------------------------------------------------
+search engine (ac_bnfa)
+                instances: 4
+                 patterns: 440
+            pattern chars: 2662
+               num states: 1892
+         num match states: 394
+             memory scale: KB
+             total memory: 74.8848
+           pattern memory: 19.7832
+        match list memory: 28.9688
+        transition memory: 25.6328
+        fast pattern only: 1
+appid: MaxRss diff: 3072
+appid: patterns loaded: 300
+--------------------------------------------------
+pcap DAQ configured to read-file.
+Commencing packet processing
+Retry queue interval is: 200 ms
+++ [0] tests/pcaps/generated/icmp_sweep.pcap
+06/09-19:56:01.671932 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.10
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.10 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.673005 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.11
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.11 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.673788 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.12
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.12 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.674551 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.13
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.13 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.675300 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.14
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.14 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.676095 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.15
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.15 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.676849 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.16
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.16 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.677682 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.17
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.17 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.679807 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.18
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.18 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.680656 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.19
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.19 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.681679 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.20
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.20 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.683004 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.21
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.21 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.684402 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.22
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.22 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.685987 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.23
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.23 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:01.687608 [**] [1:9990005:1] "TEST ICMP SWEEP PAYLOAD" [**] [Priority: 0] {ICMP} 203.0.113.10 -> 192.168.56.24
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x44
+203.0.113.10 -> 192.168.56.24 ICMP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:54
+Type:8  Code:0  ID:0   Seq:0  ECHO
+
+snort.raw[26]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43 4D 50 20 65 63 68  6F 20 73 77 65 65 70 20  ICMP ech o sweep 
+6C 61 62 20 70 61 63 6B  65 74                    lab pack et
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+-- [0] tests/pcaps/generated/icmp_sweep.pcap
+--------------------------------------------------
+Packet Statistics
+--------------------------------------------------
+daq
+                    pcaps: 1
+                 received: 15
+                 analyzed: 15
+                    allow: 15
+                 rx_bytes: 1020
+--------------------------------------------------
+codec
+                    total: 15          	(100.000%)
+                      eth: 15          	(100.000%)
+                    icmp4: 15          	(100.000%)
+                     ipv4: 15          	(100.000%)
+--------------------------------------------------
+Module Statistics
+--------------------------------------------------
+ac_bnfa
+                 searches: 15
+                  matches: 15
+                    bytes: 390
+--------------------------------------------------
+appid
+                  packets: 15
+        processed_packets: 15
+           total_sessions: 15
+--------------------------------------------------
+binder
+                new_flows: 15
+                 inspects: 15
+--------------------------------------------------
+detection
+                 analyzed: 15
+             raw_searches: 15
+             pkt_searches: 15
+                   alerts: 15
+             total_alerts: 15
+                   logged: 15
+--------------------------------------------------
+ips_actions
+                    alert: 15
+--------------------------------------------------
+port_scan
+                  packets: 15
+                 trackers: 16
+--------------------------------------------------
+search_engine
+               max_queued: 1
+            total_flushed: 15
+            total_inserts: 15
+             total_unique: 15
+         qualified_events: 15
+--------------------------------------------------
+stream
+                    flows: 15
+--------------------------------------------------
+stream_icmp
+                 sessions: 15
+                      max: 15
+                  created: 15
+                 released: 15
+--------------------------------------------------
+Summary Statistics
+--------------------------------------------------
+timing
+                  runtime: 00:00:00
+                  seconds: 0.040219
+                 pkts/sec: 373
+o")~   Snort exiting

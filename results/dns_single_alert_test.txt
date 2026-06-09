@@ -1,0 +1,231 @@
+--------------------------------------------------
+o")~   Snort++ 3.10.0.0
+--------------------------------------------------
+Loading /home/snorty/snort3/etc/snort/snort.lua:
+Loading snort_defaults.lua:
+Finished snort_defaults.lua:
+	output
+	references
+	classifications
+	port_scan
+	ftp_server
+	process
+	so_proxy
+	packets
+	host_tracker
+	ftp_data
+	ftp_client
+	smtp
+	gtp_inspect
+	dce_http_server
+	dce_http_proxy
+	dce_udp
+	dce_tcp
+	dce_smb
+	s7commplus
+	opcua
+	modbus
+	mms
+	iec104
+	dnp3
+	cip
+	telnet
+	ssl
+	ssh
+	sip
+	rpc_decode
+	pop
+	normalizer
+	netflow
+	imap
+	dns
+	back_orifice
+	arp_spoof
+	stream_file
+	stream_user
+	stream_udp
+	stream_tcp
+	stream_icmp
+	stream_ip
+	stream
+	search_engine
+	decode
+	daq
+	alerts
+	active
+	host_cache
+	ips
+	file_id
+	http_inspect
+	http2_inspect
+	hosts
+	network
+	file_policy
+	js_norm
+	appid
+	wizard
+	binder
+	trace
+Finished /home/snorty/snort3/etc/snort/snort.lua:
+Loading file_id.rules_file:
+Loading file_magic.rules:
+Finished file_magic.rules:
+Finished file_id.rules_file:
+Loading rule args:
+Loading tmp/dns_icmp_test.rules:
+Finished tmp/dns_icmp_test.rules:
+Finished rule args:
+--------------------------------------------------
+ips policies rule stats
+              id  loaded  shared enabled    file
+               0     221       0     221    /home/snorty/snort3/etc/snort/snort.lua
+--------------------------------------------------
+rule counts
+       total rules loaded: 221
+               text rules: 221
+            option chains: 221
+            chain headers: 3
+--------------------------------------------------
+port rule counts
+             tcp     udp    icmp      ip
+     any       0       0       1       0
+     dst       0       1       0       0
+   total       0       1       1       0
+--------------------------------------------------
+service rule counts          to-srv  to-cli
+                  file_id:      219     219
+                    total:      219     219
+--------------------------------------------------
+fast pattern groups
+                      dst: 2
+                      any: 2
+                to_server: 1
+                to_client: 1
+--------------------------------------------------
+search engine (ac_bnfa)
+                instances: 4
+                 patterns: 440
+            pattern chars: 2662
+               num states: 1892
+         num match states: 394
+             memory scale: KB
+             total memory: 74.8848
+           pattern memory: 19.7832
+        match list memory: 28.9688
+        transition memory: 25.6328
+        fast pattern only: 1
+appid: MaxRss diff: 3072
+appid: patterns loaded: 300
+--------------------------------------------------
+pcap DAQ configured to read-file.
+Commencing packet processing
+Retry queue interval is: 200 ms
+++ [0] tests/pcaps/generated/dns_tunneling.pcap
+06/09-19:56:01.596840 [**] [1:9990004:1] "TEST DNS TUNNEL LONG LABEL" [**] [Priority: 0] {UDP} 192.168.56.20:53000 -> 8.8.8.8:53
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x87
+192.168.56.20:53000 -> 8.8.8.8:53 UDP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:121
+Len: 93
+
+dns.raw[93]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+00 00 01 00 00 01 00 00  00 00 00 00 3F 61 61 61  ........ ....?aaa
+61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  aaaaaaaa aaaaaaaa
+61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  aaaaaaaa aaaaaaaa
+61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  aaaaaaaa aaaaaaaa
+61 61 61 61 61 61 61 61  61 61 61 61 03 6C 61 62  aaaaaaaa aaaa.lab
+07 65 78 61 6D 70 6C 65  00 00 01 00 01           .example .....
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+-- [0] tests/pcaps/generated/dns_tunneling.pcap
+--------------------------------------------------
+Packet Statistics
+--------------------------------------------------
+daq
+                    pcaps: 1
+                 received: 1
+                 analyzed: 1
+                    allow: 1
+                 rx_bytes: 135
+--------------------------------------------------
+codec
+                    total: 1           	(100.000%)
+                      eth: 1           	(100.000%)
+                     ipv4: 1           	(100.000%)
+                      udp: 1           	(100.000%)
+--------------------------------------------------
+Module Statistics
+--------------------------------------------------
+ac_bnfa
+                 searches: 1
+                  matches: 1
+                    bytes: 93
+--------------------------------------------------
+ac_full
+                 searches: 1
+                    bytes: 93
+--------------------------------------------------
+appid
+                  packets: 1
+        processed_packets: 1
+           total_sessions: 1
+       service_cache_adds: 1
+             bytes_in_use: 168
+             items_in_use: 1
+--------------------------------------------------
+back_orifice
+                  packets: 1
+--------------------------------------------------
+binder
+                new_flows: 1
+                 inspects: 1
+--------------------------------------------------
+detection
+                 analyzed: 1
+             raw_searches: 1
+             pkt_searches: 1
+                   alerts: 1
+             total_alerts: 1
+                   logged: 1
+--------------------------------------------------
+dns
+                  packets: 1
+                 requests: 1
+             dns_over_udp: 1
+--------------------------------------------------
+ips_actions
+                    alert: 1
+--------------------------------------------------
+port_scan
+                  packets: 1
+                 trackers: 2
+--------------------------------------------------
+search_engine
+               max_queued: 1
+            total_flushed: 1
+            total_inserts: 1
+             total_unique: 1
+         qualified_events: 1
+--------------------------------------------------
+stream
+                    flows: 1
+--------------------------------------------------
+stream_udp
+                 sessions: 1
+                      max: 1
+                  created: 1
+                 released: 1
+              total_bytes: 93
+--------------------------------------------------
+Appid Statistics
+--------------------------------------------------
+detected apps and services
+              Application: Services   Clients    Users      Payloads   Misc       Referred  
+                  unknown: 0          1          0          0          0          0         
+--------------------------------------------------
+Summary Statistics
+--------------------------------------------------
+timing
+                  runtime: 00:00:00
+                  seconds: 0.039994
+                 pkts/sec: 25
+o")~   Snort exiting
