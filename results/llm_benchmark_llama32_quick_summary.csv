@@ -1,0 +1,2 @@
+model_spec,prompt_variant,queries,ok_rows,error_rows,valid_rule_rate,attack_type_accuracy,retrieval_grounding_rate,avg_latency_ms
+ollama:llama3.2,strict_json,10,10,0,1.0,1.0,1.0,9730.382500000002

@@ -1,3 +1,4 @@
 model_spec,prompt_variant,queries,ok_rows,error_rows,valid_rule_rate,attack_type_accuracy,retrieval_grounding_rate,avg_latency_ms
+ollama:llama3.2,strict_json,10,10,0,1.0,1.0,1.0,9730.3825
 ollama:mistral,strict_json,10,10,0,1.0,1.0,1.0,32517.198599999996
 ollama:qwen2.5,strict_json,10,10,0,1.0,1.0,1.0,22631.499600000003
