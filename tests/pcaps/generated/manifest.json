@@ -3,60 +3,80 @@
     "pcap": "tests/pcaps/generated/port_scan.pcap",
     "scenario": "port_scan",
     "synthetic": true,
-    "expected_attack_type": "port_scan"
+    "protocol_valid": true,
+    "expected_attack_type": "port_scan",
+    "packet_count": 11
   },
   {
     "pcap": "tests/pcaps/generated/ssh_bruteforce.pcap",
     "scenario": "ssh_bruteforce",
     "synthetic": true,
-    "expected_attack_type": "ssh_bruteforce"
+    "protocol_valid": true,
+    "expected_attack_type": "ssh_bruteforce",
+    "packet_count": 40
   },
   {
     "pcap": "tests/pcaps/generated/sql_injection.pcap",
     "scenario": "sql_injection",
     "synthetic": true,
-    "expected_attack_type": "sql_injection"
+    "protocol_valid": true,
+    "expected_attack_type": "sql_injection",
+    "packet_count": 5
   },
   {
     "pcap": "tests/pcaps/generated/xss.pcap",
     "scenario": "xss",
     "synthetic": true,
-    "expected_attack_type": "xss"
+    "protocol_valid": true,
+    "expected_attack_type": "xss",
+    "packet_count": 5
   },
   {
     "pcap": "tests/pcaps/generated/command_injection.pcap",
     "scenario": "command_injection",
     "synthetic": true,
-    "expected_attack_type": "command_injection"
+    "protocol_valid": true,
+    "expected_attack_type": "command_injection",
+    "packet_count": 5
   },
   {
     "pcap": "tests/pcaps/generated/directory_traversal.pcap",
     "scenario": "directory_traversal",
     "synthetic": true,
-    "expected_attack_type": "directory_traversal"
+    "protocol_valid": true,
+    "expected_attack_type": "directory_traversal",
+    "packet_count": 5
   },
   {
     "pcap": "tests/pcaps/generated/dns_tunneling.pcap",
     "scenario": "dns_tunneling",
     "synthetic": true,
-    "expected_attack_type": "dns_tunneling"
+    "protocol_valid": true,
+    "expected_attack_type": "dns_tunneling",
+    "packet_count": 1
   },
   {
     "pcap": "tests/pcaps/generated/icmp_sweep.pcap",
     "scenario": "icmp_sweep",
     "synthetic": true,
-    "expected_attack_type": "icmp_sweep"
+    "protocol_valid": true,
+    "expected_attack_type": "icmp_sweep",
+    "packet_count": 15
   },
   {
     "pcap": "tests/pcaps/generated/malware_c2.pcap",
     "scenario": "malware_c2",
     "synthetic": true,
-    "expected_attack_type": "malware_c2"
+    "protocol_valid": true,
+    "expected_attack_type": "malware_c2",
+    "packet_count": 30
   },
   {
     "pcap": "tests/pcaps/generated/benign_traffic.pcap",
     "scenario": "benign_traffic",
     "synthetic": true,
-    "expected_attack_type": "benign_traffic"
+    "protocol_valid": true,
+    "expected_attack_type": "benign_traffic",
+    "packet_count": 5
   }
 ]

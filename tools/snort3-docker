@@ -6,5 +6,6 @@ PROJECT_ROOT="/mnt/e/projects/snort_rag_rule_generator"
 docker run --rm \
   -v "$PROJECT_ROOT":/work \
   -w /work \
+  --entrypoint /home/snorty/snort3/bin/snort \
   ciscotalos/snort3:latest \
-  snort "$@"
+  "$@"

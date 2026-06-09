@@ -23,6 +23,7 @@ RULE_RE = re.compile(
 REQUIRED_OPTIONS = {"msg", "sid", "rev"}
 RECOMMENDED_OPTIONS = {"classtype"}
 COMMON_REQUIRED_OPTIONS = ("msg", "sid", "rev", "classtype")
+CONTENT_MODIFIERS = {"nocase", "fast_pattern"}
 ATTACK_TYPE_RECOMMENDATIONS = {
     "ssh_bruteforce": (("flow",), ("detection_filter", "threshold"), ("flags", "content")),
     "sql_injection": (("flow",), ("content", "pcre"), ("nocase",)),
@@ -72,6 +73,31 @@ def split_options(options: str) -> List[str]:
     return chunks
 
 
+def _split_content_value(value: str) -> tuple[str, list[str]]:
+    value = value.strip()
+    if not value.startswith('"'):
+        return value, []
+
+    escaped = False
+    for index, char in enumerate(value[1:], 1):
+        if char == '"' and not escaped:
+            tail = value[index + 1:].strip()
+            if tail.startswith(","):
+                modifiers = [item.strip() for item in tail[1:].split(",") if item.strip()]
+            else:
+                modifiers = []
+            return value[:index + 1], modifiers
+        escaped = (char == "\\" and not escaped)
+        if char != "\\":
+            escaped = False
+    return value, []
+
+
+def _content_modifier_names(value: str) -> List[str]:
+    _, modifiers = _split_content_value(value)
+    return [modifier.split(":", 1)[0].strip().lower() for modifier in modifiers if modifier.strip()]
+
+
 def parse_options(options: str) -> Tuple[Dict[str, List[str]], List[str]]:
     parsed: Dict[str, List[str]] = {}
     raw = split_options(options)
@@ -83,11 +109,139 @@ def parse_options(options: str) -> Tuple[Dict[str, List[str]], List[str]]:
         else:
             key, value = item.strip().lower(), "true"
         parsed.setdefault(key, []).append(value)
+        if key == "content":
+            for modifier_name in _content_modifier_names(value):
+                parsed.setdefault(modifier_name, []).append("true")
     return parsed, raw
 
 
+def _decode_rule_string(value: str) -> str:
+    output: List[str] = []
+    escaped = False
+    for char in value:
+        if escaped:
+            output.append(char)
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        else:
+            output.append(char)
+    if escaped:
+        output.append("\\")
+    return "".join(output)
+
+
+def _sanitize_content_text(value: str) -> str:
+    output: List[str] = []
+    index = 0
+    while index < len(value):
+        char = value[index]
+        if char == "|":
+            end = value.find("|", index + 1)
+            if end != -1:
+                candidate = value[index + 1:end].strip()
+                if candidate and re.fullmatch(r"(?:[0-9A-Fa-f]{2}\s*)+", candidate):
+                    output.append(value[index:end + 1])
+                    index = end + 1
+                    continue
+            output.append("|7C|")
+        elif char == ";":
+            output.append("|3B|")
+        elif char == '"':
+            output.append("|22|")
+        elif char == "\\":
+            output.append("|5C|")
+        else:
+            output.append(char)
+        index += 1
+    return "".join(output)
+
+
+def _escape_unescaped_quotes(value: str) -> str:
+    output: List[str] = []
+    backslashes = 0
+    for char in value:
+        if char == '"' and backslashes % 2 == 0:
+            output.append('\\"')
+        else:
+            output.append(char)
+        if char == "\\":
+            backslashes += 1
+        else:
+            backslashes = 0
+    return "".join(output)
+
+
+def _normalize_quoted_option(item: str) -> str:
+    key, value = item.split(":", 1)
+    value = value.strip()
+    if value.startswith('"') and value.endswith('"') and len(value) >= 2:
+        return f'{key.strip()}:"{_escape_unescaped_quotes(value[1:-1])}"'
+    return item.strip()
+
+
+def _normalize_content_option(item: str, extra_modifiers: List[str] | None = None) -> str:
+    extra_modifiers = extra_modifiers or []
+    _, value = item.split(":", 1)
+    value = value.strip()
+    literal, modifiers = _split_content_value(value)
+
+    if literal.startswith('"') and literal.endswith('"') and len(literal) >= 2:
+        inner = _decode_rule_string(literal[1:-1])
+    elif literal.startswith('"'):
+        inner = _decode_rule_string(literal[1:])
+    else:
+        inner = _decode_rule_string(literal)
+
+    normalized_modifiers: List[str] = []
+    seen = set()
+    for modifier in modifiers + extra_modifiers:
+        modifier = modifier.strip()
+        if not modifier:
+            continue
+        key = modifier.split(":", 1)[0].strip().lower()
+        if key not in seen:
+            normalized_modifiers.append(modifier)
+            seen.add(key)
+
+    suffix = "," + ",".join(normalized_modifiers) if normalized_modifiers else ""
+    return f'content:"{_sanitize_content_text(inner)}"{suffix}'
+
+
+def normalize_snort3_rule(rule: str) -> str:
+    """Return a Snort 3-oriented rule with content modifiers attached to content."""
+    stripped = rule.strip()
+    if stripped == "NO_RULE_RECOMMENDED":
+        return stripped
+    match = RULE_RE.match(stripped.replace("→", "->"))
+    if not match:
+        return stripped
+
+    normalized_options: List[str] = []
+    last_content_index: int | None = None
+    for item in split_options(match.group("options")):
+        key = item.split(":", 1)[0].strip().lower()
+        if key in CONTENT_MODIFIERS and last_content_index is not None:
+            normalized_options[last_content_index] = _normalize_content_option(normalized_options[last_content_index], [key])
+            continue
+        if key == "content":
+            normalized_options.append(_normalize_content_option(item))
+            last_content_index = len(normalized_options) - 1
+        elif key == "pcre":
+            normalized_options.append(_normalize_quoted_option(item))
+        else:
+            normalized_options.append(item.strip())
+
+    header = (
+        f"{match.group('action').lower()} {match.group('protocol').lower()} "
+        f"{match.group('src')} {match.group('src_port')} -> "
+        f"{match.group('dst')} {match.group('dst_port')}"
+    )
+    return f"{header} ({'; '.join(normalized_options)};)"
+
+
 def parse_rule(rule: str) -> ParsedRule:
-    rule = rule.strip().replace("→", "->")
+    rule = normalize_snort3_rule(rule).strip().replace("→", "->")
     match = RULE_RE.match(rule)
     if not match:
         raise ValueError("Rule header does not match Snort syntax.")

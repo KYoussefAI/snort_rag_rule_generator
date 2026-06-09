@@ -13,6 +13,7 @@ from snort_rag.rule_parser import (
     detected_option_names,
     extract_snort_options,
     missing_required_options,
+    normalize_snort3_rule,
     option_coverage,
     validate_rule,
 )
@@ -82,10 +83,11 @@ def explain_rule(rule: str, attack_type: str, docs: Sequence[RetrievedDoc]) -> s
 def choose_rule(query: str, attack_type: str, retrieved_docs: Sequence[RetrievedDoc]) -> str:
     for doc in retrieved_docs:
         if doc.attack_type == attack_type and doc.rule and doc.rule != "NO_RULE_RECOMMENDED":
-            valid, _ = validate_rule(doc.rule)
+            rule = normalize_snort3_rule(doc.rule)
+            valid, _ = validate_rule(rule)
             if valid:
-                return doc.rule
-    return generate_snort_rule(attack_type, query)
+                return rule
+    return normalize_snort3_rule(generate_snort_rule(attack_type, query))
 
 
 def _hallucination_risk(
@@ -122,6 +124,7 @@ def build_generation_result(
         valid = True
         errors: List[str] = []
     else:
+        rule = normalize_snort3_rule(rule)
         valid, errors = validate_rule(rule)
 
     detected_options = detected_option_names(rule)
