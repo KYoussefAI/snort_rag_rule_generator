@@ -4,11 +4,14 @@
 L'objectif de ce module est de produire une règle Snort-like cohérente à partir d'une description textuelle d'attaque réseau, tout en gardant un contrôle local sur la qualité syntaxique, l'explication de la règle et le risque de faux positifs. Le module doit aussi pouvoir recommander explicitement l'absence de règle quand la requête décrit un trafic bénin.
 
 ## 2. Entrées
-Le module s'appuie sur quatre types d'entrées:
+Le module s'appuie sur plusieurs types d'entrées clairement séparés:
 - la requête utilisateur en langage naturel
 - les documents Top-k récupérés par le pipeline RAG
 - une règle Snort de référence présente dans les documents récupérés quand elle existe
-- les logs simulés et le contexte de faux positif déjà présents dans le dataset et utilisés indirectement par la récupération
+- `data/processed/final_snort_dataset.csv`, qui est le dataset personnel utilisé pour la récupération RAG
+- `data/knowledge_base/trusted_rule_kb.csv`, qui est une base optionnelle de références Snort externes et ne remplace pas le dataset personnel
+- `data/logs/sample_network_logs.csv`, qui contient des logs synthétiques académiques utilisés pour la construction et l'évaluation contrôlée
+- `data/logs/real_lab_logs/`, qui contient de petits logs de laboratoire contrôlé produits par rejeu PCAP local, parsing de paquets et sortie Snort, sans les présenter comme des logs de production d'entreprise
 
 ## 3. Architecture
 Le flux suivi par le module est le suivant:
@@ -18,6 +21,8 @@ description utilisateur
 → prompt enrichi contrôlé  
 → génération LLM dans le contexte RAG ou fallback déterministe explicite  
 → validation syntaxique et réparation éventuelle  
+→ validation Snort 3 réelle quand les règles sont exportées
+→ rejeu PCAP de laboratoire et intégration de logs de laboratoire
 → explication  
 → analyse des faux positifs
 
@@ -51,7 +56,7 @@ La sortie principale du module est un dictionnaire `generation_result` contenant
 
 Ce format permet de conserver la compatibilité avec le reste du projet tout en ajoutant des métadonnées utiles pour l'analyse.
 
-## 6. Validation syntaxique
+## 6. Validation syntaxique et runtime
 La validation locale vérifie une forme Snort-like crédible avant export ou affichage. Les contrôles portent notamment sur:
 - l'action de règle, par exemple `alert`
 - le protocole, par exemple `tcp`, `udp`, `icmp` ou `ip`
@@ -64,7 +69,7 @@ La validation locale vérifie une forme Snort-like crédible avant export ou aff
 - l'équilibre des parenthèses
 - l'extraction et la cohérence des options Snort
 
-Le validateur reste volontairement local et structurel. Il filtre les sorties incohérentes, mais il ne remplace pas un moteur Snort réel.
+Le validateur local filtre les sorties incohérentes, mais il ne remplace pas un moteur Snort réel. Pour l'état courant du projet, les règles Snort 3 exportées dans `data/processed/person1_rules_snort3.rules` sont aussi validées avec le wrapper Docker `tools/snort3-docker` et la configuration `/home/snorty/snort3/etc/snort/snort.lua`. Les résultats sont enregistrés dans `results/snort_runtime_validation.csv`.
 
 ## 7. Explication automatique
 Le module génère aussi une explication textuelle courte pour justifier la règle retenue. Cette explication peut mentionner:
@@ -88,6 +93,8 @@ Le contrôle des faux positifs repose sur des heuristiques locales dans `false_p
 
 Quand la requête décrit un comportement légitime, le système retourne `NO_RULE_RECOMMENDED`. Ce choix est traité comme une recommandation valide, avec un risque de faux positifs nul, afin d'éviter de transformer du trafic normal en alerte artificielle.
 
+Le contrôle empirique disponible reste limité au laboratoire: `results/pcap_test_results.csv` vérifie que les PCAPs d'attaque déclenchent des alertes et que le scénario `benign_traffic` ne déclenche pas d'alerte. `results/network_log_integration_eval.csv` utilise les logs synthétiques académiques, tandis que `results/real_lab_log_integration_eval.csv` utilise les logs de laboratoire contrôlé de `data/logs/real_lab_logs/`.
+
 ## 9. Artefacts produits
 Les artefacts directement liés à ce module sont:
 - `src/snort_rag/generator.py`
@@ -99,12 +106,21 @@ Les artefacts directement liés à ce module sont:
 - `src/snort_rag/false_positive.py`
 - `results/generated_rule_examples.csv`
 - `results/false_positive_analysis.csv`
+- `results/snort_runtime_validation.csv`
+- `results/pcap_test_results.csv`
+- `results/network_log_integration_eval.csv`
+- `results/real_lab_log_integration_eval.csv`
+- `data/logs/real_lab_logs/`
 - `tests/test_generator.py`
+- `tests/test_log_integration_eval.py`
+- `tests/test_real_log_integration.py`
 
 ## 10. Limites
-Ce module présente trois limites principales:
-- la validation effectuée est une validation locale Snort-like seulement
+Ce module présente les limites suivantes:
+- les logs de `data/logs/sample_network_logs.csv` sont synthétiques et académiques
+- les logs de `data/logs/real_lab_logs/` sont de vrais artefacts de laboratoire contrôlé, mais pas des logs de production d'entreprise
 - Snort runtime reste l'autorité finale pour la syntaxe réelle et les avertissements moteur
-- des tests PCAP sont nécessaires pour vérifier le comportement réel, la qualité de détection et le niveau de faux positifs
+- les tests PCAP montrent un comportement dans un corpus de laboratoire limité, pas une étude complète en environnement opérationnel
+- certaines sorties LLM sont rejetées par validation stricte et remplacées par un fallback déterministe, ce qui est volontaire pour la sécurité et la reproductibilité
 
-Cette section ne revendique donc pas une validation d'exécution Snort si elle n'a pas été réellement lancée dans l'environnement cible.
+Si Snort Docker n'est pas disponible dans un environnement cible, les résultats runtime doivent être déclarés `SKIPPED` ou en échec; ils ne doivent pas être simulés.

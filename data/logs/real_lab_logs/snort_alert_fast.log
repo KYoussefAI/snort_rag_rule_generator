@@ -1,0 +1,70 @@
+### scenario=benign_traffic pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/benign_traffic.pcap
+
+### scenario=command_injection pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/command_injection.pcap
+06/09-19:56:00.933901 [**] [1:9100081:1] "P1 Command injection payload 1" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41003 -> 192.168.56.10:80
+
+### scenario=directory_traversal pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/directory_traversal.pcap
+06/09-19:56:01.260006 [**] [1:9100119:1] "P1 Directory traversal attempt 19" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41004 -> 192.168.56.10:80
+06/09-19:56:01.260006 [**] [1:9100113:1] "P1 Directory traversal attempt 13" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41004 -> 192.168.56.10:80
+06/09-19:56:01.260006 [**] [1:9100110:1] "P1 Directory traversal attempt 10" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41004 -> 192.168.56.10:80
+
+### scenario=dns_tunneling pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/dns_tunneling.pcap
+06/09-19:56:01.596840 [**] [1:9100182:1] "P1 DNS tunneling long encoded label lab validation" [**] [Classification: Potential Corporate Privacy Violation] [Priority: 1] {UDP} 192.168.56.20:53000 -> 8.8.8.8:53
+
+### scenario=icmp_sweep pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/icmp_sweep.pcap
+06/09-19:56:01.671932 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.10
+06/09-19:56:01.673005 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.11
+06/09-19:56:01.673788 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.12
+06/09-19:56:01.674551 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.13
+06/09-19:56:01.675300 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.14
+06/09-19:56:01.676095 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.15
+06/09-19:56:01.676849 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.16
+06/09-19:56:01.677682 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.17
+06/09-19:56:01.679807 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.18
+06/09-19:56:01.680656 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.19
+06/09-19:56:01.681679 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.20
+06/09-19:56:01.683004 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.21
+06/09-19:56:01.684402 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.22
+06/09-19:56:01.685987 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.23
+06/09-19:56:01.687608 [**] [1:9100183:1] "P1 ICMP sweep payload lab validation" [**] [Classification: Attempted Information Leak] [Priority: 2] {ICMP} 203.0.113.10 -> 192.168.56.24
+
+### scenario=malware_c2 pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/malware_c2.pcap
+06/09-19:56:02.737358 [**] [1:9100162:1] "P1 Malware C2 beacon 2" [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 192.168.56.20:43004 -> 198.51.100.20:80
+06/09-19:56:02.738835 [**] [1:9100162:1] "P1 Malware C2 beacon 2" [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 192.168.56.20:43005 -> 198.51.100.20:80
+
+### scenario=port_scan pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/port_scan.pcap
+06/09-19:55:56.312072 [**] [1:9100017:1] "P1 Port scan repeated SYN 17" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
+06/09-19:55:56.312072 [**] [1:9100013:1] "P1 Port scan repeated SYN 13" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
+06/09-19:55:56.312072 [**] [1:9100009:1] "P1 Port scan repeated SYN 9" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
+
+### scenario=sql_injection pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/sql_injection.pcap
+06/09-19:56:00.207047 [**] [1:9100041:1] "P1 SQL injection payload 1" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41001 -> 192.168.56.10:80
+
+### scenario=ssh_bruteforce pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/ssh_bruteforce.pcap
+06/09-19:55:57.254932 [**] [1:9100038:1] "P1 SSH brute force repeated login failures 18" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42003 -> 192.168.56.10:22
+06/09-19:55:57.254932 [**] [1:9100034:1] "P1 SSH brute force repeated login failures 14" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42003 -> 192.168.56.10:22
+06/09-19:55:57.254932 [**] [1:9100030:1] "P1 SSH brute force repeated login failures 10" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42003 -> 192.168.56.10:22
+06/09-19:55:57.256640 [**] [1:9100039:1] "P1 SSH brute force repeated login failures 19" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42004 -> 192.168.56.10:22
+06/09-19:55:57.256640 [**] [1:9100034:1] "P1 SSH brute force repeated login failures 14" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42004 -> 192.168.56.10:22
+06/09-19:55:57.256640 [**] [1:9100030:1] "P1 SSH brute force repeated login failures 10" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42004 -> 192.168.56.10:22
+06/09-19:55:57.256640 [**] [1:9100032:1] "P1 SSH brute force repeated login failures 12" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42004 -> 192.168.56.10:22
+06/09-19:55:57.256640 [**] [1:9100027:1] "P1 SSH brute force repeated login failures 7" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42004 -> 192.168.56.10:22
+06/09-19:55:57.256640 [**] [1:9100026:1] "P1 SSH brute force repeated login failures 6" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42004 -> 192.168.56.10:22
+06/09-19:55:57.258265 [**] [1:9100039:1] "P1 SSH brute force repeated login failures 19" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42005 -> 192.168.56.10:22
+06/09-19:55:57.258265 [**] [1:9100032:1] "P1 SSH brute force repeated login failures 12" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42005 -> 192.168.56.10:22
+06/09-19:55:57.258265 [**] [1:9100027:1] "P1 SSH brute force repeated login failures 7" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42005 -> 192.168.56.10:22
+06/09-19:55:57.258265 [**] [1:9100026:1] "P1 SSH brute force repeated login failures 6" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42005 -> 192.168.56.10:22
+06/09-19:55:57.258265 [**] [1:9100024:1] "P1 SSH brute force repeated login failures 4" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42005 -> 192.168.56.10:22
+06/09-19:55:57.259750 [**] [1:9100039:1] "P1 SSH brute force repeated login failures 19" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42006 -> 192.168.56.10:22
+06/09-19:55:57.259750 [**] [1:9100032:1] "P1 SSH brute force repeated login failures 12" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42006 -> 192.168.56.10:22
+06/09-19:55:57.259750 [**] [1:9100027:1] "P1 SSH brute force repeated login failures 7" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42006 -> 192.168.56.10:22
+06/09-19:55:57.259750 [**] [1:9100026:1] "P1 SSH brute force repeated login failures 6" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42006 -> 192.168.56.10:22
+06/09-19:55:57.259750 [**] [1:9100024:1] "P1 SSH brute force repeated login failures 4" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42006 -> 192.168.56.10:22
+06/09-19:55:57.261322 [**] [1:9100039:1] "P1 SSH brute force repeated login failures 19" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42007 -> 192.168.56.10:22
+06/09-19:55:57.261322 [**] [1:9100032:1] "P1 SSH brute force repeated login failures 12" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42007 -> 192.168.56.10:22
+06/09-19:55:57.261322 [**] [1:9100027:1] "P1 SSH brute force repeated login failures 7" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42007 -> 192.168.56.10:22
+06/09-19:55:57.261322 [**] [1:9100026:1] "P1 SSH brute force repeated login failures 6" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42007 -> 192.168.56.10:22
+06/09-19:55:57.261322 [**] [1:9100024:1] "P1 SSH brute force repeated login failures 4" [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.10:42007 -> 192.168.56.10:22
+
+### scenario=xss pcap=/mnt/e/projects/snort_rag_rule_generator/tests/pcaps/generated/xss.pcap
+06/09-19:56:00.582774 [**] [1:9100181:1] "P1 XSS script alert lab validation" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41002 -> 192.168.56.10:80

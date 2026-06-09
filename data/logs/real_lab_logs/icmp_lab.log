@@ -1,0 +1,1 @@
+lab-icmp src=203.0.113.10 targets=192.168.56.10,192.168.56.11,192.168.56.12,192.168.56.13,192.168.56.14 target_count=15 type=echo-request note=ICMP ping sweep scenario=icmp_sweep source_pcap=icmp_sweep.pcap

@@ -1,30 +1,47 @@
-# Snort Runtime and PCAP Validation
+# Snort 3 Runtime, PCAP Replay, and Lab Log Validation
 
-Runtime validation must be executed with a real Snort binary before making strong claims about rule acceptance or alert behavior.
+Runtime claims in this project are based on a real Snort 3 engine executed through the Docker wrapper `tools/snort3-docker`. The wrapper invokes `/home/snorty/snort3/bin/snort` inside the container and uses `/home/snorty/snort3/etc/snort/snort.lua` for validation and PCAP replay.
 
-Commands:
+## Commands
 
 ```bash
 PYTHONPATH=src python scripts/generate_lab_pcaps.py --out tests/pcaps/generated
-PYTHONPATH=src python scripts/run_snort_validation.py --snort-bin snort --rules data/processed/person1_rules.rules --out results/snort_runtime_validation.csv
-PYTHONPATH=src python scripts/run_pcap_tests.py --snort-bin snort --rules data/processed/person1_rules.rules --pcap-dir tests/pcaps/generated --out results/pcap_test_results.csv
+
+PYTHONPATH=src python scripts/run_snort_validation.py \
+  --snort-bin ./tools/snort3-docker \
+  --config /home/snorty/snort3/etc/snort/snort.lua \
+  --rules data/processed/person1_rules_snort3.rules \
+  --out results/snort_runtime_validation.csv
+
+PYTHONPATH=src python scripts/run_pcap_tests.py \
+  --snort-bin ./tools/snort3-docker \
+  --config /home/snorty/snort3/etc/snort/snort.lua \
+  --rules data/processed/person1_rules_snort3.rules \
+  --pcap-dir tests/pcaps/generated \
+  --out results/pcap_test_results.csv
+
+scripts/capture_real_lab_logs.sh
+PYTHONPATH=src python scripts/run_real_log_integration_eval.py
 ```
 
-If Snort is unavailable, the scripts write `SKIPPED` rows. In that case the report must say: runtime Snort validation was not executed in this environment; only local structural validation was executed.
+## Current Evidence
+
+- `results/snort_runtime_validation.csv`: 183 Snort 3-compatible rules validated with 183 PASS rows and `runtime_valid=True`.
+- `results/pcap_test_results.csv`: protocol-valid lab PCAP replay produced PASS rows for all 10 scenarios, with 9/9 malicious attack categories detected and benign traffic alert count 0.
+- `data/logs/real_lab_logs/snort_alert_fast.log`: Snort alert output captured from replaying the generated lab PCAPs through the real Snort 3 container.
+- `data/logs/real_lab_logs/real_lab_logs_index.csv`: normalized index of controlled lab log lines used by `scripts/run_real_log_integration_eval.py`.
+
+## Separation of Evidence Sources
+
+- `data/processed/final_snort_dataset.csv` is the personal RAG dataset.
+- `data/knowledge_base/trusted_rule_kb.csv` is an optional trusted-source Snort reference KB.
+- `data/logs/sample_network_logs.csv` contains realistic synthetic academic logs used for dataset construction and synthetic integration evaluation.
+- `data/logs/real_lab_logs/` contains controlled lab-captured/parsing artifacts produced from local PCAP replay and packet parsing. These logs are real lab artifacts, not enterprise production logs.
 
 ## SKIPPED Results
 
-When `results/snort_runtime_validation.csv` contains only `SKIPPED`, no runtime Snort syntax claim is made. The CSV still records the attempted command, timestamp, binary lookup result, config path, rules path, and local structural validation status.
+If the Docker wrapper, Snort image, or Snort config is unavailable, runtime validation cannot be claimed. The result should be marked `SKIPPED` or failed honestly. Local structural validation must not be described as equivalent to Snort runtime validation.
 
-When `results/pcap_test_results.csv` contains only `SKIPPED`, synthetic lab PCAPs were generated but replay through Snort was not executed because Snort was unavailable.
+## Limitations
 
-## Executed PASS/FAIL Results
-
-After Snort is installed, the report should summarize:
-
-- Snort command and timestamp
-- rule count, PASS/FAIL/SKIPPED counts, and stderr/stdout excerpts
-- PCAP path, expected attack, alert count, triggered SIDs, and benign alert flag
-- benign PCAP alert count, malicious PCAP alert counts, unexpected alerts, and missed detections
-
-If the benign PCAP triggers alerts, keep the row and discuss it as empirical false-positive evidence.
+The PCAPs are protocol-valid synthetic educational lab captures. The real-lab logs are controlled local lab artifacts derived from those captures and Snort replay, not production network telemetry. The benign replay result is useful false-positive evidence for this lab corpus, but it is not a full enterprise false-positive study.

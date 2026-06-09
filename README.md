@@ -3,16 +3,17 @@
 ## Overview
 This repository contains an academic NLP/RAG project for generating Snort IDS rules from natural-language descriptions and realistic network-log examples. The system is defensive and controlled: it classifies the suspected attack type, retrieves relevant examples from a local corpus, builds a constrained RAG prompt, accepts LLM output only when it passes strict validation, and otherwise falls back to deterministic templates for safety and reproducibility.
 
-The current project state includes real Snort 3 validation through Docker, protocol-valid synthetic lab PCAP replay, and executable network-log integration evidence. It is still an educational project, not a production IDS engineering framework.
+The current project state includes real Snort 3 validation through Docker, protocol-valid synthetic lab PCAP replay, synthetic academic log evaluation, and a separate controlled real-lab-log workflow. It is still an educational project, not a production IDS engineering framework.
 
 ## Current Validation Evidence
 | Evidence area | Current result | Main artifacts |
 | --- | ---: | --- |
 | Snort 3 syntax/runtime validation | 183/183 PASS | `tools/snort3-docker`, `data/processed/person1_rules_snort3.rules`, `results/snort_runtime_validation.csv`, `results/snort3_syntax_test.txt` |
 | PCAP replay | 9/9 attack categories detected, 0 benign false positives | `scripts/generate_lab_pcaps.py`, `scripts/run_pcap_tests.py`, `tests/pcaps/generated/`, `results/pcap_test_results.csv` |
-| Network log integration | 10/10 PASS, 1.000 classification accuracy | `data/logs/sample_network_logs.csv`, `scripts/run_log_integration_eval.py`, `results/network_log_integration_eval.csv` |
+| Synthetic network log integration | 10/10 PASS, 1.000 classification accuracy | `data/logs/sample_network_logs.csv`, `scripts/run_log_integration_eval.py`, `results/network_log_integration_eval.csv` |
+| Controlled real-lab log integration | 10/10 PASS, 1.000 classification accuracy | `data/logs/real_lab_logs/`, `scripts/capture_real_lab_logs.sh`, `scripts/run_real_log_integration_eval.py`, `results/real_lab_log_integration_eval.csv` |
 | LLM benchmarking | qwen2.5, mistral, llama3.2 through Ollama | `results/llm_benchmark.csv`, `results/llm_benchmark_summary.csv` |
-| Automated tests | 22 passed | `tests/` |
+| Automated tests | run with `PYTHONPATH=src pytest tests/` | `tests/` |
 
 Real Snort execution uses the Docker wrapper `tools/snort3-docker`, which invokes `/home/snorty/snort3/bin/snort` inside the container. The validated Snort config is `/home/snorty/snort3/etc/snort/snort.lua`.
 
@@ -45,8 +46,9 @@ The LLM path is intentionally constrained by retrieved documents, strict JSON pa
 - `data/processed/final_snort_dataset.jsonl`
 - `data/processed/person1_rules_snort3.rules`
 - `data/logs/sample_network_logs.csv`
+- `data/logs/real_lab_logs/`
 
-The processed dataset is the retrieval corpus. The network logs are realistic synthetic academic examples used by `scripts/run_log_integration_eval.py`; they are not private production logs.
+The processed dataset is the personal retrieval corpus used by the RAG pipeline. `data/logs/sample_network_logs.csv` contains realistic synthetic academic logs used during dataset construction and synthetic log integration evaluation. `data/logs/real_lab_logs/` contains small sanitized controlled lab logs produced from local PCAP replay and PCAP parsing commands; these are real lab artifacts, not enterprise production logs.
 
 ### Generation and RAG Modules
 - `src/snort_rag/generator.py`
@@ -69,6 +71,7 @@ The project includes baseline generation, classic RAG, reranking RAG, hybrid RAG
 - `results/snort_runtime_validation.csv`
 - `results/pcap_test_results.csv`
 - `results/network_log_integration_eval.csv`
+- `results/real_lab_log_integration_eval.csv`
 - `results/llm_benchmark.csv`
 - `results/llm_benchmark_summary.csv`
 - `results/embedding_benchmark.csv`
@@ -139,6 +142,12 @@ PYTHONPATH=src python scripts/run_pcap_tests.py \
 PYTHONPATH=src python scripts/run_log_integration_eval.py
 ```
 
+### Capture and evaluate controlled real-lab logs
+```bash
+scripts/capture_real_lab_logs.sh
+PYTHONPATH=src python scripts/run_real_log_integration_eval.py
+```
+
 ### Run retrieval and clustering evaluations
 ```bash
 PYTHONPATH=src python scripts/benchmark_retrieval.py
@@ -170,7 +179,8 @@ This produces `data/knowledge_base/trusted_rule_kb.csv`, `data/knowledge_base/tr
 ```text
 src/snort_rag/                         source package
 data/processed/                        project dataset and Snort 3-compatible exported rules
-data/logs/                             realistic synthetic academic network logs
+data/logs/sample_network_logs.csv      realistic synthetic academic network logs
+data/logs/real_lab_logs/               controlled lab-captured/parsing log artifacts
 data/knowledge_base/                   optional trusted-source rule reference artifacts
 results/                               evaluation, validation, and benchmarking artifacts
 docs/                                  report sections and technical notes
@@ -193,7 +203,8 @@ print(result["false_positive_risk"])
 
 ## Limitations
 - The PCAPs are protocol-valid synthetic educational lab captures, not production traffic.
-- The network logs are realistic synthetic academic examples, not private production logs.
+- `data/logs/sample_network_logs.csv` contains realistic synthetic academic examples, not private production logs.
+- `data/logs/real_lab_logs/` contains real controlled lab logs and log-style summaries generated from local PCAP replay/parsing. They satisfy lab integration evidence, but they are not enterprise production logs.
 - False-positive analysis combines heuristics with benign lab replay evidence; it is not a full enterprise deployment study.
 - LLM outputs may be rejected by strict schema/rule validation and replaced by deterministic fallback output. This is intentional and should be reported as fallback behavior, not as raw LLM success.
 - Snort 3 runtime evidence depends on the Docker wrapper and image being available. If Snort cannot run, runtime validation must be marked `SKIPPED` or failed honestly.
