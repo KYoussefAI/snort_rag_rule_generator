@@ -5,39 +5,32 @@ o"")~   Snort++ 3.10.0.0
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	port_scan
-	smtp
-	ftp_server
-	ftp_client
 	ftp_data
-	http2_inspect
-	file_policy
-	js_norm
-	appid
-	wizard
-	binder
-	output
-	ips
-	classifications
 	references
-	http_inspect
-	s7commplus
-	opcua
-	so_proxy
-	search_engine
-	process
-	packets
-	network
-	hosts
-	host_tracker
-	alerts
-	active
-	dns
-	daq
+	classifications
+	ips
 	file_id
-	decode
-	trace
+	js_norm
+	binder
+	wizard
+	appid
+	file_policy
+	http2_inspect
+	http_inspect
+	search_engine
+	output
+	so_proxy
+	packets
+	hosts
 	host_cache
+	active
+	alerts
+	decode
+	host_tracker
+	network
+	process
+	daq
+	trace
 	stream
 	stream_ip
 	stream_icmp
@@ -47,6 +40,7 @@ Finished snort_defaults.lua:
 	stream_file
 	arp_spoof
 	back_orifice
+	dns
 	imap
 	netflow
 	normalizer
@@ -61,12 +55,18 @@ Finished snort_defaults.lua:
 	iec104
 	mms
 	modbus
+	opcua
+	s7commplus
 	dce_smb
 	dce_tcp
 	dce_udp
 	dce_http_proxy
 	dce_http_server
 	gtp_inspect
+	port_scan
+	smtp
+	ftp_server
+	ftp_client
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -83,14 +83,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -120,7 +119,7 @@ search engine (ac_bnfa)
         match list memory: 41.2188
         transition memory: 44.2188
         fast pattern only: 120
-appid: MaxRss diff: 2944
+appid: MaxRss diff: 3200
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -158,6 +157,7 @@ ac_full
 appid
                   packets: 5
         processed_packets: 4
+          ignored_packets: 1
        ",
 tests/pcaps/generated/command_injection.pcap,command_injection,PASS,1,9100081,False,./tools/snort3-docker -r tests/pcaps/generated/command_injection.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
@@ -165,68 +165,68 @@ o"")~   Snort++ 3.10.0.0
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	normalizer
-	pop
-	rpc_decode
-	sip
-	ssl
-	telnet
-	cip
-	dnp3
-	iec104
-	mms
-	modbus
-	opcua
-	s7commplus
-	dce_smb
+	trace
+	stream
+	stream_ip
+	stream_tcp
+	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	imap
 	dce_tcp
-	dce_udp
-	dce_http_proxy
-	dce_http_server
 	gtp_inspect
+	port_scan
 	smtp
 	ftp_server
 	ftp_client
-	http_inspect
+	ftp_data
+	output
+	http2_inspect
+	js_norm
 	appid
 	wizard
 	binder
-	ips
-	file_id
-	classifications
-	references
-	js_norm
-	file_policy
-	http2_inspect
-	ftp_data
-	port_scan
-	ssh
-	netflow
-	dns
-	back_orifice
-	arp_spoof
-	stream_file
-	stream_user
-	stream_udp
-	stream_tcp
-	stream_icmp
-	stream_ip
-	stream
-	trace
-	daq
-	active
 	alerts
+	daq
 	decode
 	host_cache
+	host_tracker
 	hosts
 	network
+	packets
 	process
 	search_engine
 	so_proxy
-	host_tracker
-	imap
-	packets
-	output
+	references
+	classifications
+	ssl
+	iec104
+	dce_udp
+	ips
+	file_policy
+	file_id
+	http_inspect
+	dce_http_server
+	dce_http_proxy
+	dce_smb
+	s7commplus
+	opcua
+	modbus
+	mms
+	dnp3
+	cip
+	telnet
+	ssh
+	sip
+	rpc_decode
+	pop
+	normalizer
+	netflow
+	stream_icmp
+	active
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -243,14 +243,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -280,7 +279,7 @@ search engine (ac_bnfa)
         match list memory: 41.2188
         transition memory: 44.2188
         fast pattern only: 120
-appid: MaxRss diff: 2944
+appid: MaxRss diff: 3200
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -306,75 +305,76 @@ Packet Statistics
 --------------------------------------------------
 daq
                     pcaps: 1
-                 received: ",
-tests/pcaps/generated/directory_traversal.pcap,directory_traversal,PASS,3,"9100113,9100116,9100119",False,./tools/snort3-docker -r tests/pcaps/generated/directory_traversal.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
+                 received: 5
+                 analyzed: ",
+tests/pcaps/generated/directory_traversal.pcap,directory_traversal,PASS,3,"9100107,9100113,9100119",False,./tools/snort3-docker -r tests/pcaps/generated/directory_traversal.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
 --------------------------------------------------
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	ftp_data
-	http_inspect
-	http2_inspect
-	file_policy
+	trace
+	port_scan
 	js_norm
+	references
+	ips
+	classifications
+	binder
+	wizard
 	appid
+	file_policy
+	file_id
+	http2_inspect
+	http_inspect
+	ftp_data
+	ftp_client
+	ftp_server
+	smtp
+	output
+	process
 	active
-	alerts
 	daq
 	decode
 	host_cache
 	host_tracker
-	port_scan
-	stream_file
-	arp_spoof
-	classifications
-	references
-	binder
-	wizard
-	ftp_client
-	ftp_server
-	smtp
-	gtp_inspect
-	trace
-	dce_http_server
-	dce_http_proxy
-	dce_udp
-	dce_tcp
-	dce_smb
-	s7commplus
-	opcua
-	modbus
-	mms
-	iec104
-	dnp3
-	cip
-	telnet
-	ssl
-	ssh
-	sip
-	rpc_decode
-	pop
-	normalizer
-	netflow
-	imap
-	dns
-	back_orifice
-	ips
-	file_id
-	stream_user
-	stream_udp
-	stream_tcp
-	stream_icmp
-	stream_ip
-	stream
-	output
-	packets
-	search_engine
 	hosts
 	network
-	process
+	packets
+	search_engine
 	so_proxy
+	stream
+	stream_ip
+	stream_icmp
+	stream_tcp
+	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	imap
+	netflow
+	normalizer
+	pop
+	rpc_decode
+	sip
+	ssh
+	ssl
+	telnet
+	cip
+	dnp3
+	iec104
+	mms
+	modbus
+	opcua
+	s7commplus
+	dce_smb
+	dce_tcp
+	dce_udp
+	dce_http_proxy
+	dce_http_server
+	gtp_inspect
+	alerts
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -391,14 +391,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -448,49 +447,40 @@ snort.raw[51]:
 0A 0D 0A                                          ...
 - - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
 
-06/09-19:56:01.260006 [**] [1:9100116:1] ""P1 Directory traversal attempt 16"" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41004 -> 192.168.56.10:80
-00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x69",
+06/09-19:56:01.260006 [**] [1:9100113:1] ""P1 Directory traversal attempt 13"" [**] [Classification: Web Application Attack] [Priority: 1] {TCP} 203.0.113.10:41004 -> 192.168.56.10:80
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x69
+203.0.113.10:41004 -> 192.16",
 tests/pcaps/generated/dns_tunneling.pcap,dns_tunneling,PASS,1,9100182,False,./tools/snort3-docker -r tests/pcaps/generated/dns_tunneling.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
 --------------------------------------------------
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	ips
-	file_id
-	smtp
-	http_inspect
-	classifications
-	stream_user
-	binder
-	wizard
-	appid
-	js_norm
+	dce_tcp
+	dce_udp
 	file_policy
+	js_norm
+	appid
+	wizard
+	binder
+	references
+	output
+	ips
+	classifications
+	file_id
 	http2_inspect
+	http_inspect
 	ftp_data
 	ftp_client
 	ftp_server
+	smtp
+	port_scan
 	gtp_inspect
 	dce_http_server
-	trace
-	dce_udp
+	dce_http_proxy
 	dce_smb
-	opcua
-	mms
-	dnp3
-	telnet
-	ssh
-	pop
-	stream
-	netflow
-	imap
-	dns
-	stream_ip
-	arp_spoof
-	stream_file
-	references
-	stream_tcp
+	trace
+	search_engine
 	active
 	alerts
 	daq
@@ -502,22 +492,32 @@ Finished snort_defaults.lua:
 	packets
 	process
 	so_proxy
+	stream
+	stream_ip
 	stream_icmp
+	stream_tcp
 	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
 	back_orifice
+	dns
+	imap
+	netflow
 	normalizer
+	pop
 	rpc_decode
 	sip
+	ssh
 	ssl
+	telnet
 	cip
+	dnp3
 	iec104
+	mms
 	modbus
+	opcua
 	s7commplus
-	dce_tcp
-	dce_http_proxy
-	port_scan
-	output
-	search_engine
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -534,14 +534,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -571,7 +570,7 @@ search engine (ac_bnfa)
         match list memory: 41.2188
         transition memory: 44.2188
         fast pattern only: 120
-appid: MaxRss diff: 2944
+appid: MaxRss diff: 3200
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -596,7 +595,7 @@ dns.raw[93]:
 -- [0] tests/pcaps/generated/dns_tunneling.pcap
 --------------------------------------------------
 Packet Statistics
------------",
+----------------------------------------",
 tests/pcaps/generated/icmp_sweep.pcap,icmp_sweep,PASS,15,9100183,False,./tools/snort3-docker -r tests/pcaps/generated/icmp_sweep.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
 --------------------------------------------------
@@ -604,14 +603,13 @@ Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
 	ips
+	file_id
 	classifications
-	references
-	decode
+	binder
 	wizard
 	appid
 	js_norm
 	file_policy
-	file_id
 	http2_inspect
 	http_inspect
 	ftp_data
@@ -624,33 +622,7 @@ Finished snort_defaults.lua:
 	dce_http_proxy
 	dce_udp
 	dce_tcp
-	dce_smb
-	s7commplus
 	opcua
-	modbus
-	mms
-	iec104
-	dnp3
-	cip
-	telnet
-	ssl
-	ssh
-	sip
-	rpc_decode
-	pop
-	output
-	normalizer
-	netflow
-	imap
-	dns
-	back_orifice
-	arp_spoof
-	stream_file
-	stream_user
-	stream_udp
-	stream_tcp
-	stream_icmp
-	binder
 	active
 	alerts
 	daq
@@ -658,13 +630,40 @@ Finished snort_defaults.lua:
 	host_tracker
 	hosts
 	network
+	packets
 	process
 	search_engine
 	so_proxy
+	stream_tcp
+	imap
+	output
 	stream
 	stream_ip
+	stream_icmp
+	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	netflow
+	normalizer
+	pop
+	rpc_decode
+	sip
+	ssh
+	ssl
+	telnet
+	cip
+	dnp3
+	iec104
+	mms
+	modbus
+	s7commplus
+	dce_smb
 	trace
-	packets
+	references
+	decode
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -681,14 +680,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -718,7 +716,7 @@ search engine (ac_bnfa)
         match list memory: 41.2188
         transition memory: 44.2188
         fast pattern only: 120
-appid: MaxRss diff: 3072
+appid: MaxRss diff: 3200
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -742,217 +740,75 @@ snort.raw[26]:
 Type:8  Code:0  ID:0   Seq:0  ECHO
 
 snort.raw[26]:
-- - - - - - - - - - - -  - - - - - - - - - -",
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+49 43",
 tests/pcaps/generated/malware_c2.pcap,malware_c2,PASS,2,9100162,False,./tools/snort3-docker -r tests/pcaps/generated/malware_c2.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
 --------------------------------------------------
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	imap
-	netflow
-	normalizer
-	pop
-	rpc_decode
-	sip
-	ssl
-	telnet
-	cip
-	dnp3
-	iec104
-	mms
-	modbus
-	opcua
-	s7commplus
-	dce_smb
-	dce_tcp
-	dce_udp
-	dce_http_proxy
-	dce_http_server
-	gtp_inspect
-	port_scan
-	smtp
-	ftp_server
-	ftp_client
-	ftp_data
-	http_inspect
-	http2_inspect
-	file_policy
-	wizard
-	binder
-	output
-	ips
-	classifications
-	references
-	appid
-	js_norm
-	file_id
-	ssh
-	trace
-	network
-	active
-	alerts
-	daq
-	decode
-	host_cache
-	host_tracker
-	hosts
-	packets
-	process
-	search_engine
-	so_proxy
 	stream
-	stream_ip
 	stream_icmp
 	stream_tcp
 	stream_udp
-	stream_user
+	trace
 	stream_file
-	arp_spoof
 	back_orifice
-	dns
-Finished /home/snorty/snort3/etc/snort/snort.lua:
-Loading file_id.rules_file:
-Loading file_magic.rules:
-Finished file_magic.rules:
-Finished file_id.rules_file:
-Loading rule args:
-Loading data/processed/person1_rules_snort3.rules:
-Finished data/processed/person1_rules_snort3.rules:
-Finished rule args:
---------------------------------------------------
-pcre counts
-               pcre_rules: 40
-              pcre_native: 40
---------------------------------------------------
-ips policies rule stats
-              id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
---------------------------------------------------
-rule counts
-       total rules loaded: 402
-          duplicate rules: 2
-               text rules: 402
-            option chains: 402
-            chain headers: 53
---------------------------------------------------
-port rule counts
-             tcp     udp    icmp      ip
-     any      20       0      21       0
-     dst     121      21       0       0
-   total     141      21      21       0
---------------------------------------------------
-service rule counts          to-srv  to-cli
-                  file_id:      219     219
-                    total:      219     219
---------------------------------------------------
-fast pattern groups
-                      dst: 16
-                      any: 2
-                to_server: 1
-                to_client: 1
---------------------------------------------------
-search engine (ac_bnfa)
-                instances: 11
-                 patterns: 581
-            pattern chars: 4030
-               num states: 2896
-         num match states: 479
-             memory scale: KB
-             total memory: 113.433
-           pattern memory: 26.6201
-        match list memory: 41.2188
-        transition memory: 44.2188
-        fast pattern only: 120
-appid: MaxRss diff: 2944
-appid: patterns loaded: 300
---------------------------------------------------
-pcap DAQ configured to read-file.
-Commencing packet processing
-Retry queue interval is: 200 ms
-++ [0] tests/pcaps/generated/malware_c2.pcap
-06/09-19:56:02.737358 [**] [1:9100162:1] ""P1 Malware C2 beacon 2"" [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 192.168.56.20:43004 -> 198.51.100.20:80
-00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x76
-192.168.56.20:43004 -> 198.51.100.20:80 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:104
-***AP*** Seq: 0x3E9  Ack: 0x1389  Win: 0x2000  TcpLen: 20
-
-snort.raw[64]:
-- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
-47 45 54 20 2F 67 61 74  65 2E 70 68 70 20 48 54  GET /gat e.php HT
-54 50 2F 31 2E 31 0D 0A  48 6F 73 74 3A 20 63 32  TP/1.1.. Host: c2
-2E 6C 61 62 0D 0A 55 73  65 72 2D 41 67 65 6E 74  .lab..Us er-Agent
-3A 20 6C 61 62 2D 62 65  61 63 6F 6E 0D 0A 0D 0A  : lab-be acon....
-- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
-
-06/09-19:56:02.738835 [**] [1:9100162:1] ""P1 Malware C2 beacon 2"" [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 192.168.56.20:43005 -> 198.51.100.20:80
-00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x7",
-tests/pcaps/generated/port_scan.pcap,port_scan,PASS,3,"9100009,9100013,9100017",False,./tools/snort3-docker -r tests/pcaps/generated/port_scan.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
-o"")~   Snort++ 3.10.0.0
---------------------------------------------------
-Loading /home/snorty/snort3/etc/snort/snort.lua:
-Loading snort_defaults.lua:
-Finished snort_defaults.lua:
-	stream
-	stream_ip
-	stream_tcp
-	stream_udp
-	stream_user
-	stream_file
-	arp_spoof
-	back_orifice
-	dns
-	imap
-	netflow
-	normalizer
-	pop
-	rpc_decode
-	sip
-	ssh
-	telnet
-	cip
-	dnp3
-	iec104
-	mms
-	modbus
-	opcua
-	dce_smb
-	dce_tcp
-	dce_udp
+	output
 	dce_http_proxy
-	dce_http_server
+	ips
+	pop
+	references
+	binder
+	port_scan
+	active
+	ftp_server
 	gtp_inspect
+	smtp
 	ftp_data
+	http_inspect
+	http2_inspect
+	ftp_client
+	file_id
 	file_policy
 	js_norm
 	appid
 	wizard
-	binder
-	ftp_client
-	ips
-	classifications
-	http2_inspect
-	http_inspect
-	ftp_server
-	smtp
-	port_scan
+	dce_http_server
+	dce_udp
+	dce_tcp
+	dce_smb
 	s7commplus
+	opcua
+	modbus
+	mms
+	iec104
+	dnp3
+	cip
+	telnet
 	ssl
-	stream_icmp
-	references
-	file_id
-	trace
-	output
-	search_engine
-	active
+	ssh
+	sip
+	rpc_decode
+	classifications
+	normalizer
+	netflow
+	imap
+	dns
+	arp_spoof
+	stream_user
+	stream_ip
 	alerts
+	host_cache
 	daq
 	decode
-	host_cache
 	host_tracker
 	hosts
 	network
 	packets
 	process
+	search_engine
 	so_proxy
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
@@ -970,155 +826,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
---------------------------------------------------
-port rule counts
-             tcp     udp    icmp      ip
-     any      20       0      21       0
-     dst     121      21       0       0
-   total     141      21      21       0
---------------------------------------------------
-service rule counts          to-srv  to-cli
-                  file_id:      219     219
-                    total:      219     219
---------------------------------------------------
-fast pattern groups
-                      dst: 16
-                      any: 2
-                to_server: 1
-                to_client: 1
---------------------------------------------------
-search engine (ac_bnfa)
-                instances: 11
-                 patterns: 581
-            pattern chars: 4030
-               num states: 2896
-         num match states: 479
-             memory scale: KB
-             total memory: 113.433
-           pattern memory: 26.6201
-        match list memory: 41.2188
-        transition memory: 44.2188
-        fast pattern only: 120
-appid: MaxRss diff: 2944
-appid: patterns loaded: 300
---------------------------------------------------
-pcap DAQ configured to read-file.
-Commencing packet processing
-Retry queue interval is: 200 ms
-++ [0] tests/pcaps/generated/port_scan.pcap
-06/09-19:55:56.312072 [**] [1:9100017:1] ""P1 Port scan repeated SYN 17"" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
-00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x36
-203.0.113.10:44010 -> 192.168.56.10:8443 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:40
-******S* Seq: 0x6E  Ack: 0x0  Win: 0x2000  TcpLen: 20
-
-06/09-19:55:56.312072 [**] [1:9100013:1] ""P1 Port scan repeated SYN 13"" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
-00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x36
-203.0.113.10:44010 -> 192.168.56.10:8443 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:40
-******S* Seq: 0x6E  Ack: 0x0  Win: 0x2000  TcpLen: 20
-
-06/09-19:55:56.312072 [**] [1:9100009:1] ""P1 Port scan repeated SYN 9"" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
-00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x36
-203.0.113.10:44010 -> 192.168.56.10:844",
-tests/pcaps/generated/sql_injection.pcap,sql_injection,PASS,1,9100041,False,./tools/snort3-docker -r tests/pcaps/generated/sql_injection.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
-o"")~   Snort++ 3.10.0.0
---------------------------------------------------
-Loading /home/snorty/snort3/etc/snort/snort.lua:
-Loading snort_defaults.lua:
-Finished snort_defaults.lua:
-	references
-	classifications
-	ips
-	packets
-	file_id
-	active
-	trace
-	iec104
-	dnp3
-	pop
-	netflow
-	arp_spoof
-	stream_udp
-	stream_tcp
-	stream_icmp
-	stream_ip
-	alerts
-	decode
-	host_cache
-	host_tracker
-	hosts
-	process
-	search_engine
-	stream
-	stream_user
-	stream_file
-	output
-	back_orifice
-	dns
-	imap
-	normalizer
-	rpc_decode
-	sip
-	ssh
-	ssl
-	telnet
-	cip
-	mms
-	modbus
-	opcua
-	s7commplus
-	dce_smb
-	dce_tcp
-	dce_udp
-	dce_http_proxy
-	dce_http_server
-	gtp_inspect
-	port_scan
-	smtp
-	ftp_server
-	ftp_client
-	ftp_data
-	http_inspect
-	http2_inspect
-	network
-	so_proxy
-	file_policy
-	js_norm
-	appid
-	wizard
-	binder
-	daq
-Finished /home/snorty/snort3/etc/snort/snort.lua:
-Loading file_id.rules_file:
-Loading file_magic.rules:
-Finished file_magic.rules:
-Finished file_id.rules_file:
-Loading rule args:
-Loading data/processed/person1_rules_snort3.rules:
-Finished data/processed/person1_rules_snort3.rules:
-Finished rule args:
---------------------------------------------------
-pcre counts
-               pcre_rules: 40
-              pcre_native: 40
---------------------------------------------------
-ips policies rule stats
-              id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
---------------------------------------------------
-rule counts
-       total rules loaded: 402
-          duplicate rules: 2
-               text rules: 402
-            option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -1149,6 +863,289 @@ search engine (ac_bnfa)
         transition memory: 44.2188
         fast pattern only: 120
 appid: MaxRss diff: 3072
+appid: patterns loaded: 300
+--------------------------------------------------
+pcap DAQ configured to read-file.
+Commencing packet processing
+Retry queue interval is: 200 ms
+++ [0] tests/pcaps/generated/malware_c2.pcap
+06/09-19:56:02.737358 [**] [1:9100162:1] ""P1 Malware C2 beacon 2"" [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 192.168.56.20:43004 -> 198.51.100.20:80
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x76
+192.168.56.20:43004 -> 198.51.100.20:80 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:104
+***AP*** Seq: 0x3E9  Ack: 0x1389  Win: 0x2000  TcpLen: 20
+
+snort.raw[64]:
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+47 45 54 20 2F 67 61 74  65 2E 70 68 70 20 48 54  GET /gat e.php HT
+54 50 2F 31 2E 31 0D 0A  48 6F 73 74 3A 20 63 32  TP/1.1.. Host: c2
+2E 6C 61 62 0D 0A 55 73  65 72 2D 41 67 65 6E 74  .lab..Us er-Agent
+3A 20 6C 61 62 2D 62 65  61 63 6F 6E 0D 0A 0D 0A  : lab-be acon....
+- - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
+
+06/09-19:56:02.738835 [**] [1:9100162:1] ""P1 Malware C2 beacon 2"" [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 192.168.56.20:43005 -> 198.51.100.20:80
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x76
+192.168.56.20:43005 -> 198.",
+tests/pcaps/generated/port_scan.pcap,port_scan,PASS,3,"9100009,9100013,9100017",False,./tools/snort3-docker -r tests/pcaps/generated/port_scan.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
+o"")~   Snort++ 3.10.0.0
+--------------------------------------------------
+Loading /home/snorty/snort3/etc/snort/snort.lua:
+Loading snort_defaults.lua:
+Finished snort_defaults.lua:
+	ips
+	classifications
+	references
+	binder
+	opcua
+	appid
+	s7commplus
+	file_policy
+	ssl
+	http2_inspect
+	http_inspect
+	ftp_data
+	gtp_inspect
+	active
+	alerts
+	daq
+	decode
+	host_tracker
+	hosts
+	network
+	packets
+	process
+	search_engine
+	so_proxy
+	ftp_server
+	smtp
+	port_scan
+	stream
+	stream_ip
+	stream_icmp
+	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	imap
+	netflow
+	normalizer
+	rpc_decode
+	sip
+	ssh
+	telnet
+	cip
+	dnp3
+	iec104
+	mms
+	modbus
+	dce_smb
+	dce_udp
+	dce_http_proxy
+	dce_http_server
+	ftp_client
+	dce_tcp
+	js_norm
+	wizard
+	file_id
+	trace
+	pop
+	stream_tcp
+	output
+	host_cache
+Finished /home/snorty/snort3/etc/snort/snort.lua:
+Loading file_id.rules_file:
+Loading file_magic.rules:
+Finished file_magic.rules:
+Finished file_id.rules_file:
+Loading rule args:
+Loading data/processed/person1_rules_snort3.rules:
+Finished data/processed/person1_rules_snort3.rules:
+Finished rule args:
+--------------------------------------------------
+pcre counts
+               pcre_rules: 40
+              pcre_native: 40
+--------------------------------------------------
+ips policies rule stats
+              id  loaded  shared enabled    file
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
+--------------------------------------------------
+rule counts
+       total rules loaded: 402
+               text rules: 402
+            option chains: 402
+            chain headers: 11
+--------------------------------------------------
+port rule counts
+             tcp     udp    icmp      ip
+     any      20       0      21       0
+     dst     121      21       0       0
+   total     141      21      21       0
+--------------------------------------------------
+service rule counts          to-srv  to-cli
+                  file_id:      219     219
+                    total:      219     219
+--------------------------------------------------
+fast pattern groups
+                      dst: 16
+                      any: 2
+                to_server: 1
+                to_client: 1
+--------------------------------------------------
+search engine (ac_bnfa)
+                instances: 11
+                 patterns: 581
+            pattern chars: 4030
+               num states: 2896
+         num match states: 479
+             memory scale: KB
+             total memory: 113.433
+           pattern memory: 26.6201
+        match list memory: 41.2188
+        transition memory: 44.2188
+        fast pattern only: 120
+appid: MaxRss diff: 3200
+appid: patterns loaded: 300
+--------------------------------------------------
+pcap DAQ configured to read-file.
+Commencing packet processing
+Retry queue interval is: 200 ms
+++ [0] tests/pcaps/generated/port_scan.pcap
+06/09-19:55:56.312072 [**] [1:9100017:1] ""P1 Port scan repeated SYN 17"" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x36
+203.0.113.10:44010 -> 192.168.56.10:8443 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:40
+******S* Seq: 0x6E  Ack: 0x0  Win: 0x2000  TcpLen: 20
+
+06/09-19:55:56.312072 [**] [1:9100013:1] ""P1 Port scan repeated SYN 13"" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x36
+203.0.113.10:44010 -> 192.168.56.10:8443 TCP TTL:64 TOS:0x0 ID:1 IpLen:20 DgmLen:40
+******S* Seq: 0x6E  Ack: 0x0  Win: 0x2000  TcpLen: 20
+
+06/09-19:55:56.312072 [**] [1:9100009:1] ""P1 Port scan repeated SYN 9"" [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.10:44010 -> 192.168.56.10:8443
+00:15:5D:BD:BA:DE -> FF:FF:FF:FF:FF:FF type:0x800 len:0x36
+203.0.113.10:44010 -> 192.168.56.10:8443 TCP TTL:64 TOS:0x0 ID:1 IpL",
+tests/pcaps/generated/sql_injection.pcap,sql_injection,PASS,1,9100041,False,./tools/snort3-docker -r tests/pcaps/generated/sql_injection.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
+o"")~   Snort++ 3.10.0.0
+--------------------------------------------------
+Loading /home/snorty/snort3/etc/snort/snort.lua:
+Loading snort_defaults.lua:
+Finished snort_defaults.lua:
+	active
+	alerts
+	daq
+	decode
+	host_cache
+	host_tracker
+	network
+	packets
+	process
+	so_proxy
+	stream
+	stream_ip
+	stream_icmp
+	stream_tcp
+	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	netflow
+	normalizer
+	pop
+	sip
+	ssh
+	ssl
+	telnet
+	cip
+	dnp3
+	mms
+	modbus
+	opcua
+	s7commplus
+	dce_smb
+	dce_tcp
+	dce_udp
+	dce_http_proxy
+	dce_http_server
+	gtp_inspect
+	port_scan
+	smtp
+	ftp_server
+	ips
+	file_id
+	trace
+	binder
+	wizard
+	appid
+	js_norm
+	file_policy
+	http2_inspect
+	http_inspect
+	ftp_data
+	ftp_client
+	iec104
+	rpc_decode
+	imap
+	hosts
+	output
+	search_engine
+	references
+	classifications
+Finished /home/snorty/snort3/etc/snort/snort.lua:
+Loading file_id.rules_file:
+Loading file_magic.rules:
+Finished file_magic.rules:
+Finished file_id.rules_file:
+Loading rule args:
+Loading data/processed/person1_rules_snort3.rules:
+Finished data/processed/person1_rules_snort3.rules:
+Finished rule args:
+--------------------------------------------------
+pcre counts
+               pcre_rules: 40
+              pcre_native: 40
+--------------------------------------------------
+ips policies rule stats
+              id  loaded  shared enabled    file
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
+--------------------------------------------------
+rule counts
+       total rules loaded: 402
+               text rules: 402
+            option chains: 402
+            chain headers: 11
+--------------------------------------------------
+port rule counts
+             tcp     udp    icmp      ip
+     any      20       0      21       0
+     dst     121      21       0       0
+   total     141      21      21       0
+--------------------------------------------------
+service rule counts          to-srv  to-cli
+                  file_id:      219     219
+                    total:      219     219
+--------------------------------------------------
+fast pattern groups
+                      dst: 16
+                      any: 2
+                to_server: 1
+                to_client: 1
+--------------------------------------------------
+search engine (ac_bnfa)
+                instances: 11
+                 patterns: 581
+            pattern chars: 4030
+               num states: 2896
+         num match states: 479
+             memory scale: KB
+             total memory: 113.433
+           pattern memory: 26.6201
+        match list memory: 41.2188
+        transition memory: 44.2188
+        fast pattern only: 120
+appid: MaxRss diff: 3200
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -1175,45 +1172,38 @@ Packet Statistics
 daq
                     pcaps: 1
                  received: 5
-                 analyze",
-tests/pcaps/generated/ssh_bruteforce.pcap,ssh_bruteforce,PASS,24,"9100023,9100024,9100026,9100027,9100030,9100034,9100038,9100039",False,./tools/snort3-docker -r tests/pcaps/generated/ssh_bruteforce.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
+                 analyzed: 5
+                    allo",
+tests/pcaps/generated/ssh_bruteforce.pcap,ssh_bruteforce,PASS,24,"9100023,9100027,9100030,9100034,9100035,9100038,9100040",False,./tools/snort3-docker -r tests/pcaps/generated/ssh_bruteforce.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
 --------------------------------------------------
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	active
-	daq
-	decode
-	host_cache
-	host_tracker
-	hosts
-	packets
-	process
-	so_proxy
-	s7commplus
-	dce_smb
-	dce_tcp
-	dce_http_proxy
-	dce_http_server
-	smtp
-	ftp_server
-	ftp_client
-	ips
-	file_id
 	references
 	classifications
+	pop
+	dce_smb
+	dce_udp
+	dce_http_server
+	ips
 	binder
 	wizard
 	appid
 	js_norm
 	file_policy
+	file_id
 	http2_inspect
 	http_inspect
 	ftp_data
+	ftp_client
+	ftp_server
+	smtp
 	port_scan
 	gtp_inspect
-	dce_udp
+	dce_http_proxy
+	dce_tcp
+	s7commplus
 	opcua
 	modbus
 	mms
@@ -1225,25 +1215,33 @@ Finished snort_defaults.lua:
 	ssh
 	sip
 	rpc_decode
-	pop
 	normalizer
 	netflow
 	imap
-	dns
-	back_orifice
-	arp_spoof
-	stream_file
 	stream_user
 	stream_udp
-	stream_tcp
-	stream_icmp
-	stream_ip
-	stream
-	output
 	trace
-	network
+	daq
+	active
 	alerts
+	decode
+	host_cache
+	host_tracker
+	hosts
+	network
+	packets
+	process
 	search_engine
+	so_proxy
+	stream
+	stream_ip
+	stream_icmp
+	stream_tcp
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	output
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -1260,14 +1258,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -1297,7 +1294,7 @@ search engine (ac_bnfa)
         match list memory: 41.2188
         transition memory: 44.2188
         fast pattern only: 120
-appid: MaxRss diff: 2944
+appid: MaxRss diff: 3072
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -1319,75 +1316,76 @@ ssh.stream_tcp[35]:
 - - - - - - - - - - - -  - - - - - - - - - - - -  - - - - - - - - -
 53 53 48 2D 32 2E 30 20  72 65 70 65 61 74 65 64  SSH-2.0  repeated
 20 6C 6F 67 69 6E 20 6C  61 62 20 70 61 63 6B 65   login l ab packe
-74 0D 0A                                    ",
+74 0D 0A                                          t..
+- - - - - - - - - -",
 tests/pcaps/generated/xss.pcap,xss,PASS,1,9100181,False,./tools/snort3-docker -r tests/pcaps/generated/xss.pcap -R data/processed/person1_rules_snort3.rules -A cmg -c /home/snorty/snort3/etc/snort/snort.lua,"--------------------------------------------------
 o"")~   Snort++ 3.10.0.0
 --------------------------------------------------
 Loading /home/snorty/snort3/etc/snort/snort.lua:
 Loading snort_defaults.lua:
 Finished snort_defaults.lua:
-	binder
-	references
-	classifications
 	ips
 	file_id
-	ftp_data
-	search_engine
-	host_tracker
-	daq
-	dce_tcp
-	dce_smb
-	s7commplus
-	opcua
-	modbus
-	mms
-	iec104
-	dnp3
-	cip
-	telnet
-	ssl
-	ssh
-	sip
-	rpc_decode
-	pop
-	normalizer
-	netflow
-	imap
-	dns
-	back_orifice
-	arp_spoof
-	stream_file
-	stream_user
-	stream_udp
-	stream_tcp
-	stream_icmp
-	stream_ip
-	stream
-	host_cache
-	active
-	alerts
+	classifications
 	decode
+	host_cache
+	host_tracker
 	hosts
 	network
 	packets
 	process
-	output
+	search_engine
 	so_proxy
-	trace
 	dce_udp
+	stream_icmp
+	stream_tcp
+	stream_udp
+	stream_user
+	stream_file
+	arp_spoof
+	back_orifice
+	dns
+	imap
+	pop
+	rpc_decode
+	ssh
+	ssl
+	telnet
+	cip
+	dnp3
+	iec104
+	mms
+	modbus
+	opcua
+	s7commplus
+	dce_smb
+	dce_tcp
 	dce_http_proxy
 	dce_http_server
-	gtp_inspect
 	port_scan
 	smtp
 	ftp_server
 	ftp_client
+	ftp_data
 	http_inspect
 	http2_inspect
+	gtp_inspect
 	file_policy
 	js_norm
 	appid
 	wizard
+	binder
+	sip
+	normalizer
+	netflow
+	stream_ip
+	stream
+	output
+	references
+	trace
+	daq
+	alerts
+	active
 Finished /home/snorty/snort3/etc/snort/snort.lua:
 Loading file_id.rules_file:
 Loading file_magic.rules:
@@ -1404,14 +1402,13 @@ pcre counts
 --------------------------------------------------
 ips policies rule stats
               id  loaded  shared enabled    file
-               0     402       2     402    /home/snorty/snort3/etc/snort/snort.lua
+               0     402       0     402    /home/snorty/snort3/etc/snort/snort.lua
 --------------------------------------------------
 rule counts
        total rules loaded: 402
-          duplicate rules: 2
                text rules: 402
             option chains: 402
-            chain headers: 53
+            chain headers: 11
 --------------------------------------------------
 port rule counts
              tcp     udp    icmp      ip
@@ -1441,7 +1438,7 @@ search engine (ac_bnfa)
         match list memory: 41.2188
         transition memory: 44.2188
         fast pattern only: 120
-appid: MaxRss diff: 2816
+appid: MaxRss diff: 3200
 appid: patterns loaded: 300
 --------------------------------------------------
 pcap DAQ configured to read-file.
@@ -1468,4 +1465,5 @@ Packet Statistics
 daq
                     pcaps: 1
                  received: 5
-                 analyzed: 5",
+                 analyzed: 5
+                    allow: 5",

@@ -181,5 +181,3 @@ alert tcp $HOME_NET any -> $EXTERNAL_NET 443 (msg:"P1 Malware C2 beacon 20"; flo
 alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"P1 XSS script alert lab validation"; flow:to_server,established; content:"<script>alert(1)</script>",nocase; classtype:web-application-attack; sid:9100181; rev:1;)
 alert udp $HOME_NET any -> $EXTERNAL_NET 53 (msg:"P1 DNS tunneling long encoded label lab validation"; content:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",nocase; dsize:>70; classtype:policy-violation; sid:9100182; rev:1;)
 alert icmp $EXTERNAL_NET any -> $HOME_NET any (msg:"P1 ICMP sweep payload lab validation"; content:"ICMP echo sweep lab packet"; classtype:attempted-recon; sid:9100183; rev:1;)
-alert udp $HOME_NET any -> $EXTERNAL_NET 53 (msg:"P1 DNS tunneling long encoded label lab validation"; content:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",nocase; dsize:>70; classtype:policy-violation; sid:9100182; rev:1;)
-alert icmp $EXTERNAL_NET any -> $HOME_NET any (msg:"P1 ICMP sweep payload lab validation"; content:"ICMP echo sweep lab packet"; classtype:attempted-recon; sid:9100183; rev:1;)
