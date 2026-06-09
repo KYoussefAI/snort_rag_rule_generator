@@ -1,30 +1,21 @@
 # LLM Benchmarking Methodology
 
-The final generation module uses an LLM only inside a controlled RAG pipeline. The query is first matched against the personal Snort dataset, Top-k documents are inserted into a strict JSON prompt, and the generated rule is parsed and validated before being accepted.
+The reported LLM evidence is for a controlled RAG rule-generation pipeline, not for raw LLM perfection. Each query is matched against the personal Snort dataset, retrieved context is inserted into a strict prompt, and the returned JSON is parsed, validated, repaired when possible, or replaced by a deterministic fallback when strict validation rejects the raw response.
 
-Run:
-
-```bash
-PYTHONPATH=src python scripts/benchmark_llms.py --models mock
-```
-
-For final submission in a Snort/LLM-capable environment, replace `mock` with local model specs such as:
-
-```bash
-ollama serve
-ollama pull mistral
-ollama pull llama3
-ollama pull qwen2.5
-PYTHONPATH=src python scripts/benchmark_llms.py --models ollama:mistral ollama:llama3 ollama:qwen2.5
-```
-
-Required outputs:
-
+Current benchmark artifacts:
 - `results/llm_benchmark.csv`
 - `results/llm_benchmark_summary.csv`
 
-Metrics include valid rule rate, attack-type accuracy, retrieval grounding, false-positive score, option coverage, latency, model name, prompt variant, generation mode, and repair attempts.
+The benchmark includes local Ollama models such as `qwen2.5`, `mistral`, and `llama3.2`. Metrics include valid rule rate, attack-type accuracy, retrieval grounding, false-positive score, option coverage, latency, model name, prompt variant, generation mode, and repair attempts. Rows should therefore be interpreted as controlled pipeline outcomes, including fallback behavior, rather than as claims that every raw model response was directly usable.
 
-The `mock` client is only a smoke-test client for schema, prompt, validation, and artifact generation. If only the mock client is executed, the report must state: "The LLM pipeline was smoke-tested with a mock client; real local LLM benchmarking remains to be executed."
+Example command for a short local benchmark:
+
+```bash
+PYTHONPATH=src python scripts/benchmark_llms.py \
+  --models ollama:qwen2.5 ollama:mistral ollama:llama3.2 \
+  --eval data/evaluation/snort_eval_quick_10.csv \
+  --out results/llm_benchmark.csv \
+  --summary-out results/llm_benchmark_summary.csv
+```
 
 The benchmark writes `status=error` rows if a local model runtime is unavailable, so one failed model does not abort the full comparison.

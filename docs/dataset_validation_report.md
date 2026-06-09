@@ -53,7 +53,7 @@ Résultat: `VALIDATION PASSED`
 
 Formulation projet:
 
-Dataset vérifié structurellement et cohérent pour RAG. Les règles Snort-like doivent encore être testées dans un environnement Snort réel avant usage opérationnel.
+Dataset vérifié structurellement et cohérent pour RAG. Les règles du dataset restent des références éducatives; l'évidence runtime finale porte sur l'export Snort 3 compatible `data/processed/person1_rules_snort3.rules`.
 
 ## Validation renforcée des règles Snort-like
 L'ancien script contrôlait surtout la structure minimale des lignes et des règles: présence des champs requis, schéma CSV/JSONL, `sid`, `rev` et quelques contraintes simples sur les ports et protocoles.
@@ -70,4 +70,4 @@ Le validateur renforcé ajoute maintenant des vérifications Snort-like plus str
 
 Cette validation locale réduit le risque d'accepter du texte IA aléatoire qui ressemble vaguement à une règle mais qui n'a pas une forme Snort-like crédible.
 
-Elle ne remplace toutefois pas une vraie validation d'exécution Snort: la syntaxe finale, les avertissements moteur et le comportement réel de détection doivent encore être confirmés avec Snort et des tests PCAP.
+Elle ne remplace pas Snort 3. La validation d'autorité est documentée dans `results/snort_runtime_validation.csv`, et le comportement de détection est documenté dans `results/pcap_test_results.csv`.

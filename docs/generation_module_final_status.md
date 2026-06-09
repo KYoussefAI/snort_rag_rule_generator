@@ -14,15 +14,15 @@ Le module de génération a été étendu pour produire une sortie enrichie et s
 - `docs/report_section_generation_validation.md`
 
 ## 3. Tests exécutés et résultat
-Commande exécutée:
+Commande de validation courante:
 
 ```bash
-PYTHONPATH=src pytest tests/test_generator.py tests/test_rule_parser.py tests/test_retrieval.py tests/test_generate_dataset.py
+PYTHONPATH=src pytest tests/
 ```
 
-Résultat observé:
-- `9 passed`
-- `1 warning` liée à `joblib` en mode série dans cet environnement
+Résultat observé dans l'état validé du projet:
+- suite complète pytest PASS
+- les tests couvrent la génération, le parsing, la récupération, la validation Snort/PCAP et l'intégration des logs
 
 ## 4. Artefacts d’exemples générés
 Commande exécutée:
@@ -42,9 +42,10 @@ Le module d’analyse signale les règles trop générales, l’absence de logiq
 
 ## 6. Limites restantes
 - La sortie dépend toujours de la qualité de la récupération et du corpus local.
-- Un cas de mauvaise classification reste visible dans les artefacts: la requête ICMP sweep a produit une règle de `command_injection` dans l’exemple généré.
-- Validation Snort runtime non exécutée; validation locale Snort-like uniquement.
-- Des tests PCAP restent nécessaires pour vérifier le comportement réel de détection et les faux positifs en exécution.
+- Les réponses LLM brutes peuvent être rejetées par la validation stricte du schéma ou des règles; dans ce cas, le pipeline utilise un fallback déterministe contrôlé pour préserver la reproductibilité.
+- Les règles exportées pour l'évidence finale sont validées dans `data/processed/person1_rules_snort3.rules` avec Snort 3 via Docker.
+- Les tests PCAP de laboratoire existent et restent des captures synthétiques éducatives, pas une étude sur trafic d'entreprise.
+- Les logs de laboratoire réels sont des traces contrôlées locales, séparées des logs académiques synthétiques.
 
 ## 7. Ce que l’architecture et le dashboard peuvent consommer
 Les anciens champs restent disponibles:

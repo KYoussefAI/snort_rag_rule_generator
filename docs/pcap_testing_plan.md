@@ -1,27 +1,27 @@
 # Plan de test PCAP
 
-Les tests PCAP constituent une validation comportementale future des règles exportées pour Person 1. Ils sont distincts de la pré-validation locale du script et distincts d'un simple contrôle statique de syntaxe Snort.
+Les tests PCAP constituent la validation comportementale des règles exportées pour Person 1. Ils sont distincts de la pré-validation locale du script et distincts d'un simple contrôle statique de syntaxe Snort.
 
 Le validateur local peut rejeter des règles Snort-like manifestement faibles, incohérentes ou trop génériques, mais il ne peut pas démontrer à lui seul:
 - qu'une règle déclenche sur le trafic réellement visé
 - qu'une règle évite des faux positifs sur du trafic bénin
 - qu'une règle se comporte correctement avec un vrai moteur Snort, une vraie configuration et de vrais flux réseau
 
-Aucun résultat PCAP ne doit être affirmé dans la documentation du projet tant que le replay PCAP n'a pas été réellement exécuté et observé avec Snort.
+Les résultats PCAP courants sont enregistrés dans `results/pcap_test_results.csv`. Ils doivent être régénérés avec Snort 3 avant toute nouvelle revendication de validation.
 
 ## Principe général
 
 Workflow recommandé:
-1. Valider d'abord la syntaxe et les avertissements moteur avec `scripts/validate_rules_with_snort.sh`.
-2. Préparer un ensemble de PCAP synthétiques en laboratoire, un par scénario d'attaque principal et plusieurs PCAP bénins de contrôle.
-3. Exécuter Snort avec `data/processed/person1_rules.rules` sur chaque PCAP.
+1. Générer ou vérifier les PCAP synthétiques de laboratoire avec `scripts/generate_lab_pcaps.py`.
+2. Valider la syntaxe et les avertissements moteur avec `scripts/run_snort_validation.py`.
+3. Exécuter Snort avec `data/processed/person1_rules_snort3.rules` sur chaque PCAP.
 4. Collecter les alertes, les non-détections et les déclenchements inattendus.
 5. Réviser les règles si le comportement observé ne correspond pas à l'objectif de détection.
 
 Variables d'exécution recommandées:
 
 ```bash
-export SNORT_CONFIG="${SNORT_CONFIG:-/usr/local/etc/snort/snort.lua}"
+export SNORT_CONFIG="${SNORT_CONFIG:-/home/snorty/snort3/etc/snort/snort.lua}"
 ```
 
 ## Cas de test détaillés
@@ -46,7 +46,7 @@ Rejouer un PCAP de connexions TCP légitimes isolées vers quelques ports sans c
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/port_scan.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/port_scan.pcap -A alert_fast
 ```
 
 ### 2. `ssh_bruteforce`
@@ -69,7 +69,7 @@ Tester un PCAP avec une unique connexion SSH administrative légitime ou quelque
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/ssh_bruteforce.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/ssh_bruteforce.pcap -A alert_fast
 ```
 
 ### 3. `sql_injection`
@@ -92,7 +92,7 @@ Rejouer des requêtes HTTP légitimes contenant les mots `select` ou `union` dan
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/sql_injection.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/sql_injection.pcap -A alert_fast
 ```
 
 ### 4. `xss`
@@ -115,7 +115,7 @@ Tester un PCAP de navigation ou de développement web légitime contenant des fr
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/xss.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/xss.pcap -A alert_fast
 ```
 
 ### 5. `command_injection`
@@ -138,7 +138,7 @@ Rejouer du trafic web d'administration, de documentation ou de formation contena
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/command_injection.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/command_injection.pcap -A alert_fast
 ```
 
 ### 6. `directory_traversal`
@@ -161,7 +161,7 @@ Tester des requêtes web bénignes vers des chemins comportant plusieurs répert
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/directory_traversal.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/directory_traversal.pcap -A alert_fast
 ```
 
 ### 7. `dns_tunneling`
@@ -184,7 +184,7 @@ Rejouer des requêtes DNS bénignes mais longues, comme certains domaines légit
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/dns_tunneling.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/dns_tunneling.pcap -A alert_fast
 ```
 
 ### 8. `icmp_sweep`
@@ -207,7 +207,7 @@ Rejouer un PCAP avec quelques pings de supervision, de diagnostic ou de monitori
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/icmp_sweep.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/icmp_sweep.pcap -A alert_fast
 ```
 
 ### 9. `malware_c2`
@@ -230,7 +230,7 @@ Rejouer du trafic applicatif légitime vers des API externes, synchronisations c
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/malware_c2.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/malware_c2.pcap -A alert_fast
 ```
 
 ### 10. `benign_traffic`
@@ -242,7 +242,7 @@ Trafic PCAP attendu:
 Des flux normaux de navigation web, SSH d'administration, DNS usuel, monitoring ICMP, sauvegarde ou health checks, sans charges utiles explicitement malveillantes.
 
 Règle ou catégorie attendue:
-Aucune règle dédiée `benign_traffic`. Le test sert de baseline de non-détection face à l'ensemble de `data/processed/person1_rules.rules`.
+Aucune règle dédiée `benign_traffic`. Le test sert de baseline de non-détection face à l'ensemble de `data/processed/person1_rules_snort3.rules`.
 
 Comportement attendu:
 Aucune alerte idéalement. Si des alertes apparaissent, elles doivent être examinées comme faux positifs potentiels ou comme signe que les règles sont trop larges.
@@ -253,7 +253,7 @@ Comparer plusieurs PCAP bénins couvrant différents usages réels de laboratoir
 Example command:
 
 ```bash
-snort -c "$SNORT_CONFIG" -R data/processed/person1_rules.rules -r tests/pcaps/benign_traffic.pcap -A alert_fast
+./tools/snort3-docker -c "$SNORT_CONFIG" -R data/processed/person1_rules_snort3.rules -r tests/pcaps/generated/benign_traffic.pcap -A alert_fast
 ```
 
 ## Interprétation des résultats
@@ -267,4 +267,4 @@ Un résultat de validation utile doit documenter au minimum:
 - les cas attendus non détectés
 - les cas bénins détectés par erreur
 
-Sans cette exécution réelle, il ne faut pas présenter les règles comme validées opérationnellement. La pré-validation locale reste un filtre de qualité, mais Snort et les PCAP demeurent la référence finale pour le comportement de détection.
+Dans l'état actuel, cette exécution réelle est représentée par `results/pcap_test_results.csv`. Si elle ne peut pas être reproduite dans un autre environnement, il ne faut pas présenter une nouvelle validation PCAP comme acquise; la pré-validation locale reste un filtre de qualité, mais Snort et les PCAP demeurent la référence finale pour le comportement de détection.

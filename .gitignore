@@ -10,6 +10,8 @@ dist/
 *.pcap
 *.cap
 *.log
+!data/logs/real_lab_logs/
+!data/logs/real_lab_logs/*.log
 data/processed/snort_generated_dataset.csv
 data/processed/snort_generated_dataset.json
 data/processed/snort_generated_dataset.jsonl

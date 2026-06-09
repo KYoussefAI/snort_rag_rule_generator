@@ -2,11 +2,11 @@
 
 | Requirement | Project artifact | Status |
 | --- | --- | --- |
-| Personal dataset | `data/processed/final_snort_dataset.csv`, `DATASET_CARD.md`, `dataset_manifest.json` | Implemented |
+| Personal dataset | `data/processed/final_snort_dataset.csv`, `data/processed/DATASET_CARD.md`, `data/processed/dataset_manifest.json` | Implemented |
 | Separation of personal dataset and optional external references | Personal RAG dataset in `data/processed/`; optional trusted-source KB in `data/knowledge_base/trusted_rule_kb.csv` | Implemented |
 | Retrieval with BM25 and embeddings | `src/snort_rag/retrieval.py`, `scripts/benchmark_retrieval.py` | Implemented, optional dense backends depend on install |
-| LLM generation from query + retrieved docs | `src/snort_rag/llm_generator.py`, `src/snort_rag/prompting.py` | Implemented, real model execution required for final report |
-| LLM benchmarking | `scripts/benchmark_llms.py` | Implemented, run with local models for final evidence |
+| Controlled RAG generation from query + retrieved docs | `src/snort_rag/llm_generator.py`, `src/snort_rag/prompting.py`, `results/generated_rule_examples.csv` | Implemented; strict parsing and deterministic fallback are part of the controlled pipeline |
+| LLM benchmarking | `scripts/benchmark_llms.py`, `results/llm_benchmark.csv`, `results/llm_benchmark_summary.csv` | Implemented with local Ollama models; results describe the controlled RAG pipeline, not raw LLM perfection |
 | Full RAG pipeline | `src/snort_rag/architectures.py` | Implemented |
 | Classification and clustering | `src/snort_rag/templates.py`, `src/snort_rag/clustering.py` | Implemented |
 | Rule explanation | `src/snort_rag/generator.py`, `src/snort_rag/llm_generator.py` | Implemented |
@@ -15,5 +15,5 @@
 | Protocol-valid PCAP integration | `scripts/generate_lab_pcaps.py`, `scripts/run_pcap_tests.py`, `tests/pcaps/generated/`, `results/pcap_test_results.csv` | Implemented; PCAPs are synthetic educational lab captures |
 | Synthetic academic log integration | `data/logs/sample_network_logs.csv`, `scripts/run_log_integration_eval.py`, `results/network_log_integration_eval.csv` | Implemented; clearly labeled synthetic academic logs |
 | Controlled real-lab log integration | `scripts/capture_real_lab_logs.sh`, `data/logs/real_lab_logs/`, `scripts/run_real_log_integration_eval.py`, `results/real_lab_log_integration_eval.csv`, `tests/test_real_log_integration.py` | Implemented; real controlled lab artifacts, not enterprise production logs |
-| Dashboard with PDF upload | `src/snort_rag/app_gradio.py` | Implemented |
-| Technical report sections | `docs/report_section_*.md` | Draft sections present |
+| Dashboard with PDF upload | `src/snort_rag/app_gradio.py`, `docs/dashboard_usage.md` | Implemented; includes rule generation, retrieval inspection, validation metadata, false-positive metadata, benchmark evidence, dataset/KB stats, and temporary PDF knowledge-base extension |
+| Technical report sections | `docs/report_section_dataset_kb.md`, `docs/report_section_generation_validation.md`, `docs/report_section_llm_benchmark.md`, `docs/report_section_retrieval_benchmark.md`, `docs/report_section_clustering.md`, `docs/report_section_pcap_runtime_validation.md` | Draft sections present |

@@ -15,8 +15,8 @@ Les labels métier utilisés sont `port_scan`, `ssh_bruteforce`, `sql_injection`
 ## Simulation des logs
 Les logs ont été simulés dans plusieurs formats réalistes: Apache access log, Nginx access log, SSH auth log, firewall log, Zeek-like conn log, Zeek-like dns log, proxy log, WAF log, IDS-style log et ICMP sweep log. L'objectif est de fournir des mots-clés récupérables par un moteur de recherche RAG sans prétendre reproduire tous les champs d'un environnement de production.
 
-## Règles Snort-like
-Les règles de `snort_rule_reference` sont des règles Snort-like éducatives, écrites pour rester simples et lisibles. Elles contiennent `alert`, `msg`, une condition de détection, `classtype`, `sid` et `rev`. Elles ne remplacent pas une validation Snort réelle.
+## Règles Snort et export validé
+Les règles de `snort_rule_reference` dans le dataset restent des références éducatives destinées au RAG. L'export opérationnel validé pour l'évidence finale est séparé dans `data/processed/person1_rules_snort3.rules` et utilise une syntaxe compatible Snort 3.
 
 ## Séparation avec la base de connaissance de règles fiables
 Les règles Snort de confiance stockées dans `data/knowledge_base/` restent une base de connaissance de référence séparée. Elles peuvent aider à comparer une structure de règle, mais elles ne servent pas de dataset principal pour l'apprentissage ou la récupération Person 1.
@@ -24,5 +24,8 @@ Les règles Snort de confiance stockées dans `data/knowledge_base/` restent une
 ## Utilité pour la récupération RAG
 Le dataset est utile pour la récupération parce qu'il relie des descriptions naturelles variées, des logs simulés, des familles d'attaque, des niveaux de sévérité et des explications attendues. Un moteur de recherche peut donc retrouver des exemples proches même si la requête change de style ou de vocabulaire.
 
+## Séparation des logs
+`data/logs/sample_network_logs.csv` contient des logs académiques synthétiques réalistes pour l'évaluation d'intégration. `data/logs/real_lab_logs/` contient des logs de laboratoire contrôlés, capturés ou dérivés de commandes locales et du replay PCAP Snort. Ces deux sources ne sont pas des logs d'entreprise.
+
 ## Limites
-Le dataset reste petit et pédagogique. Les logs sont simulés, pas collectés depuis une infrastructure réelle. Les règles Snort-like sont vérifiées structurellement, mais pas encore validées en exécution dans un moteur Snort réel.
+Le dataset reste petit et pédagogique. Les logs synthétiques ne doivent pas être renommés ou présentés comme des logs réels. Les logs de laboratoire réels sont contrôlés localement et ne représentent pas une infrastructure de production. Les règles Snort 3 exportées disposent d'une validation Snort runtime et PCAP dans les artefacts `results/`, tandis que la validation locale reste seulement un filtre avant export.

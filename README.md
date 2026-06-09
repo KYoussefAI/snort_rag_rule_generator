@@ -164,7 +164,15 @@ PYTHONPATH=src pytest tests/
 PYTHONPATH=src python -m snort_rag.app_gradio
 ```
 
-The dashboard supports interactive rule generation, retrieved-context inspection, validation metadata, false-positive metadata, and optional PDF knowledge-base extension.
+The dashboard is organized into six tabs:
+- Rule Generator: attack description input, architecture selection, Top-k retrieval, model selection, generated rule display, validity status, fallback warning, and export of the latest `.rules`/JSON result.
+- Retrieval Details: retrieved document IDs, retrieval scores, context metadata, grounding flags, hallucination risk, option coverage, and prompt preview.
+- Validation & False Positives: syntax validation, validation errors, detected/missing Snort options, false-positive risk, risk factors, and improvement suggestions.
+- Dataset / Knowledge Base: personal RAG dataset statistics plus clear separation between synthetic academic logs, controlled real-lab logs, and optional trusted-source references.
+- Benchmarks & Evidence: tables loaded from existing Snort runtime, PCAP replay, log integration, LLM, embedding, and clustering result files.
+- PDF Upload: temporary in-memory knowledge-base extension for retrieval during the current session.
+
+See `docs/dashboard_usage.md` for a short usage guide and suggested screenshots for the final report.
 
 ## Trusted-Source Knowledge Base
 Optional trusted-source rule references can be refreshed with:

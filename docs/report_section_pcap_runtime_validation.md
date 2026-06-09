@@ -38,7 +38,7 @@ PYTHONPATH=src python scripts/run_real_log_integration_eval.py
 - `data/logs/sample_network_logs.csv` contains realistic synthetic academic logs used for dataset construction and synthetic integration evaluation.
 - `data/logs/real_lab_logs/` contains controlled lab-captured/parsing artifacts produced from local PCAP replay and packet parsing. These logs are real lab artifacts, not enterprise production logs.
 
-## SKIPPED Results
+## Unavailable Runtime Handling
 
 If the Docker wrapper, Snort image, or Snort config is unavailable, runtime validation cannot be claimed. The result should be marked `SKIPPED` or failed honestly. Local structural validation must not be described as equivalent to Snort runtime validation.
 
