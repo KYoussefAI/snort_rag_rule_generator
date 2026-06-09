@@ -1,0 +1,11 @@
+id,query,expected_attack_type,expected_family,language,difficulty,notes
+Q1,Detect SQL injection using UNION SELECT in an HTTP URI,sql_injection,web_attack,EN,medium,quick real llm benchmark
+Q2,Detect repeated SSH login attempts against port 22,ssh_bruteforce,bruteforce,EN,medium,quick real llm benchmark
+Q3,Detect a port scan with many TCP SYN packets to multiple ports,port_scan,reconnaissance,EN,medium,quick real llm benchmark
+Q4,Detect XSS using script tag in a web request,xss,web_attack,EN,medium,quick real llm benchmark
+Q5,Detect command injection using semicolon wget in an HTTP parameter,command_injection,web_attack,EN,hard,quick real llm benchmark
+Q6,Detect directory traversal trying to access ../../etc/passwd,directory_traversal,web_attack,EN,medium,quick real llm benchmark
+Q7,Detect DNS tunneling with very long encoded subdomains,dns_tunneling,exfiltration,EN,hard,quick real llm benchmark
+Q8,Detect ICMP sweep with many echo requests to internal hosts,icmp_sweep,reconnaissance,EN,medium,quick real llm benchmark
+Q9,Detect malware C2 beaconing to /gate.php every minute,malware_c2,malware,EN,hard,quick real llm benchmark
+Q10,Normal HTTPS browsing to the company website should not create an alert,benign_traffic,benign,EN,easy,negative benign case

@@ -67,7 +67,7 @@ def generate_with_llm_context(
     validation_errors: list[str] = []
     start = time.perf_counter()
 
-    response: LLMResponse = client.generate(prompt, temperature=0.0, max_new_tokens=192)
+    response: LLMResponse = client.generate(prompt, temperature=0.0, max_new_tokens=512)
     raw_outputs.append(response.text)
     active_prompt = prompt
 
@@ -111,7 +111,7 @@ def generate_with_llm_context(
             break
         repair_attempts += 1
         active_prompt = build_repair_prompt(active_prompt, raw_outputs[-1], validation_errors, [doc.id for doc in retrieved_docs])
-        response = client.generate(active_prompt, temperature=0.0, max_new_tokens=192)
+        response = client.generate(active_prompt, temperature=0.0, max_new_tokens=512)
         raw_outputs.append(response.text)
 
     fallback = generate_from_context(query, retrieved_docs)
