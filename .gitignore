@@ -17,10 +17,4 @@ data/experiments/legacy_generated/snort_generated_dataset.csv
 data/experiments/legacy_generated/snort_generated_dataset.json
 data/experiments/legacy_generated/snort_generated_dataset.jsonl
 data/knowledge_base/*.tar.gz
-snort_rag_99_fix_plan_3.pdf
-snort_rag_99_fix_plan_3.txt
-what i did get.txt
-snort_rag_codex_final_fix_handoff.pdf
-most_important_file.pdf
-Globale_evaluation.txt
-problems.txt
+skip/
