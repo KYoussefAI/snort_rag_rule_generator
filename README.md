@@ -164,6 +164,15 @@ PYTHONPATH=src pytest tests/
 PYTHONPATH=src python -m snort_rag.app_gradio
 ```
 
+The Gradio dashboard is the demo/prototype frontend for exploring the academic workflow.
+
+### Run the FastAPI backend
+```bash
+PYTHONPATH=src uvicorn snort_rag.api.main:app --reload
+```
+
+The FastAPI app is the clean JSON backend layer. It wraps the existing RAG, retrieval, generation, parser, validation, and false-positive modules without replacing the Gradio demo.
+
 The dashboard is organized into six tabs:
 - Rule Generator: attack description input, architecture selection, Top-k retrieval, model selection, generated rule display, validity status, fallback warning, and export of the latest `.rules`/JSON result.
 - Retrieval Details: retrieved document IDs, retrieval scores, context metadata, grounding flags, hallucination risk, option coverage, and prompt preview.
