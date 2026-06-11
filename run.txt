@@ -1,0 +1,5 @@
+terminale 1# 
+ollama serve 
+
+terminale 2# 
+PYTHONPATH=src python -m snort_rag.app_gradio
