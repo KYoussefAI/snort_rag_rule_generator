@@ -1,5 +1,7 @@
 # Snort RAG Rule Generator - NLP/RAG Mini Project
 
+**Encadrant:** Pr. Ikram BENABDELOUAHAB
+
 ## Overview
 This repository contains an academic NLP/RAG project for generating Snort IDS rules from natural-language descriptions and realistic network-log examples. The system is defensive and controlled: it classifies the suspected attack type, retrieves relevant examples from a local corpus, builds a constrained RAG prompt, accepts LLM output only when it passes strict validation, and otherwise falls back to deterministic templates for safety and reproducibility.
 

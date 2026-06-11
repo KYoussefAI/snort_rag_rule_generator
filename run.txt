@@ -3,3 +3,9 @@ ollama serve
 
 terminale 2# 
 PYTHONPATH=src python -m snort_rag.app_gradio
+
+
+Detect SQL injection with UNION SELECT in HTTP URI
+
+Normal employee browsing the company website with regular HTTP traffic
+
