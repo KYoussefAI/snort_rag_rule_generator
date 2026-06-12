@@ -60,14 +60,14 @@ def build_method_specs(rag: SnortRAGArchitectures) -> list[dict[str, object]]:
 
         return retrieve
 
-    def dense_rerank(query: str, k: int = 5) -> list[RetrievedDoc]:
-        initial_docs = rag.kb.dense_retrieve(query, k=max(8, k))
+    def sparse_rerank(query: str, k: int = 5) -> list[RetrievedDoc]:
+        initial_docs = rag.kb.sparse_retrieve(query, k=max(8, k))
         return rag.kb.rerank(query, initial_docs, k=k)
 
     return [
         {"method": "bm25", "backend": "bm25", "retriever": rag.kb.bm25_retrieve, "requires_sentence_bert": False, "requires_faiss": False},
-        {"method": "dense_tfidf", "backend": "tfidf", "retriever": rag.kb.dense_retrieve, "requires_sentence_bert": False, "requires_faiss": False},
-        {"method": "dense_tfidf_rerank", "backend": "tfidf_rerank", "retriever": dense_rerank, "requires_sentence_bert": False, "requires_faiss": False},
+        {"method": "sparse_tfidf", "backend": "tfidf", "retriever": rag.kb.sparse_retrieve, "requires_sentence_bert": False, "requires_faiss": False},
+        {"method": "sparse_tfidf_rerank", "backend": "tfidf_rerank", "retriever": sparse_rerank, "requires_sentence_bert": False, "requires_faiss": False},
         {"method": "hybrid_rerank_best", "backend": "hybrid_tfidf_bm25_rerank", "retriever": rag.kb.hybrid_rerank_retrieve, "requires_sentence_bert": False, "requires_faiss": False},
         {"method": "hybrid_alpha_0.25", "backend": "hybrid_tfidf_bm25", "retriever": hybrid_alpha(0.25), "requires_sentence_bert": False, "requires_faiss": False},
         {"method": "hybrid_alpha_0.50", "backend": "hybrid_tfidf_bm25", "retriever": hybrid_alpha(0.50), "requires_sentence_bert": False, "requires_faiss": False},

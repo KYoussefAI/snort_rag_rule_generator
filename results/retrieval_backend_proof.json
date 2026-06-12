@@ -13,7 +13,7 @@
       "error_message": ""
     },
     {
-      "method": "dense_tfidf",
+      "method": "sparse_tfidf",
       "backend": "tfidf",
       "requires_sentence_bert": false,
       "requires_faiss": false,
@@ -21,7 +21,7 @@
       "error_message": ""
     },
     {
-      "method": "dense_tfidf_rerank",
+      "method": "sparse_tfidf_rerank",
       "backend": "tfidf_rerank",
       "requires_sentence_bert": false,
       "requires_faiss": false,

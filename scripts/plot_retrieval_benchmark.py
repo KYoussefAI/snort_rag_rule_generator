@@ -17,8 +17,8 @@ def main() -> None:
     k3 = df[(df["k"] == 3) & (df["status"] == "ready")].copy()
     selected_methods = [
         "bm25",
-        "dense_tfidf",
-        "dense_tfidf_rerank",
+        "sparse_tfidf",
+        "sparse_tfidf_rerank",
         "hybrid_rerank_best",
         "sentence_bert",
         "sentence_bert_faiss",

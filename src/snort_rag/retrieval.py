@@ -217,7 +217,7 @@ class SnortKnowledgeBase:
             ))
         return docs
 
-    def dense_retrieve(self, query: str, k: int = 5) -> List[RetrievedDoc]:
+    def sparse_retrieve(self, query: str, k: int = 5) -> List[RetrievedDoc]:
         qv = self.vectorizer.transform([query])
         sims = cosine_similarity(qv, self.tfidf).ravel()
         idx = np.argsort(sims)[::-1][:k]
@@ -269,9 +269,9 @@ class SnortKnowledgeBase:
 
     def hybrid_retrieve(self, query: str, k: int = 5, alpha: float = 0.55) -> List[RetrievedDoc]:
         qv = self.vectorizer.transform([query])
-        dense = cosine_similarity(qv, self.tfidf).ravel()
+        tfidf_scores = cosine_similarity(qv, self.tfidf).ravel()
         sparse = self.bm25.scores(query)
-        fused = alpha * self._normalize(dense) + (1 - alpha) * self._normalize(sparse)
+        fused = alpha * self._normalize(tfidf_scores) + (1 - alpha) * self._normalize(sparse)
         idx = np.argsort(fused)[::-1][:k]
         return self._to_docs(idx, fused[idx])
 

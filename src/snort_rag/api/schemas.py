@@ -18,7 +18,7 @@ ArchitectureName = Literal[
 ]
 
 RetrievalStrategy = Literal[
-    "dense",
+    "sparse",
     "bm25",
     "hybrid",
     "hybrid_rerank",

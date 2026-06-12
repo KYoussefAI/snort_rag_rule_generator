@@ -6,7 +6,7 @@ L'objectif de cette partie est de comparer plusieurs strategies de recuperation 
 
 Les methodes comparees sont:
 - BM25
-- similarite dense TF-IDF
+- similarite sparse TF-IDF
 - embeddings Sentence-BERT en similarite cosinus
 - embeddings Sentence-BERT avec index FAISS
 - TF-IDF avec reranking
@@ -34,11 +34,11 @@ A k=3, cette methode obtient:
 - MRR = 1.0
 - Latence moyenne ~= 3.5 ms
 
-La methode `dense_tfidf_rerank` est plus rapide, mais sa Precision@3 est plus faible. Pour un systeme RAG, la qualite du contexte recupere est prioritaire, car des documents incorrects peuvent degrader la generation de regles Snort.
+La methode `sparse_tfidf_rerank` est plus rapide, mais sa Precision@3 est plus faible. Pour un systeme RAG, la qualite du contexte recupere est prioritaire, car des documents incorrects peuvent degrader la generation de regles Snort.
 
 ## Justification du choix final
 
-La methode `hybrid_rerank_best` est retenue car elle garde les avantages du retrieval lexical BM25 et de la similarite dense TF-IDF. Le reranking ameliore le classement final en remontant les documents dont le type d'attaque correspond mieux a la requete.
+La methode `hybrid_rerank_best` est retenue car elle garde les avantages du retrieval lexical BM25 et de la similarite sparse TF-IDF. Le reranking ameliore le classement final en remontant les documents dont le type d'attaque correspond mieux a la requete.
 
 Ce choix corrige notamment les cas ou le bon type d'attaque etait present dans le Top-3 mais pas au premier rang. Le benchmark montre donc que le reranking ameliore la robustesse du retrieval pour le pipeline RAG.
 

@@ -58,11 +58,11 @@ class SnortRAGArchitectures:
         return self.llm_no_rag(query)
 
     def rag_classic(self, query: str, k: int = 5) -> Dict[str, object]:
-        docs = self.kb.dense_retrieve(query, k=k)
+        docs = self.kb.sparse_retrieve(query, k=k)
         return self._pack("rag_classic", generate_from_context(query, docs), docs)
 
     def rag_rerank(self, query: str, k: int = 8) -> Dict[str, object]:
-        initial = self.kb.dense_retrieve(query, k=k)
+        initial = self.kb.sparse_retrieve(query, k=k)
         docs = self.kb.rerank(query, initial, k=5)
         return self._pack("rag_rerank", generate_from_context(query, docs), docs)
 

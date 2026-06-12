@@ -159,8 +159,8 @@ async def generate_rule(request: GenerateRuleRequest) -> GenerateRuleResponse:
 async def retrieve(request: RetrieveRequest) -> RetrieveResponse:
     kb = get_rag().kb
     try:
-        if request.strategy == "dense":
-            docs = kb.dense_retrieve(request.query, k=request.k)
+        if request.strategy == "sparse":
+            docs = kb.sparse_retrieve(request.query, k=request.k)
         elif request.strategy == "bm25":
             docs = kb.bm25_retrieve(request.query, k=request.k)
         elif request.strategy == "hybrid":
