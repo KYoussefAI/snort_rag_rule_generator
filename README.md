@@ -229,6 +229,14 @@ print(result["false_positive_risk"])
 - Snort 3 runtime evidence depends on the Docker wrapper and image being available. If Snort cannot run, runtime validation must be marked `SKIPPED` or failed honestly.
 - Generated rules are educational artifacts and should not be deployed operationally without broader environment-specific testing.
 
+## Future Improvements
+- Test with larger and more diverse real network traffic.
+- Add more attack families and benign traffic categories.
+- Improve rule quality with more Snort 3 runtime feedback.
+- Add stronger false-positive evaluation across longer lab captures.
+- Compare more local LLMs and embedding models.
+- Add a small web dashboard for easier review of generated rules and evidence.
+
 ## Academic Positioning
 This repository emphasizes reproducibility, interpretability, controlled local generation, explicit validation evidence, and honest limitations. It is suitable for academic reporting on NLP/RAG-assisted defensive rule generation, not for direct production IDS deployment.
 
