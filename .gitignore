@@ -21,3 +21,4 @@ data/experiments/legacy_generated/snort_generated_dataset.jsonl
 data/knowledge_base/*.tar.gz
 skip/
 report/
+.vscode
